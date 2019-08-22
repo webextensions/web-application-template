@@ -1,0 +1,102 @@
+{
+    // http://eslint.org/docs/user-guide/configuring.html
+    // https://gist.github.com/cletusw/e01a85e399ab563b1236
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        // http://eslint.org/docs/user-guide/migrating-to-2.0.0#language-options
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module" // https://github.com/AtomLinter/linter-eslint/issues/462#issuecomment-190770417
+    },
+    "plugins": [
+        "node",
+        "react", // https://www.npmjs.com/package/eslint-plugin-react
+        "import" // https://www.npmjs.com/package/eslint-plugin-import
+    ],
+    "rules": {
+        "indent": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1, // https://eslint.org/docs/rules/indent#switchcase
+                "ignoreComments": true // https://eslint.org/docs/rules/indent#ignorecomments
+            }
+        ],
+        "linebreak-style": [ "error", "unix" ],
+        "quotes": "off", // http://eslint.org/docs/rules/quotes
+        "semi": [ "error", "always" ],
+        "no-console": "off",
+        "no-debugger": "off",
+        "no-shadow": "off",
+        "no-var": [ "error" ],
+        "prefer-const": [ "error" ],
+        "comma-dangle": ["error", "never"],
+        "space-before-function-paren": [
+            "error",
+            {
+                "anonymous": "always",
+                "asyncArrow": "always",
+                "named": "never"
+            }
+        ],
+
+        // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/exports-last.md
+        "import/exports-last": [ "error" ],
+
+        /*
+        // Commented out this rule since it doesn't have expected capabilities as of 2019-August
+        // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/extensions.md
+        // Note:
+        //     The requirement for compulsory extension seems to be well served by
+        //     https://github.com/mysticatea/eslint-plugin-node/blob/master/docs/rules/file-extension-in-import.md
+        //     which is currently being used elsewhere in this file
+        "import/extensions": [
+            "error",
+            "always",
+            {
+                "js": "ignorePackages"
+            }
+        ],
+        /* */
+
+        // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/self-closing-comp.md
+        "react/self-closing-comp": [
+            "error",
+            {
+                "component": true,
+                "html": false
+            }
+        ],
+
+        "node/no-missing-require": [ "error" ],
+        "node/file-extension-in-import": [ "error" ],
+        "node/no-deprecated-api": [ "error" ]
+    },
+    // https://eslint.org/docs/user-guide/configuring#adding-shared-settings
+    "settings": {
+        // https://github.com/yannickcr/eslint-plugin-react#configuration
+        "react": {
+            "version": "detect" // React version. "detect" automatically picks the version you have installed.
+                                // You can also use `16.0`, `16.3`, etc, if you want to override the detected value.
+                                // default to latest and warns if missing
+                                // It will default to "detect" in the future
+        }
+    }
+}

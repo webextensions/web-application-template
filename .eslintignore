@@ -1,0 +1,8 @@
+# http://eslint.org/docs/user-guide/configuring.html#ignoring-files-and-directories
+
+# node_modules ignored by default
+
+# Auto-generated directories and contents
+/public-*/
+
+/scripts/health-checks/check-npm-install-status/semver.js

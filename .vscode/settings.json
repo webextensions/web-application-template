@@ -1,0 +1,28 @@
+{
+    // When "search.useIgnoreFiles" is set to false, the search-in-files functionality does not take
+    // .gitignore into consideration for exclusion
+    "search.useIgnoreFiles": false,
+
+    "search.exclude": {
+        // // https://github.com/Microsoft/vscode/issues/36438#issuecomment-337382427
+        // // When "search.useIgnoreFiles" is set to true (its default value), use this rule to
+        // // allow searching (and quick-opening) the files in the custom "node_modules" folder (the
+        // // one which is not at the root level)
+        // "**/node_modules": false
+
+        // Exclude the auto-generated public folders from search
+        "public-*": true
+    },
+
+    // https://github.com/wk-j/vscode-save-and-run#sample-config
+    "saveAndRun": {
+        "commands": [
+            {
+                "match": "package.cjson",
+                "cmd": "./scripts/housekeeping/generate-package-json.sh",
+                "useShortcut": false,
+                "silent": true
+            }
+        ]
+    }
+}

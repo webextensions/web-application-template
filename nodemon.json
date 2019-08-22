@@ -1,0 +1,16 @@
+{
+  "verbose": true,
+  "watch": [
+    "config/",
+    "nodemon.json",
+    "server/"
+  ],
+  "ext": "js json",
+  "ignoreRoot": [
+    ".git",
+    "./node_modules/"
+  ],
+  "ignore": [
+    "config/*.example.js"
+  ]
+}
