@@ -27,6 +27,7 @@ const configForThisMode = {
         }
     },
     webpack: {
+        watch: true,
         publicDirectory,
         useMinimize: true
     }
