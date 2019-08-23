@@ -80,7 +80,32 @@ const application = {
         const exp = express();
 
         exp.use(function (req, res, next) {
-            logger.verbose(req.method + ' ' + req.url);
+            // TODO:
+            //     "logRequestInit" and "logResponseFinish" should come from config
+            const
+                logRequestInit = false,
+                logResponseFinish = true;
+
+            if (logRequestInit) {
+                logger.verbose(req.method + ' ' + req.url);
+            }
+
+            if (logResponseFinish) {
+                res.on('finish', function () {
+                    let responseStatus;
+                    try {
+                        responseStatus = res._header.split('\n')[0].trim(); // ".trim()" is required, otherwise, "\r" entry might remain there.
+                    } catch (e) {
+                        responseStatus = 'Error: Unexpected error in response status. This should never happen.';
+                    }
+                    logger.verbose(
+                        req.method + ' ' +
+                        req.url + ' ' +
+                        responseStatus
+                    );
+                });
+            }
+
             next();
         });
 
@@ -239,15 +264,25 @@ const application = {
                             dotfiles: 'ignore',
 
                             // TODO: In production mode, we should use appropriate caching
-                            maxAge: 0,
+                            // maxAge: 0,
 
                             // https://github.com/expressjs/serve-static/issues/32#issuecomment-76226945
                             setHeaders: function (res, path) {
                                 const numberOfSecondsInFifteenDays = 15 * 24 * 60 * 60;
-                                // Cache the requests matching the pattern *.<20-characters-of-hash>.<css/js>
-                                // https://stackoverflow.com/questions/5416250/regex-contains-at-least-8-decimal-digits#comment6129189_5416280
-                                if (path.match(/.*\.[0-9a-f]{20}\.(css|js)/)) {
+
+                                if (path.indexOf('ensure-freshness') !== -1) {
+                                    // Note:
+                                    //     The Chrome DevTools do not necessarily show the real HTTP response status code.
+                                    //     The following "Cache-Control" setting seems to work well for serving static
+                                    //     files where "ensure-freshness" functionality is required (in development mode)
+                                    res.setHeader('Cache-Control', 'public, max-age=' + (numberOfSecondsInFifteenDays) + ', no-cache');
+                                } else if (path.match(/.*\.[0-9a-f]{20}\.(css|js)/)) {
+                                    // Cache the requests matching the pattern *.<20-characters-of-hash>.<css/js>
+                                    // https://stackoverflow.com/questions/5416250/regex-contains-at-least-8-decimal-digits#comment6129189_5416280
                                     res.setHeader('Cache-Control', 'public, max-age=' + (numberOfSecondsInFifteenDays));
+                                } else {
+                                    // TODO: In production mode, we should use appropriate caching
+                                    res.setHeader('Cache-Control', 'public, max-age=0');
                                 }
                             }
                         }

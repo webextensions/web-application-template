@@ -7,6 +7,9 @@ const
     copyWebpackPlugin = require('copy-webpack-plugin');
 
 const
+    chalk = require('chalk');
+
+const
     notifyCompletionStatus = require('./utils/notify-completion-status.js');
 
 const
@@ -23,6 +26,7 @@ const BABEL_QUERY = {
 const configGenerator = function (generatorOptions = {}) {
     const
         {
+            verbose,
             watch = false,
             useMinimize,
             useCopyWebpackPlugin,
@@ -42,6 +46,11 @@ const configGenerator = function (generatorOptions = {}) {
 
     // const
     //     templateToHtml = generatorOptions.templateToHtml || {},
+
+    if (verbose) {
+        console.log(chalk.blue('Generating webpack configuration for:'));
+        console.log(chalk.blue('    ' + JSON.stringify(generatorOptions, null, '    ').replace(/\n/g, '\n    ')));
+    }
 
     const config = {
         entry: (function () {
@@ -156,8 +165,8 @@ const configGenerator = function (generatorOptions = {}) {
             noEmitOnErrors: true,
             splitChunks: {
                 // TODO: Adjust minSize and maxSize to more practical values
-                minSize: 5000,
-                maxSize: 30000,
+                minSize: 50000,
+                maxSize: 2000000,
 
                 automaticNameDelimiter: '.',
 
@@ -253,6 +262,11 @@ const configGenerator = function (generatorOptions = {}) {
             return plugins;
         }())
     };
+
+    if (verbose) {
+        console.log(chalk.blue('Generated webpack configuration:'));
+        console.log(chalk.blue('    ' + JSON.stringify(config, null, '    ').replace(/\n/g, '\n    ')));
+    }
 
     return config;
 };

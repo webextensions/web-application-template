@@ -71,10 +71,6 @@ const webpackConfig = function (env, argv) {    // eslint-disable-line
         console.log(e);
         exitWithError('Error summary: Invalid or unavailable file ' + configFilePath);
     }
-    if (!silent) {
-        console.log(chalk.blue('Generating webpack configuration for:'));
-        console.log(chalk.blue('    ' + JSON.stringify(flagBasedWebpackConfig, null, '    ').replace(/\n/g, '\n    ')));
-    }
 
     const generatedWebpackConfig = configGenerator(flagBasedWebpackConfig);
     return generatedWebpackConfig;

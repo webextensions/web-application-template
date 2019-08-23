@@ -27,8 +27,11 @@ const configForThisMode = {
         }
     },
     webpack: {
+        verbose: true,
         useCopyWebpackPlugin: true,
-        publicDirectory: null // ! Important note: This must be set in the configuration which extends this
+        publicDirectory: null, // ! Important note: This must be set in the configuration which extends this
+        outputJsFilenamePattern: 'bundle.[name].[contenthash:20].js',
+        outputCssFilenamePattern: 'bundle.[name].[contenthash:20].css'
     }
 };
 
