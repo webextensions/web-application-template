@@ -188,6 +188,12 @@ const configGenerator = function (generatorOptions = {}) {
 
         watch,
 
+        // https://webpack.js.org/configuration/stats/
+        stats: {
+            // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/271#issuecomment-449694009
+            children: false
+        },
+
         devtool: 'source-map',
 
         plugins: (function () {
