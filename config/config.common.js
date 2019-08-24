@@ -28,8 +28,8 @@ const configForThisMode = {
     },
     webpack: {
         verbose: true,
-        useCopyWebpackPlugin: true,
         publicDirectory: null,
+        useCopyWebpackPlugin: true,
         outputJsFilenamePattern: 'bundle.[name].[contenthash:20].js',
         outputCssFilenamePattern: 'bundle.[name].[contenthash:20].css'
     }
