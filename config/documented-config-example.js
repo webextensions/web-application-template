@@ -25,7 +25,7 @@ const configForThisMode = {
         // workers: 1,                                              // 1 / <number-of-workers>
         verbose: true,
         access: {
-            // publicDirectory: null,                               // null / <public-path>
+            // publicDirectory: null,                               // optional ; null / <public-path>
             // publicDirectory: require('path').join(__dirname, '../public-development-local/'),
             serveDotWellKnownDirectoryForSslCertificate: true,
             url: {
@@ -73,8 +73,8 @@ const configForThisMode = {
             skipHSTS: true,
             useLiveCssEditor: true
             // networkDelay: {                                              // Random delay in network requests
-            //     minimum: 0,                                              // <undefined-or-null> / <non-negative-integer>
-            //     maximum: 0                                               // <undefined-or-null> / <non-negative-integer>
+            //     minimum: 0,                                              // optional ; null / <non-negative-integer>
+            //     maximum: 0                                               // optional ; null / <non-negative-integer>
             // },
             // hardCodedResponses: [
             //     {

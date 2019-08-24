@@ -5,7 +5,7 @@ const configForThisMode = {
     server: {
         verbose: true,
         access: {
-            publicDirectory: null, // ! Important note: This must be set in the configuration which extends this
+            publicDirectory: null,
             url: {
                 http: {
                     enabled: true,
@@ -29,7 +29,7 @@ const configForThisMode = {
     webpack: {
         verbose: true,
         useCopyWebpackPlugin: true,
-        publicDirectory: null, // ! Important note: This must be set in the configuration which extends this
+        publicDirectory: null,
         outputJsFilenamePattern: 'bundle.[name].[contenthash:20].js',
         outputCssFilenamePattern: 'bundle.[name].[contenthash:20].css'
     }

@@ -65,7 +65,7 @@ function readFileAsJson(filePath) {
             json = JSON.parse(data);
         return json;
     } catch (e) {
-        return null;
+        return undefined;
     }
 }
 
