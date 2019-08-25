@@ -1,5 +1,3 @@
-// This is the default configuration file
-
 /*
 const logger = require('note-down');
 if (process.env.NODE_ENV !== 'production') {
