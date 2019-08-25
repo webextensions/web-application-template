@@ -1,7 +1,7 @@
 {
   "author": "Priyank Parashar",
   "bugs": {
-    "url": "https://github.com/webextensions/basic-react/issues"
+    "url": "https://github.com/webextensions/web-application-template/issues"
   },
   "dependencies": {
     "basic-auth": "^2.0.1",
@@ -55,7 +55,7 @@
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.7"
   },
-  "homepage": "https://github.com/webextensions/basic-react#readme",
+  "homepage": "https://github.com/webextensions/web-application-template#readme",
   "husky": {
     "hooks": {
       "post-checkout": "./husky/post-checkout.sh",
@@ -68,7 +68,7 @@
   "name": "web-application-template",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/webextensions/basic-react.git"
+    "url": "git+https://github.com/webextensions/web-application-template.git"
   },
   "scripts": {
     "all-is-well": "./scripts/health-checks/all-is-well.sh",

@@ -5,13 +5,13 @@
   "author": "Priyank Parashar",
   "license": "MIT",
 
-  "homepage": "https://github.com/webextensions/basic-react#readme",
+  "homepage": "https://github.com/webextensions/web-application-template#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/webextensions/basic-react.git"
+    "url": "git+https://github.com/webextensions/web-application-template.git"
   },
   "bugs": {
-    "url": "https://github.com/webextensions/basic-react/issues"
+    "url": "https://github.com/webextensions/web-application-template/issues"
   },
 
   "main": "server/application.js",
