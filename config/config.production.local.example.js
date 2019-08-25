@@ -11,7 +11,7 @@ const configForThisMode = {
     server: {
         // verbose: false,
         access: {
-            publicDirectory: publicDirectory,
+            publicDirectory,
             url: {
                 // host: 'example.com'
                 http: {
@@ -27,6 +27,7 @@ const configForThisMode = {
         }
     },
     webpack: {
+        // verbose: false,
         watch: true,
         publicDirectory,
         useMinimize: true

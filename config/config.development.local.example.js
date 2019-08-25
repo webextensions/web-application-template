@@ -9,9 +9,9 @@ const publicDirectory = 'public-development-local';
 
 const configForThisMode = {
     server: {
-        // verbose: false,
+        // verbose: true,
         access: {
-            publicDirectory: publicDirectory,
+            publicDirectory,
             url: {
                 // host: 'example.com',
                 http: {
@@ -27,6 +27,7 @@ const configForThisMode = {
         }
     },
     webpack: {
+        // verbose: true,
         publicDirectory
     }
 };

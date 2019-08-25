@@ -118,6 +118,7 @@ const configForThisMode = {
     //     name: 'web-application-template'
     // },
     webpack: {
+        verbose: true,
         watch: true,                                                        // false/true
         publicDirectory,
         // templateToHtml: {

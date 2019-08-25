@@ -4,8 +4,9 @@ const publicDirectory = 'public-development';
 
 const configForThisMode = {
     server: {
+        verbose: false,
         access: {
-            publicDirectory: publicDirectory,
+            publicDirectory,
             url: {
                 http: {
                     port: 8000,

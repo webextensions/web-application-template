@@ -14,7 +14,7 @@ const publicDirectory = 'public-production';
 const configForThisMode = {
     server: {
         access: {
-            publicDirectory: publicDirectory,
+            publicDirectory,
             url: {
                 // host: 'example.com',
                 http: {
