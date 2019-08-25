@@ -87,7 +87,7 @@ const application = {
                 logResponseFinish = true;
 
             if (logRequestInit) {
-                logger.verbose(req.method + ' ' + req.url);
+                logger.verbose(req.method + ' ' + req.originalUrl);
             }
 
             if (logResponseFinish) {
@@ -99,12 +99,13 @@ const application = {
                     let responseStatus;
                     try {
                         responseStatus = res._header.split('\n')[0].trim(); // ".trim()" is required, otherwise, "\r" entry might remain there.
+                        responseStatus = responseStatus.replace('HTTP/1.1', '').trim();
                     } catch (e) {
                         responseStatus = 'Error: Unexpected error in response status. This should never happen.';
                     }
                     logger.verbose(
                         req.method + ' ' +
-                        req.url + ' ' +
+                        req.originalUrl + ' ' +
                         responseStatus
                     );
                 });
