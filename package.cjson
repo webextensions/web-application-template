@@ -1,9 +1,10 @@
 {
   "name": "web-application-template",
-  "description": "A web application project template, based on: Node.js, Babel, ESLint, Express, React, Webpack, etc",
   "version": "1.0.0",
+  "description": "A web application project template, based on: Node.js, Babel, ESLint, Express, React, Webpack, etc",
   "author": "Priyank Parashar",
   "license": "MIT",
+
   "homepage": "https://github.com/webextensions/basic-react#readme",
   "repository": {
     "type": "git",
@@ -12,7 +13,9 @@
   "bugs": {
     "url": "https://github.com/webextensions/basic-react/issues"
   },
+
   "main": "server/application.js",
+
   "dependencies": {
     // Server - Express
     "express": "^4.17.1",
@@ -46,6 +49,7 @@
     "lodash": "^4.17.15",
     "extend": "^3.0.2"
   },
+
   "devDependencies": {
     // Git hooks
     "husky": "^3.0.4",
@@ -88,6 +92,7 @@
     "shelljs": "^0.8.3",
     "commander": "^3.0.0"
   },
+
   "husky": {
     "hooks": {
       "post-checkout": "./husky/post-checkout.sh",
@@ -95,16 +100,12 @@
       "pre-push": "npm test"
     }
   },
+
   "scripts": {
+    /* Setup */
     "preinstall":  "./scripts/npm-run-scripts/preinstall.sh",
 
-    "clean": "./scripts/housekeeping/clean.js",
-
-    "lint": "eslint . --report-unused-disable-directives",
-
-    "housekeeping-review-dependencies": "./scripts/housekeeping/imperfect/review-dependencies-via-depcheck.sh",
-
-    // Build (with webpack)
+    /* Build (with webpack) */
     // References: https://stackoverflow.com/questions/16978256/what-is-node-env-in-express/16979503#16979503
     "build-production-inspect-brk":       "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production  --display-error-details --progress --env.config config/config.production.js",
     "build-production":                                                              "NODE_ENV=production webpack --mode production  --display-error-details --progress --env.config config/config.production.js",
@@ -121,7 +122,7 @@
     "build-inspect-brk": "npm run build-development-local-inspect-brk",
     "build":             "npm run build-development-local",
 
-    // Server
+    /* Server */
     "server-production-inspect-brk":       "NODE_ENV=production node --inspect-brk server/server.js    --config config/config.production.js",
     "server-production":                   "NODE_ENV=production nodemon            server/server.js -- --config config/config.production.js",
 
@@ -140,8 +141,16 @@
     "start-inspect-brk":  "npm run server-inspect-brk",
     "start":              "npm run server",
 
+    /* Linting, tests etc */
+    "housekeeping-review-dependencies": "./scripts/housekeeping/imperfect/review-dependencies-via-depcheck.sh",
+
+    "clean": "./scripts/housekeeping/clean.js",
+
+    "lint": "eslint . --report-unused-disable-directives",
+
     // "mocha": "echo \"** Warning: no test specified **\"",
     "mocha": "mocha",
+
     "all-is-well": "./scripts/health-checks/all-is-well.sh",
 
     "test": "npm run all-is-well"
