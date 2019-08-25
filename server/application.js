@@ -91,6 +91,10 @@ const application = {
             }
 
             if (logResponseFinish) {
+                // TODO:
+                //     Potentially, res.on('finish', <handler>), may not get cleaned up (if "res" still remains there in
+                //     memory due to any leak). Ensure a timer to handle such cases (and add appropriate log entries),
+                //     otherwise, the server memory would get clogged.
                 res.on('finish', function () {
                     let responseStatus;
                     try {
