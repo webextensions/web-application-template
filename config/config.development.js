@@ -39,8 +39,8 @@ const configForThisMode = {
     },
     webpack: {
         verbose: false,
-        publicDirectory,
         watch: true,
+        publicDirectory,
         outputCssFilenamePattern: 'bundle.[name].ensure-freshness.css',
         outputJsFilenamePattern:  'bundle.[name].ensure-freshness.js'
     }
