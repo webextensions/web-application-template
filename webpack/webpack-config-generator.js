@@ -23,7 +23,7 @@ const BABEL_QUERY = {
     plugins: ["transform-es2015-modules-commonjs"]
 };
 
-const configGenerator = function (generatorOptions = {}) {
+const webpackConfigGenerator = function (generatorOptions = {}) {
     const
         {
             verbose,
@@ -277,4 +277,4 @@ const configGenerator = function (generatorOptions = {}) {
     return config;
 };
 
-module.exports = configGenerator;
+module.exports = webpackConfigGenerator;

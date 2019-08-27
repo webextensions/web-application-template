@@ -26,9 +26,10 @@
         "sourceType": "module" // https://github.com/AtomLinter/linter-eslint/issues/462#issuecomment-190770417
     },
     "plugins": [
+        "filenames", // https://www.npmjs.com/package/eslint-plugin-filenames
+        "import", // https://www.npmjs.com/package/eslint-plugin-import
         "node",
-        "react", // https://www.npmjs.com/package/eslint-plugin-react
-        "import" // https://www.npmjs.com/package/eslint-plugin-import
+        "react" // https://www.npmjs.com/package/eslint-plugin-react
     ],
     "rules": {
         "indent": [
@@ -56,6 +57,16 @@
                 "named": "never"
             }
         ],
+
+        // https://www.npmjs.com/package/eslint-plugin-filenames
+        "filenames/match-exported": [
+            "error",
+            [
+                null,
+                "kebab"
+            ]
+        ],
+        "filenames/no-index": [ "error" ],
 
         // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/exports-last.md
         "import/exports-last": [ "error" ],

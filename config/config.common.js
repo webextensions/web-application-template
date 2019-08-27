@@ -1,3 +1,5 @@
+/* eslint-disable filenames/match-exported */
+
 const configForThisMode = {
     application: {
         name: 'Web Application Template'

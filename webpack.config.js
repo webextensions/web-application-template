@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+/* eslint-disable filenames/match-exported */
+
 const path = require('path');
 
 const chalk = require('chalk');
