@@ -31,7 +31,7 @@
     // Server - More
     "basic-auth": "^2.0.1",
     "compression": "^1.7.4",
-    "helmet": "^3.20.0",
+    "helmet": "^3.21.1",
     "serve-favicon": "^2.5.0",
 
     // Logging
@@ -52,26 +52,26 @@
 
   "devDependencies": {
     // Git hooks
-    "husky": "^3.0.4",
+    "husky": "^3.0.5",
 
     // Linting
-    "eslint": "^6.2.2",
+    "eslint": "^6.4.0",
     "eslint-plugin-filenames": "^1.3.2",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-react": "^7.14.3",
 
     // Build - Transpilation
-    "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
+    "@babel/cli": "^7.6.2",
+    "@babel/core": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
-    "@babel/preset-typescript": "^7.3.3",
+    "@babel/preset-typescript": "^7.6.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
 
     // Build - Bundling
-    "webpack": "^4.39.3",
-    "webpack-cli": "^3.3.7",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.9",
     "copy-webpack-plugin": "^5.0.4",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
@@ -81,17 +81,17 @@
     "mocha": "^6.2.0",
 
     // Development assistants
-    "nodemon": "^1.19.1",
+    "nodemon": "^1.19.2",
     "@webextensions/live-css": "^7.0.10",
     "local-ip-addresses-and-hostnames": "^0.1.3",
 
     // Miscellaneous
     "del": "^5.1.0",
-    "handlebars": "^4.1.2",
-    "node-notifier": "^5.4.3",
+    "handlebars": "^4.2.1",
+    "node-notifier": "^6.0.0",
     "package-cjson": "0.0.3", // Required in scripts "health-checks/compare-package-json-cjson.sh" and "housekeeping/generate-package-json.sh"
     "shelljs": "^0.8.3",
-    "commander": "^3.0.0"
+    "commander": "^3.0.1"
   },
 
   "husky": {
