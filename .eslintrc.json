@@ -26,10 +26,11 @@
         "sourceType": "module" // https://github.com/AtomLinter/linter-eslint/issues/462#issuecomment-190770417
     },
     "plugins": [
-        "filenames", // https://www.npmjs.com/package/eslint-plugin-filenames
-        "import", // https://www.npmjs.com/package/eslint-plugin-import
+        "filenames",  // https://www.npmjs.com/package/eslint-plugin-filenames
+        "import",     // https://www.npmjs.com/package/eslint-plugin-import
         "node",
-        "react" // https://www.npmjs.com/package/eslint-plugin-react
+        "react",      // https://www.npmjs.com/package/eslint-plugin-react
+        "react-hooks" // https://www.npmjs.com/package/eslint-plugin-react-hooks
     ],
     "rules": {
         "indent": [
@@ -95,6 +96,9 @@
                 "html": false
             }
         ],
+
+        "react-hooks/rules-of-hooks": "error", // Checks rules of hooks
+        "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
 
         "node/no-missing-require": [ "error" ],
         "node/file-extension-in-import": [ "error" ],
