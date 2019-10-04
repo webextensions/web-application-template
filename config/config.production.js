@@ -20,6 +20,9 @@ const configForThisMode = {
                 http: {
                     port: 8000, // Ensure that the port 8000 is "forwarded" to port 80 in the production server
                     redirectToHttps: true
+                },
+                https: {
+                    enabled: false // In ideal production setup, https should be enabled
                 }
             }
         }
