@@ -87,6 +87,7 @@
     "clean": "./scripts/housekeeping/clean.js",
     "housekeeping-review-dependencies": "./scripts/housekeeping/imperfect/review-dependencies-via-depcheck.sh",
     "lint": "eslint . --report-unused-disable-directives",
+    "lint-fix": "eslint . --report-unused-disable-directives --fix",
     "mocha": "mocha",
     "preinstall": "./scripts/npm-run-scripts/preinstall.sh",
     "server": "npm run server-development-local",

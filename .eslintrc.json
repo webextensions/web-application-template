@@ -42,7 +42,17 @@
             }
         ],
         "linebreak-style": [ "error", "unix" ],
-        "quotes": "off", // http://eslint.org/docs/rules/quotes
+
+        // http://eslint.org/docs/rules/quotes
+        "quotes": [
+            "warn",
+            "single",
+            {
+                "allowTemplateLiterals": true,
+                "avoidEscape": true
+            }
+        ],
+
         "semi": [ "error", "always" ],
         "no-console": "off",
         "no-debugger": "off",

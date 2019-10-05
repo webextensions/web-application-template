@@ -19,8 +19,8 @@ const
     projectRoot = path.join(__dirname, '..');
 
 const BABEL_QUERY = {
-    presets: ["@babel/preset-react"],
-    plugins: ["transform-es2015-modules-commonjs"]
+    presets: ['@babel/preset-react'],
+    plugins: ['transform-es2015-modules-commonjs']
 };
 
 const webpackConfigGenerator = function (generatorOptions = {}) {

@@ -148,7 +148,8 @@
 
     "clean": "./scripts/housekeeping/clean.js",
 
-    "lint": "eslint . --report-unused-disable-directives",
+    "lint":     "eslint . --report-unused-disable-directives",
+    "lint-fix": "eslint . --report-unused-disable-directives --fix",
 
     // "mocha": "echo \"** Warning: no test specified **\"",
     "mocha": "mocha",

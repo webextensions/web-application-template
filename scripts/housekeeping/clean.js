@@ -17,9 +17,9 @@ require('shelljs/global');
 // TODO: Use globs for these patterns
 
 const patternsMarkedToKeep = [
-    "node_modules/",
-    "config/config.development.local.js",
-    "config/config.production.local.js"
+    'node_modules/',
+    'config/config.development.local.js',
+    'config/config.production.local.js'
 ];
 
 const patternsToDelete = [
