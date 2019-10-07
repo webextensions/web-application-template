@@ -40,6 +40,7 @@
     "css-loader": "^3.2.0",
     "del": "^5.1.0",
     "eslint": "^6.5.1",
+    "eslint-config-ironplate": "^0.0.1",
     "eslint-plugin-filenames": "^1.3.2",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-node": "^10.0.0",
