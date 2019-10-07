@@ -2,7 +2,7 @@ import React from 'react';
 
 import './PageFooter.css';
 
-import Message from '../Message/Message.js';
+import { Message } from '../Message/Message.js';
 
 class PageFooter extends React.Component {
     render() {
@@ -14,4 +14,4 @@ class PageFooter extends React.Component {
     }
 }
 
-export default PageFooter;
+export { PageFooter };

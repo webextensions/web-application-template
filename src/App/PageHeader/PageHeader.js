@@ -2,8 +2,8 @@ import React from 'react';
 
 import './PageHeader.css';
 
-import CurrentTime from 'generic-components/CurrentTime/CurrentTime.js';
-import UserAgent from 'generic-components/UserAgent/UserAgent.js';
+import { CurrentTime } from 'generic-components/CurrentTime/CurrentTime.js';
+import { UserAgent } from 'generic-components/UserAgent/UserAgent.js';
 
 class PageHeader extends React.Component {
     render() {
@@ -23,4 +23,4 @@ class PageHeader extends React.Component {
     }
 }
 
-export default PageHeader;
+export { PageHeader };

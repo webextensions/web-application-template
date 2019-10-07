@@ -2,7 +2,7 @@ import React from 'react';
 
 import './TodoList.css';
 
-import Todo from './Todo/Todo.js';
+import { Todo } from './Todo/Todo.js';
 
 class TodoList extends React.Component {
     render() {
@@ -26,4 +26,4 @@ class TodoList extends React.Component {
     }
 }
 
-export default TodoList;
+export { TodoList };
