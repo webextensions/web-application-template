@@ -2,7 +2,15 @@
 <html>
 
 <head>
+    <title>Web Application Template</title>
 
+    <style>
+        /* If most of the times, the page would have a vertical scroll, then this style should be added to the html file
+        itself to avoid FOUC */
+        body {
+            overflow-y: scroll;
+        }
+    </style>
 </head>
 
 <body>
