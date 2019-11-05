@@ -13,10 +13,47 @@
     // Add ESLint plugins here. If they are stable and useful, move those as a pull
     // request to https://github.com/webextensions/eslint-config-ironplate/
     "plugins": [
+        "unicorn"
     ],
 
     // Add ESLint rules here. If they are stable and useful, move those as a pull
     // request to https://github.com/webextensions/eslint-config-ironplate/
     "rules": {
+        "unicorn/consistent-function-scoping": "error",
+        "unicorn/custom-error-definition": "error",
+        "unicorn/error-message": "error",
+        "unicorn/escape-case": "error",
+        "unicorn/expiring-todo-comments": "error",
+        "unicorn/filename-case": [
+            "error",
+            {
+                "cases": {
+                    "camelCase": true,
+                    "pascalCase": true,
+                    "kebabCase": true
+                }
+            }
+        ],
+        "unicorn/new-for-builtins": "error",
+        "unicorn/no-abusive-eslint-disable": "error",
+        "unicorn/no-array-instanceof": "error",
+        "unicorn/no-console-spaces": "error",
+        "unicorn/no-fn-reference-in-iterator": "error",
+        "unicorn/no-for-loop": "error",
+        "unicorn/no-hex-escape": "error",
+        "unicorn/no-new-buffer": "error",
+        "unicorn/no-process-exit": "error",
+        "unicorn/no-unreadable-array-destructuring": "error",
+        "unicorn/no-unsafe-regex": "error",
+        "unicorn/no-unused-properties": "error",
+        "unicorn/no-zero-fractions": "error",
+        "unicorn/number-literal-case": "error",
+        "unicorn/prefer-add-event-listener": "error",
+        "unicorn/prefer-event-key": "error",
+        "unicorn/prefer-flat-map": "error",
+        "unicorn/prefer-text-content": "error",
+        "unicorn/prefer-type-error": "error",
+        "unicorn/regex-shorthand": "error",
+        "unicorn/throw-new-error": "error"
     }
 }

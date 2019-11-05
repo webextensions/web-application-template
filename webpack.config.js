@@ -44,7 +44,7 @@ const showHelpAndExitWithError = function (errMsg) {
 const currentDir = process.cwd();
 
 // https://webpack.js.org/configuration/configuration-types/
-const webpackConfig = function (env, argv) {    // eslint-disable-line
+const webpackConfig = function (env, argv) {    // eslint-disable-line no-unused-vars
     env = env || {};
 
     const silent = env.silent;

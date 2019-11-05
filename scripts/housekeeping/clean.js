@@ -61,8 +61,7 @@ const doCleanup = function (cmd, itemTerm, flagFilterInOnlyFolders, callback) {
             }
         })
         .filter(function filterOutPatternsMarkedForSkipping(item) {
-            for (let i = 0; i < patternsMarkedToKeep.length; i++) {
-                const patternMarkedToKeep = patternsMarkedToKeep[i];
+            for (const patternMarkedToKeep of patternsMarkedToKeep) {
                 if (
                     typeof patternMarkedToKeep === 'string' &&
                     item === patternMarkedToKeep
@@ -77,8 +76,7 @@ const doCleanup = function (cmd, itemTerm, flagFilterInOnlyFolders, callback) {
 
     const listOfItemsToClean = listOfPotentialItemsToClean
         .filter(function (item) {
-            for (let i = 0; i < patternsToDelete.length; i++) {
-                const patternToDelete = patternsToDelete[i];
+            for (const patternToDelete of patternsToDelete) {
                 if (
                     typeof patternToDelete === 'string' &&
                     item === patternToDelete

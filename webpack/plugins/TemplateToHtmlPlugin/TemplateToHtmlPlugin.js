@@ -120,9 +120,7 @@ class TemplateToHtmlPlugin {
                 };
 
                 // There might be multiple files in the chunk (for example: a .css file along with a .js file)
-                for (let i = 0; i < chunkFiles.length; i++) {
-                    const chunkFileName = chunkFiles[i];
-
+                for (const chunkFileName of chunkFiles) {
                     if (isFileCssOrJs(chunkFileName)) {
                         context.chunks[chunkFileName] = {
                             filePath: chunkFileName,
