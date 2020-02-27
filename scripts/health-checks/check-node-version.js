@@ -31,7 +31,7 @@ try {
     const
         dotNvmrcPath = path.resolve(__dirname, '../../.nvmrc'),
         dotNvmrcContents = fs.readFileSync(dotNvmrcPath, 'utf8');
-    if(dotNvmrcContents !== nodeVersion) {
+    if (dotNvmrcContents !== nodeVersion) {
         logger.log('');
         logger.success(' ✓   .nvmrc suggests: Node JS ' + dotNvmrcContents);
         loggerWarnOrError(' ✗ You currently use: Node JS ' + nodeVersion);
