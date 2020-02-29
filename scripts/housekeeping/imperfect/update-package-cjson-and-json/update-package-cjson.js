@@ -54,4 +54,6 @@ if (originalPackageCjsonContents === updatedPackageCjsonContents) {
 } else {
     fs.writeFileSync(packageCjsonFilePath, updatedPackageCjsonContents);
     logger.warn(` ✓ Updated: ${packageCjsonFilePath}`);
+    logger.info(`   You may want to run:`);
+    logger.info(`       $ npm install`);
 }
