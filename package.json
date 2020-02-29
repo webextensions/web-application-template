@@ -104,7 +104,8 @@
     "server-production-local-inspect-brk": "NODE_ENV=production node --inspect-brk server/server.js    --config config/config.production.local.js",
     "start": "npm run server",
     "start-inspect-brk": "npm run server-inspect-brk",
-    "test": "npm run all-is-well"
+    "test": "npm run all-is-well",
+    "update-package-cjson-and-json": "./scripts/housekeeping/imperfect/update-package-cjson-and-json/update-package-cjson-and-json.sh"
   },
   "version": "1.0.0"
 }

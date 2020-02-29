@@ -147,6 +147,8 @@
     "start-inspect-brk":  "npm run server-inspect-brk",
     "start":              "npm run server",
 
+    "update-package-cjson-and-json": "./scripts/housekeeping/imperfect/update-package-cjson-and-json/update-package-cjson-and-json.sh",
+
     /* Linting, tests etc */
     "housekeeping-review-dependencies": "./scripts/housekeeping/imperfect/review-dependencies-via-depcheck.sh",
 
