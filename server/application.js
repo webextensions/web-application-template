@@ -164,7 +164,7 @@ const application = {
             }
 
             if (_serverUrlConfig.redirectToWww) {
-                exp.use(redirectToWww());
+                exp.use(redirectToWww(307));
             }
 
             const helmetConfig = {};
