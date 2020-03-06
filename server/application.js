@@ -63,12 +63,18 @@ const routeSetup = function (exp) {
                 // TODO: Validate whether "reqBody.username" exists or not
                 res.send(`TODO: Create a user with ID ${reqBody.username} (if available)`);
             })
-        )
-        .use('*', function (req, res) {
+        );
+
+    setTimeout(function () {
+        // Setting up this router after a delay so that live-css server router is able to attach itself before it
+        router.use('*', function (req, res) {
             res.status(404).send('Page not found');
         });
+    }, 1000);
 
     exp.use('/', router);
+
+    return router;
 };
 
 const application = {
@@ -299,7 +305,7 @@ const application = {
             exp.use(bodyParser.json()); // support json encoded bodies
             exp.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-            routeSetup(exp);
+            const router = routeSetup(exp);
 
             const registerServer = function (protocol, portNumber, httpsConfig) {
                 let server;
@@ -385,6 +391,7 @@ const application = {
 
                     // Start live-css server
                     liveCssServer({
+                        expressApp: router,
                         httpServer: httpServerObject,
                         configFilePath: Path.resolve(__dirname, '..', '.live-css.config.js')
                     });
