@@ -54,7 +54,7 @@
     "mocha": "^7.1.1",
     "node-notifier": "^6.0.0",
     "nodemon": "^2.0.2",
-    "package-cjson": "0.0.3",
+    "package-cjson": "^1.2.0",
     "shelljs": "^0.8.3",
     "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11"

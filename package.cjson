@@ -94,7 +94,7 @@
     "del": "^5.1.0",
     "handlebars": "^4.7.3",
     "node-notifier": "^6.0.0",
-    "package-cjson": "0.0.3", // Required in scripts "health-checks/compare-package-json-cjson.sh" and "housekeeping/generate-package-json.sh"
+    "package-cjson": "^1.2.0", // Required in scripts "health-checks/compare-package-json-cjson.sh" and "housekeeping/generate-package-json.sh"
     "shelljs": "^0.8.3",
     "commander": "^5.0.0"
   },
