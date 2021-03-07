@@ -78,7 +78,7 @@ const routeSetup = function (exp) {
 };
 
 const application = {
-    start: function (configOptionsFileRootRelativePath) {
+    start: function ({ configOptionsFileRootRelativePath }) {
         const projectRootFullPath = Path.join(__dirname, '..');
 
         const config = require('../' + configOptionsFileRootRelativePath);
@@ -356,7 +356,7 @@ const application = {
             if (useHttps || useHttp) {
                 // TODO: Fix the "eslint-disable-line no-unused-vars" used below
                 let httpServerObject,
-                    httpsServerObject; // eslint-disable-line no-unused-vars
+                    httpsServerObject;
                 if (useHttps) {
                     // http://stackoverflow.com/questions/21397809/create-a-trusted-self-signed-ssl-cert-for-localhost-for-use-with-express-node/21398485#21398485
                     const httpsConfig = {
@@ -380,7 +380,7 @@ const application = {
                             return fs.readFileSync(Path.join(projectRootFullPath, certificate));
                         });
                     }
-                    httpsServerObject = registerServer('https', useHttpsPortNumber, httpsConfig);
+                    httpsServerObject = registerServer('https', useHttpsPortNumber, httpsConfig); // eslint-disable-line no-unused-vars
                 }
                 if (useHttp) {
                     httpServerObject = registerServer('http', useHttpPortNumber);

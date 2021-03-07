@@ -12,4 +12,7 @@ commander
     .option('-c, --config <config-file>', 'Configuration file to be used (eg: config/config.development.js)')
     .parse(process.argv);
 
-application.start(commander.config);
+const options = commander.opts();
+application.start({
+    configOptionsFileRootRelativePath: options.config
+});

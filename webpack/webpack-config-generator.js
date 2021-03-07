@@ -220,15 +220,17 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
             if (useCopyWebpackPlugin) {
                 plugins.push(
                     new copyWebpackPlugin(
-                        (function () {
-                            const arr = [
-                                {
-                                    from: path.join(projectRoot, 'src', 'favicon.ico'),
-                                    to: targetPublicDirectory
-                                }
-                            ];
-                            return arr;
-                        }()),
+                        {
+                            patterns: (function () {
+                                const arr = [
+                                    {
+                                        from: path.join(projectRoot, 'src', 'favicon.ico'),
+                                        to: targetPublicDirectory
+                                    }
+                                ];
+                                return arr;
+                            }())
+                        },
                         {
                             copyUnmodified: false
                         }

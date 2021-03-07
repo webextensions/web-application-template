@@ -91,7 +91,7 @@ const doCleanup = function (cmd, itemTerm, flagFilterInOnlyFolders, callback) {
 
     if (listOfPotentialItemsToClean.length === 0) {
         logger.success(`The ${itemTerm}(s) are already clean. No ${itemTerm}(s) to delete.`);
-        callback();
+        return callback();
     } else if (listOfPotentialItemsToClean.length === listOfItemsToClean.length) {
         logger.info('\nThe following ' + listOfItemsToClean.length + ` ${itemTerm}(s) are going to be deleted:`);
         listOfItemsToClean.forEach(function (itemToClean) {
