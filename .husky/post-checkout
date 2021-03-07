@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cd "$(dirname "$0")"    # Change directory to the folder containing this file
+cd ../                  # Change directory to project's root folder
+
+./scripts/utils/print-current-hash.sh
+
+./scripts/health-checks/check-node-version.js
+
+./scripts/health-checks/compare-package-json-cjson.sh
+
+./scripts/health-checks/check-npm-install-status/check-npm-install-status.js

@@ -1,0 +1,4 @@
+cd "$(dirname "$0")"    # Change directory to the folder containing this file
+cd ../                  # Change directory to project's root folder
+
+npm test
