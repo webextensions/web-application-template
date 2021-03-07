@@ -36,7 +36,7 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "commander": "^5.0.0",
-    "copy-webpack-plugin": "^5.1.1",
+    "copy-webpack-plugin": "=6.4.1",
     "css-loader": "^3.4.2",
     "del": "^5.1.0",
     "eslint": "^6.8.0",
@@ -56,8 +56,8 @@
     "nodemon": "^2.0.2",
     "package-cjson": "^1.2.0",
     "shelljs": "^0.8.3",
-    "webpack": "^4.42.0",
-    "webpack-cli": "^3.3.11"
+    "webpack": "=4.46.0",
+    "webpack-cli": "=3.3.12"
   },
   "homepage": "https://github.com/webextensions/web-application-template#readme",
   "husky": {
