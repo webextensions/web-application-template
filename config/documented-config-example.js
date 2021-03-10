@@ -71,6 +71,7 @@ const configForThisMode = {
         },
         nonProductionDevTools: {
             skipHSTS: true,
+            skipUpgradeInsecureRequests: true,
             useLiveCssEditor: true
             // networkDelay: {                                              // Random delay in network requests
             //     minimum: 0,                                              // optional ; null / <non-negative-integer>

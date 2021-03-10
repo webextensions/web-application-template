@@ -139,6 +139,9 @@ const application = {
             //     _devToolsConfig = _serverConfig.devTools || {};
 
             const
+                useHttps = _httpsServerConfig.enabled;
+
+            const
                 _nonProductionDevToolsConfig = _serverConfig.nonProductionDevTools || {};
 
             if (_serverConfig.verbose) {
@@ -174,7 +177,7 @@ const application = {
             }
 
             const helmetConfig = {};
-            if (_nonProductionDevToolsConfig.skipHSTS) {
+            if (!useHttps || _nonProductionDevToolsConfig.skipHSTS) {
                 // We may wish to disable HSTS to run "https" on different ports
                 // If we don't disable HSTS, then browsers may cache the information
                 // and internally redirect from "http" to "https" without checking with the server.
@@ -188,8 +191,24 @@ const application = {
                 //     * https://helmetjs.github.io/docs/hsts/
                 helmetConfig.hsts = false;
             }
+            if (!useHttps || _nonProductionDevToolsConfig.skipUpgradeInsecureRequests) {
+                helmetConfig.contentSecurityPolicy = false;
+            }
             // https://github.com/helmetjs/helmet#quick-start
             exp.use(helmet(helmetConfig));
+            if (!useHttps || _nonProductionDevToolsConfig.skipUpgradeInsecureRequests) {
+                exp.use(
+                    helmet.contentSecurityPolicy({
+                        directives: (function () {
+                            const directivesToUse = {
+                                ...helmet.contentSecurityPolicy.getDefaultDirectives()
+                            };
+                            delete directivesToUse['upgrade-insecure-requests'];
+                            return directivesToUse;
+                        })()
+                    })
+                );
+            }
 
             if (staticDir) {
                 const faviconPath = Path.join(staticDir, 'favicon.ico');
@@ -346,7 +365,6 @@ const application = {
             let useHttp = _httpServerConfig.enabled;
             const
                 useHttpPortNumber = _httpServerConfig.port,
-                useHttps = _httpsServerConfig.enabled,
                 useHttpsPortNumber = _httpsServerConfig.port;
             if (useHttps && useHttp && useHttpsPortNumber === useHttpPortNumber) {
                 useHttp = false;
