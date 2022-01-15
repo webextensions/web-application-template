@@ -55,7 +55,7 @@
     "node-notifier": "^9.0.0",
     "nodemon": "^2.0.7",
     "package-cjson": "^1.2.0",
-    "shelljs": "^0.8.4",
+    "shelljs": "^0.8.5",
     "webpack": "=4.46.0",
     "webpack-cli": "=3.3.12"
   },
