@@ -18,10 +18,10 @@
 
   "dependencies": {
     // Server - Express
-    "express": "^4.17.1",
+    "express": "^4.18.2",
 
     // Server - Express middleware
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.1",
     "express-hard-coded-response": "^0.1.5",
     "express-match-request": "^0.1.3",
     "express-network-delay": "0.0.1",
@@ -36,14 +36,19 @@
 
     // Logging
     "note-down": "^0.2.3",
-    "chalk": "^4.1.0",
-    "boxen": "^5.0.0",
-    "strip-ansi": "^6.0.0",
+    "chalk": "=4.1.2",
+    "boxen": "=5.1.2",
+    "strip-ansi": "=6.0.1",
 
     // React
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "prop-types": "^15.7.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "prop-types": "^15.8.1",
+
+    "@mui/material": "^5.10.14",
+    "@mui/icons-material": "^5.10.14",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
 
     // Miscellaneous
     "lodash": "^4.17.21",
@@ -55,48 +60,48 @@
     "husky": "^5.1.3",
 
     // Linting
-    "eslint": "^7.21.0",
+    "eslint": "^8.28.0",
 
     // "eslint-config-ironplate" and its dependencies
-    "eslint-config-ironplate": "^0.3.0",
+    "eslint-config-ironplate": "^0.6.2",
     "eslint-plugin-filenames": "^1.3.2",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-react": "^7.22.0",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "eslint-plugin-unicorn": "^28.0.2",
+    "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-unicorn": "^45.0.0",
 
     // Build - Transpilation
-    "@babel/cli": "^7.13.0",
-    "@babel/core": "^7.13.8",
-    "@babel/preset-env": "^7.13.9",
-    "@babel/preset-react": "^7.12.13",
-    "@babel/preset-typescript": "^7.13.0",
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.20.2",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.18.6",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
 
     // Build - Bundling
-    "webpack": "=4.46.0",
-    "webpack-cli": "=3.3.12",
-    "copy-webpack-plugin": "=6.4.1",
-    "babel-loader": "^8.2.2",
-    "css-loader": "^5.1.1",
-    "mini-css-extract-plugin": "^1.3.9",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^4.10.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "babel-loader": "^9.1.0",
+    "css-loader": "^6.7.2",
+    "mini-css-extract-plugin": "^2.7.0",
 
     // Testing
-    "mocha": "^8.3.1",
+    "mocha": "^10.1.0",
 
     // Development assistants
-    "nodemon": "^2.0.7",
+    "nodemon": "^2.0.20",
     "@webextensions/live-css": "^8.0.3",
     "local-ip-addresses-and-hostnames": "^0.1.3",
 
     // Miscellaneous
-    "del": "^6.0.0",
+    "del": "=6.1.1",
     "handlebars": "^4.7.7",
-    "node-notifier": "^9.0.0",
+    "node-notifier": "^10.0.1",
     "package-cjson": "^1.2.0", // Required in scripts "health-checks/compare-package-json-cjson.sh" and "housekeeping/generate-package-json.sh"
-    "shelljs": "^0.8.4",
-    "commander": "^7.1.0"
+    "shelljs": "^0.8.5",
+    "commander": "^9.4.1"
   },
 
   "husky": {
@@ -113,17 +118,17 @@
 
     /* Build (with webpack) */
     // References: https://stackoverflow.com/questions/16978256/what-is-node-env-in-express/16979503#16979503
-    "build-production-inspect-brk":       "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production  --display-error-details --progress --env.config config/config.production.js",
-    "build-production":                                                              "NODE_ENV=production webpack --mode production  --display-error-details --progress --env.config config/config.production.js",
+    "build-production-inspect-brk":       "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production  --progress --env config=\"config/config.production.js\"",
+    "build-production":                                                              "NODE_ENV=production webpack --mode production  --progress --env config=\"config/config.production.js\"",
 
-    "build-production-local-inspect-brk": "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production  --display-error-details --progress --env.config config/config.production.local.js",
-    "build-production-local":                                                        "NODE_ENV=production webpack --mode production  --display-error-details --progress --env.config config/config.production.local.js",
+    "build-production-local-inspect-brk": "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production  --progress --env config=\"config/config.production.local.js\"",
+    "build-production-local":                                                        "NODE_ENV=production webpack --mode production  --progress --env config=\"config/config.production.local.js\"",
 
-    "build-development-inspect-brk":                          "node --inspect-brk ./node_modules/.bin/webpack-cli --mode development --display-error-details --progress --env.config config/config.development.js",
-    "build-development":                                                                                 "webpack --mode development --display-error-details --progress --env.config config/config.development.js",
+    "build-development-inspect-brk":                          "node --inspect-brk ./node_modules/.bin/webpack-cli --mode development --progress --env config=\"config/config.development.js\"",
+    "build-development":                                                                                 "webpack --mode development --progress --env config=\"config/config.development.js\"",
 
-    "build-development-local-inspect-brk":                    "node --inspect-brk ./node_modules/.bin/webpack-cli --mode development --display-error-details --progress --env.config config/config.development.local.js",
-    "build-development-local":                                                                           "webpack --mode development --display-error-details --progress --env.config config/config.development.local.js",
+    "build-development-local-inspect-brk":                    "node --inspect-brk ./node_modules/.bin/webpack-cli --mode development --progress --env config=\"config/config.development.local.js\"",
+    "build-development-local":                                                                           "webpack --mode development --progress --env config=\"config/config.development.local.js\"",
 
     "build-inspect-brk": "npm run build-development-local-inspect-brk",
     "build":             "npm run build-development-local",

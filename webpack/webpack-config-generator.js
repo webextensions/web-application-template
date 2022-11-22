@@ -99,7 +99,7 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
                 {
                     test: /\.js$/,
                     loader: 'babel-loader',
-                    query: BABEL_QUERY,
+                    options: BABEL_QUERY,
                     // https://github.com/nuxt/nuxt.js/issues/1668#issuecomment-330510870
                     // https://stackoverflow.com/questions/45246365/webpack-2-how-to-exclude-all-node-modules-except-for/45246482#45246482
                     // https://github.com/webpack/webpack/issues/2031#issuecomment-219040479
@@ -138,7 +138,17 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
                         //     loader: MiniCssExtractPlugin.loader
                         // },
                         MiniCssExtractPlugin.loader,
-                        'css-loader'
+                        // 'css-loader',
+                        {
+                            // https://adamrackis.dev/css-modules/
+                            loader: 'css-loader',
+                            options: {
+                                // https://webpack.js.org/loaders/css-loader/#object-2
+                                modules: {
+                                    localIdentName: '[name]__[local]--[hash:base64:5]'
+                                }
+                            }
+                        }
                     ]
                 }
                 // {
@@ -266,6 +276,7 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
 
         // https://webpack.js.org/configuration/stats/
         stats: {
+            errorDetails: true,
             // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/271#issuecomment-449694009
             children: false
         }

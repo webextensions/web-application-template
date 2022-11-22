@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './PageHeader.css';
+import styles from './PageHeader.css';
 
 import { CurrentTime } from 'generic-components/CurrentTime/CurrentTime.js';
 import { UserAgent } from 'generic-components/UserAgent/UserAgent.js';
@@ -8,7 +8,7 @@ import { UserAgent } from 'generic-components/UserAgent/UserAgent.js';
 class PageHeader extends React.Component {
     render() {
         return (
-            <div>
+            <div className={styles.PageHeader}>
                 <div>
                     Current time: <CurrentTime />
                 </div>
