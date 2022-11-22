@@ -1,6 +1,6 @@
 {
   "name": "web-application-template",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A web application project template, based on: Node.js, Babel, ESLint, Express, React, Webpack, etc",
   "author": "Priyank Parashar",
   "license": "MIT",
