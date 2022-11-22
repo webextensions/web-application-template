@@ -116,6 +116,9 @@
     /* Setup */
     "preinstall":  "./scripts/npm-run-scripts/preinstall.sh",
 
+    "postversion": "git push --follow-tags",
+    "version": "./scripts/build-and-release/prepare-version/prepare-version.sh",
+
     /* Build (with webpack) */
     // References: https://stackoverflow.com/questions/16978256/what-is-node-env-in-express/16979503#16979503
     "build-production-inspect-brk":       "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production  --progress --env config=\"config/config.production.js\"",

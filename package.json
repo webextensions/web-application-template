@@ -95,6 +95,7 @@
     "lint": "eslint . --report-unused-disable-directives",
     "lint-fix": "eslint . --report-unused-disable-directives --fix",
     "mocha": "mocha",
+    "postversion": "git push --follow-tags",
     "preinstall": "./scripts/npm-run-scripts/preinstall.sh",
     "server": "npm run server-development-local",
     "server-development": "nodemon            server/server.js -- --config config/config.development.js",
@@ -110,7 +111,8 @@
     "start-inspect-brk": "npm run server-inspect-brk",
     "test": "npm run all-is-well",
     "update-package-cjson-and-json": "./scripts/housekeeping/update-package-cjson-and-json.sh",
-    "update-package-lock-json": "./scripts/housekeeping/update-package-lock-json.sh"
+    "update-package-lock-json": "./scripts/housekeeping/update-package-lock-json.sh",
+    "version": "./scripts/build-and-release/prepare-version/prepare-version.sh"
   },
   "version": "1.0.0"
 }
