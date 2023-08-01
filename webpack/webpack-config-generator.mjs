@@ -22,8 +22,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const
-    projectRoot = path.join(__dirname, '..');
+const projectRoot = path.join(__dirname, '..');
 
 const BABEL_QUERY = {
     presets: ['@babel/preset-react'],
