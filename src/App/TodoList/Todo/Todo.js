@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './Todo.css';
+import styles from './Todo.css';
 
 class Todo extends React.Component {
     render() {
         return (
-            <div className="row">
+            <div className={styles.row}>
                 <div>Summary: {this.props.summary}</div>
-                <div style={{ marginLeft: '10px' }}>Status: {this.props.status}</div>
+                <div>Status: {this.props.status}</div>
             </div>
         );
     }

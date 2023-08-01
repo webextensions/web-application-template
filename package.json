@@ -4,6 +4,10 @@
         "url": "https://github.com/webextensions/web-application-template/issues"
     },
     "dependencies": {
+        "@emotion/react": "^11.11.1",
+        "@emotion/styled": "^11.11.0",
+        "@mui/icons-material": "^5.14.3",
+        "@mui/material": "^5.14.3",
         "basic-auth": "^2.0.1",
         "body-parser": "^1.20.2",
         "boxen": "^7.1.1",
@@ -47,7 +51,7 @@
         "eslint-plugin-react": "^7.33.1",
         "eslint-plugin-react-hooks": "^4.6.0",
         "eslint-plugin-unicorn": "^48.0.1",
-        "handlebars": "^4.7.7",
+        "handlebars": "^4.7.8",
         "husky": "^8.0.3",
         "local-ip-addresses-and-hostnames": "^0.1.3",
         "mini-css-extract-plugin": "^2.7.6",
@@ -93,6 +97,7 @@
         "lint": "eslint . --ext .cjs,.js,.mjs,.ts,.tsx --report-unused-disable-directives",
         "lint:fix": "eslint . --ext .cjs,.js,.mjs,.ts,.tsx --report-unused-disable-directives --fix",
         "mocha": "mocha",
+        "postversion": "git push --follow-tags",
         "preinstall": "./scripts/npm-run-scripts/preinstall.sh",
         "prepare": "husky install",
         "server:development": "nodemon            server/server.mjs -- --config config/config.development.mjs",
@@ -107,7 +112,8 @@
         "start:inspect-brk": "npm run start:server:inspect-brk",
         "start:server": "npm run server:development-local",
         "start:server:inspect-brk": "npm run server:development-local:inspect-brk",
-        "test": "npm run all-is-well"
+        "test": "npm run all-is-well",
+        "version": "./scripts/build-and-release/prepare-version/prepare-version.sh"
     },
     "version": "1.0.0"
 }

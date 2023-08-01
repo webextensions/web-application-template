@@ -1,6 +1,3 @@
 .row {
-    clear: both;
-}
-.row > div {
-    float: left;
+    margin-top: 10px;
 }

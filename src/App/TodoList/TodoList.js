@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './TodoList.css';
+import styles from './TodoList.css';
 
 import { Todo } from './Todo/Todo.js';
 
@@ -17,7 +17,7 @@ class TodoList extends React.Component {
             }
         ];
         return (
-            <div>
+            <div className={styles.TodoList}>
                 {dataSet.map((data, index) => {
                     return <Todo key={index} {...data} />;
                 })}

@@ -144,7 +144,17 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
                         //     loader: MiniCssExtractPlugin.loader
                         // },
                         MiniCssExtractPlugin.loader,
-                        'css-loader'
+                        // 'css-loader'
+                        {
+                            // https://adamrackis.dev/css-modules/
+                            loader: 'css-loader',
+                            options: {
+                                // https://webpack.js.org/loaders/css-loader/#object-2
+                                modules: {
+                                    localIdentName: '[name]__[local]--[hash:base64:5]'
+                                }
+                            }
+                        }
                     ]
                 }
                 // {
