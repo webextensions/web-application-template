@@ -1,4 +1,4 @@
-const logger = require('note-down');
+import { logger } from 'note-down';
 if (process.env.NODE_ENV !== 'production') {
     logger.warnHeading('Warning: Production configuration is being loaded while process.env.NODE_ENV is not set as production.');
     logger.warn(
@@ -7,7 +7,9 @@ if (process.env.NODE_ENV !== 'production') {
     );
 }
 
-const inheritedConfig = require('./config.common.js');
+import inheritedConfig from './config.common.mjs';
+
+import extend from 'extend';
 
 const publicDirectory = 'public-production';
 
@@ -33,4 +35,5 @@ const configForThisMode = {
     }
 };
 
-module.exports = require('extend')(true, {}, inheritedConfig, configForThisMode);
+// eslint-disable-next-line import/no-default-export
+export default extend(true, {}, inheritedConfig, configForThisMode);

@@ -32,9 +32,10 @@ const configForThisMode = {
         verbose: true,
         publicDirectory: null,
         useCopyWebpackPlugin: true,
-        outputJsFilenamePattern: 'bundle.[name].[contenthash:20].js',
-        outputCssFilenamePattern: 'bundle.[name].[contenthash:20].css'
+        outputCssFilenamePattern: 'bundle.[name].[contenthash:20].css',
+        outputJsFilenamePattern: 'bundle.[name].[contenthash:20].js'
     }
 };
 
-module.exports = configForThisMode;
+// eslint-disable-next-line import/no-default-export
+export default configForThisMode;

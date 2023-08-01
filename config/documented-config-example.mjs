@@ -1,7 +1,7 @@
 /* eslint-disable filenames/match-exported */
 
 /*
-const logger = require('note-down');
+import { logger } from 'note-down';
 if (process.env.NODE_ENV !== 'production') {
     logger.warnHeading('Warning: Production configuration is being loaded while process.env.NODE_ENV is not set as production.');
     logger.warn(
@@ -11,9 +11,11 @@ if (process.env.NODE_ENV !== 'production') {
 }
 /* */
 
-// const path = require('path');
+// import path from 'node:path';
 
-// const inheritedConfig = require('./config.development.js');
+// import extend from 'extend';
+
+// import inheritedConfig from './config.development.mjs';
 
 const publicDirectory = 'public-development-local';
 
@@ -26,7 +28,7 @@ const configForThisMode = {
         verbose: true,
         access: {
             // publicDirectory: null,                               // optional ; null / <public-path>
-            // publicDirectory: require('path').join(__dirname, '../public-development-local/'),
+            // publicDirectory: path.join(__dirname, '../public-development-local/'),
             serveDotWellKnownDirectoryForSslCertificate: true,
             url: {
                 http: {
@@ -140,5 +142,5 @@ const configForThisMode = {
     }
 };
 
-// module.exports = require('extend')(true, {}, inheritedConfig, configForThisMode);
-module.exports = configForThisMode;
+// export default extend(true, {}, inheritedConfig, configForThisMode);
+export default configForThisMode; // eslint-disable-line import/no-default-export

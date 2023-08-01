@@ -5,4 +5,4 @@
 # Auto-generated directories and contents
 /public-*/
 
-/scripts/health-checks/check-npm-install-status/semver.js
+/scripts/health-checks/check-npm-install-status/semver.cjs

@@ -1,8 +1,9 @@
-const path = require('path');
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'node:url';
 
 let notifier;
 try {
-    notifier = require('node-notifier');
+    notifier = (await import('node-notifier')).default;
 } catch (e) {
     console.log(
         'Could not load module "node-notifier".' +
@@ -10,6 +11,8 @@ try {
         '\n'
     );
 }
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 let muteNotifications = false;
 
@@ -21,7 +24,7 @@ const notify = function (options) {
     }
 };
 
-module.exports = {
+const notifications = {
     info: function (title, message) {
         title +=
         notify({
@@ -48,3 +51,6 @@ module.exports = {
         muteNotifications = flag;
     }
 };
+
+// eslint-disable-next-line import/no-default-export
+export default notifications;

@@ -10,8 +10,8 @@ source ./utils/bash-helpers/color-codes.sh
 printf "\n${BLUE}$ cd \"$(dirname "$0")\" ${YELLOW}# cd to the directory containing this file${NORMAL}\n"
                    cd  "$(dirname "$0")"
 
-printf "\n${BLUE}$ ./check-node-version.js --return-exit-code${NORMAL}\n"
-                   ./check-node-version.js --return-exit-code
+printf "\n${BLUE}$ ./check-node-version.mjs --return-exit-code${NORMAL}\n"
+                   ./check-node-version.mjs --return-exit-code
 exitCodeNodeVersion=$?
 
 printf "\n${BLUE}$ ./ensure-no-npm-links.sh${NORMAL}\n"
@@ -22,8 +22,8 @@ printf "\n${BLUE}$ ./compare-package-json-cjson.sh${NORMAL}\n"
                    ./compare-package-json-cjson.sh
 exitCodeComparePackageJsonCjson=$?
 
-printf "\n${BLUE}$ ./check-npm-install-status/check-npm-install-status.js --return-exit-code${NORMAL}\n"
-                   ./check-npm-install-status/check-npm-install-status.js --return-exit-code
+printf "\n${BLUE}$ ./check-npm-install-status/check-npm-install-status.mjs --return-exit-code${NORMAL}\n"
+                   ./check-npm-install-status/check-npm-install-status.mjs --return-exit-code
 exitCodeCheckNpmInstallStatus=$?
 
 printf "\n${BLUE}$ npm run lint${NORMAL}\n"

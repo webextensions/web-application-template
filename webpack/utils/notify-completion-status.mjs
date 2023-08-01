@@ -1,5 +1,10 @@
-const
-    notifier = require('../../utils/notifications/notifications.js');
+import fs from 'node:fs';
+import path, { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import notifier from '../../utils/notifications/notifications.mjs';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const notifyCompletionStatus = (stats) => {
     const jsonStats = stats.toJson();
@@ -43,7 +48,17 @@ const notifyCompletionStatus = (stats) => {
             )
         ).toISOString().substring(11, 19);
     }());
-    const title = `${require('../../package.json').name} @ ${currentTime} (in ${stats.endTime - stats.startTime}ms)`;
+    const packageJson = JSON.parse(
+        fs.readFileSync(
+            path.resolve(
+                __dirname,
+                '../../package.json' // NOTE: Using path.resolve(...) instead of just `/../../package.json` to avoid a
+                                     //       build-time issue with deployment on DigitalOcean.
+            ),
+            'utf8'
+        )
+    );
+    const title = `${packageJson.name} @ ${currentTime} (in ${stats.endTime - stats.startTime}ms)`;
 
     if (overallStatus === 'error') {
         notifier.error(title, statusMsg);
@@ -54,4 +69,4 @@ const notifyCompletionStatus = (stats) => {
     }
 };
 
-module.exports = notifyCompletionStatus;
+export { notifyCompletionStatus };

@@ -1,4 +1,6 @@
-const inheritedConfig = require('./config.common.js');
+import inheritedConfig from './config.common.mjs';
+
+import extend from 'extend';
 
 const publicDirectory = 'public-development';
 
@@ -41,9 +43,11 @@ const configForThisMode = {
         verbose: false,
         watch: true,
         publicDirectory,
+        devtool: 'source-map',
         outputCssFilenamePattern: 'bundle.[name].ensure-freshness.css',
         outputJsFilenamePattern:  'bundle.[name].ensure-freshness.js'
     }
 };
 
-module.exports = require('extend')(true, {}, inheritedConfig, configForThisMode);
+// eslint-disable-next-line import/no-default-export
+export default extend(true, {}, inheritedConfig, configForThisMode);

@@ -4,16 +4,17 @@
 //
 // How to use:
 //
-//     $ ./check-node-version.js
+//     $ ./check-node-version.mjs
 //           OR
-//     $ ./check-node-version.js --return-exit-code
+//     $ ./check-node-version.mjs --return-exit-code
 
-const
-    fs = require('fs'),
-    path = require('path');
+import fs from 'node:fs';
+import path, { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const
-    logger = require('../../utils/logger.js');
+import { logger } from '../../utils/logger.mjs';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const returnExitCode = (process.argv[2] === '--return-exit-code');
 

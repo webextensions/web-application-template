@@ -2,24 +2,26 @@
 
 /* global exec */
 
-const
-    path = require('path');
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'node:url';
 
-const
-    _ = require('lodash'),
-    del = require('del');
+import _ from 'lodash';
+import { deleteSync } from 'del';
 
-const
-    logger = require('../../utils/logger.js');
+import { logger } from '../../utils/logger.mjs';
 
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 require('shelljs/global');
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // TODO: Use globs for these patterns
 
 const patternsMarkedToKeep = [
     'node_modules/',
-    'config/config.development.local.js',
-    'config/config.production.local.js'
+    'config/config.development.local.mjs',
+    'config/config.production.local.mjs'
 ];
 
 const patternsToDelete = [
@@ -106,7 +108,7 @@ const doCleanup = function (cmd, itemTerm, flagFilterInOnlyFolders, callback) {
         setTimeout(function () { process.stdout.write(' Start'); }, 5000);
 
         setTimeout(function () {
-            const countOfDeletedItems = del.sync(listOfItemsToClean);
+            const countOfDeletedItems = deleteSync(listOfItemsToClean);
             logger.success('\nDeleted ' + countOfDeletedItems.length + ` ${itemTerm}(s).`);
             callback();
         }, 5000);

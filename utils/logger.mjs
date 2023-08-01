@@ -1,20 +1,20 @@
 let chalk;
 try {
-    chalk = require('chalk');
+    chalk = (await import('chalk')).default;
 } catch (e) {
     // do nothing
 }
 
 let boxen;
 try {
-    boxen = require('boxen');
+    boxen = (await import('boxen')).default;
 } catch (e) {
     // do nothing
 }
 
 let stripAnsi;
 try {
-    stripAnsi = require('strip-ansi');
+    stripAnsi = (await import('strip-ansi')).default;
 } catch (e) {
     // do nothing
 }
@@ -70,4 +70,4 @@ const logger = {
     }
 };
 
-module.exports = logger;
+export { logger };

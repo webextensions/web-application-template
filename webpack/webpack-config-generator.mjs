@@ -1,19 +1,26 @@
-const
-    path = require('path');
+import path, { dirname } from 'path';
 
-const
-    // webpack = require('webpack'),
-    MiniCssExtractPlugin = require('mini-css-extract-plugin'),
-    copyWebpackPlugin = require('copy-webpack-plugin');
+import { fileURLToPath } from 'node:url';
 
-const
-    chalk = require('chalk');
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-const
-    notifyCompletionStatus = require('./utils/notify-completion-status.js');
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 
-const
-    TemplateToHtmlPlugin = require('./plugins/TemplateToHtmlPlugin/TemplateToHtmlPlugin.js');
+import chalk from 'chalk';
+
+import { notifyCompletionStatus } from './utils/notify-completion-status.mjs';
+
+import { TemplateToHtmlPlugin } from './plugins/TemplateToHtmlPlugin/TemplateToHtmlPlugin.mjs';
+
+// Somehow using "import" is not working, so using the "require" way:
+//     import CopyWebpackPlugin from 'copy-webpack-plugin';
+// Probably because of this:
+//     https://github.com/webpack-contrib/copy-webpack-plugin/issues/709#issuecomment-1242330791
+// Probably using `import(...)` based syntax would make it work
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const
     projectRoot = path.join(__dirname, '..');
@@ -99,7 +106,7 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
                 {
                     test: /\.js$/,
                     loader: 'babel-loader',
-                    query: BABEL_QUERY,
+                    options: BABEL_QUERY,
                     // https://github.com/nuxt/nuxt.js/issues/1668#issuecomment-330510870
                     // https://stackoverflow.com/questions/45246365/webpack-2-how-to-exclude-all-node-modules-except-for/45246482#45246482
                     // https://github.com/webpack/webpack/issues/2031#issuecomment-219040479
@@ -164,7 +171,7 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
 
         optimization: {
             minimize: useMinimize,
-            noEmitOnErrors: true,
+            emitOnErrors: false,
             splitChunks: {
                 // TODO: Adjust minSize and maxSize to more practical values
                 minSize: 50000,
@@ -219,7 +226,7 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
 
             if (useCopyWebpackPlugin) {
                 plugins.push(
-                    new copyWebpackPlugin(
+                    new CopyWebpackPlugin(
                         {
                             patterns: (function () {
                                 const arr = [
@@ -267,7 +274,9 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
         // https://webpack.js.org/configuration/stats/
         stats: {
             // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/271#issuecomment-449694009
-            children: false
+            children: false,
+
+            errorDetails: true
         }
     };
 
@@ -279,4 +288,4 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
     return config;
 };
 
-module.exports = webpackConfigGenerator;
+export { webpackConfigGenerator };

@@ -4,20 +4,22 @@
 
 // How to use:
 //
-//     $ ./check-npm-install-status.js
+//     $ ./check-npm-install-status.mjs
 //           OR
-//     $ ./check-npm-install-status.js --return-exit-code
+//     $ ./check-npm-install-status.mjs --return-exit-code
+
+import fs from 'node:fs';
+import path, { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import http from 'node:https';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const t1 = new Date();
 
-const
-    fs = require('fs'),
-    path = require('path'),
-    http = require('https');
-
 const returnExitCode = (process.argv[2] === '--return-exit-code');
 
-const semverFilePath = path.join(__dirname, 'semver.js');
+const semverFilePath = path.join(__dirname, 'semver.cjs');
 
 // http://stackoverflow.com/questions/11944932/how-to-download-a-file-with-node-js-without-using-third-party-libraries/22907134#22907134
 function download(url, dest, cb) {
@@ -33,7 +35,7 @@ function download(url, dest, cb) {
             cb(err.message);
         }
     });
-    request.setTimeout(15000, function () {
+    request.setTimeout(15000, async function () {
         // Note: It appears that in some cases of network failure, there is some weird problem with Node JS
         // due to which request.abort() may not work fine (eg: When trying to access a URL and network is
         // enabled in VirtualBox guest machine, but internet is disconnected in host machine).
@@ -41,7 +43,7 @@ function download(url, dest, cb) {
         request.abort();
         request.destroy();
         fs.unlink(dest); // Delete the file async. (But we don't check the result)
-        cb('Timed out');
+        await cb('Timed out');
         process.kill(process.pid, 'SIGKILL');
     });
 }
@@ -77,8 +79,8 @@ function exitWithCodeIfRequired(exitCode) {
     }
 }
 
-function main(rootPath) {
-    const semver = require(semverFilePath);
+async function main(rootPath) {
+    const semver = await import(semverFilePath);
 
     const
         mainPackageJsonPath = path.resolve(rootPath, 'package.json'),
@@ -111,42 +113,42 @@ function main(rootPath) {
         exitWithCodeIfRequired(0);
     } else {
         try {
-            const chalk = require('chalk');
+            const chalk = (await import('chalk')).default;
             const chalkRedOrYellow = returnExitCode ? chalk.red : chalk.yellow;
             console.log(chalkRedOrYellow('\n' + updateMessages.length + '/' + Object.keys(allDependencies).length + ' npm packages need to be updated: (' + ((t2 - t1) / 1000) + ' seconds)'));
             console.log('    ' + updateMessages.join('\n    '));
-            console.log(chalkRedOrYellow('You might want to run "$ npm install"\n'));
+            console.log(chalkRedOrYellow('We might want to run "$ npm install"\n'));
         } catch (e) {
             console.log('\nCould not load module "chalk"');
             console.log('\n' + updateMessages.length + '/' + Object.keys(allDependencies).length + ' npm packages need to be updated: (' + ((t2 - t1) / 1000) + ' seconds)');
             console.log('    ' + updateMessages.join('\n    '));
-            console.log('You might want to run "$ npm install"\n');
+            console.log('We might want to run "$ npm install"\n');
         }
         exitWithCodeIfRequired(1);
     }
 }
 
-function initiateCheck() {
+async function initiateCheck() {
     const
         rootPath = path.resolve(__dirname, '..', '..', '..'),
-        returnCode = main(rootPath);
+        returnCode = await main(rootPath);
 
     exitWithCodeIfRequired(returnCode);
 }
 
 try {
     fs.statSync(semverFilePath);
-    initiateCheck();
+    await initiateCheck();
 } catch (e) {
-    const url = 'https://raw.githubusercontent.com/npm/node-semver/master/semver.js';
-    console.log('\nDownloading (timeout: 15s) ' + url + ' (to be used in check-npm-install-status.js)');
-    download(url, semverFilePath, function (errMsg) {
+    const url = 'https://unpkg.com/semver@6.3.0/semver.js';
+    console.log('\nDownloading (timeout: 15s) ' + url + ' (to be used in check-npm-install-status.mjs)');
+    download(url, semverFilePath, async function (errMsg) {
         if (errMsg) {
             console.log('Error: ' + errMsg);
-            console.log('Unable to download semver.js. Skipping detection of top-level mismatches between node_modules/ and package.json.\n');
+            console.log('Unable to download semver.js (as semver.cjs). Skipping detection of top-level mismatches between node_modules/ and package.json.\n');
             exitWithCodeIfRequired(1);
             return;
         }
-        initiateCheck();
+        await initiateCheck();
     });
 }

@@ -1,9 +1,11 @@
 /*
-    Rename this file from config.production.local.example.js to config.production.local.js to run
+    Rename this file from config.production.local.example.mjs to config.production.local.mjs to run
     the build and server in local mode
 */
 
-const inheritedConfig = require('./config.production.js');
+import inheritedConfig from './config.production.mjs';
+
+import extend from 'extend';
 
 const publicDirectory = 'public-production-local';
 
@@ -34,4 +36,5 @@ const configForThisMode = {
     }
 };
 
-module.exports = require('extend')(true, {}, inheritedConfig, configForThisMode);
+// eslint-disable-next-line import/no-default-export
+export default extend(true, {}, inheritedConfig, configForThisMode);

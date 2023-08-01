@@ -4,34 +4,39 @@
 
 'use strict';
 
-const
-    // url = require('url'),
-    Path = require('path'),
-    https = require('https'),
-    http = require('http'),
-    fs = require('fs');
+import Path, { dirname } from 'path';
+import https from 'https';
+import http from 'http';
+import fs from 'fs';
 
-const
-    express = require('express'),
-    bodyParser = require('body-parser'),
-    compression = require('compression'),
-    helmet = require('helmet'),
-    favicon = require('serve-favicon');
+import { fileURLToPath } from 'node:url';
 
-const
-    extend = require('extend'),
-    _ = require('lodash'),
-    chalk = require('chalk');
+import express from 'express';
+import bodyParser from 'body-parser';
+import compression from 'compression';
+import helmet from 'helmet';
+import favicon from 'serve-favicon';
 
-const
-    logger = require('note-down');
+import extend from 'extend';
+import _ from 'lodash';
+import chalk from 'chalk';
 
-const
-    hardCodedResponse = require('express-hard-coded-response'),
-    networkDelay = require('express-network-delay'),
-    redirectToWww = require('express-redirect-to-www'),
-    redirectToHttps = require('express-redirect-to-https'),
-    matchRequest = require('express-match-request');
+import { logger } from 'note-down';
+
+import libLocalIpAddressesAndHostnames from 'local-ip-addresses-and-hostnames';
+
+import hardCodedResponse from 'express-hard-coded-response';
+import networkDelay from 'express-network-delay';
+import redirectToWww from 'express-redirect-to-www';
+import redirectToHttps from 'express-redirect-to-https';
+import matchRequest from 'express-match-request';
+
+import { basicAuth } from './middleware/basic-auth.mjs';
+
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 let localIpAddressesAndHostnames;
 
@@ -68,7 +73,7 @@ const routeSetup = function (exp) {
     setTimeout(function () {
         // Setting up this router after a delay so that live-css server router is able to attach itself before it
         router.use('*', function (req, res) {
-            res.status(404).send('Page not found');
+            return res.status(404).send('Page not found');
         });
     }, 1000);
 
@@ -78,10 +83,11 @@ const routeSetup = function (exp) {
 };
 
 const application = {
-    start: function ({ configOptionsFileRootRelativePath }) {
+    start: async function ({ configOptionsFileRootRelativePath }) {
         const projectRootFullPath = Path.join(__dirname, '..');
 
-        const config = require('../' + configOptionsFileRootRelativePath);
+        // const config = require('../' + configOptionsFileRootRelativePath);
+        const config = (await import('../' + configOptionsFileRootRelativePath)).default;
 
         const exp = express();
 
@@ -234,7 +240,6 @@ const application = {
             }
 
             if (_accessSecurityConfig.limitAccessWithBasicAuth) {
-                const basicAuth = require('./middleware/basic-auth.js');
                 // Authentication should be used after redirects are already done
                 // (eg: redirecting to "www." should happen before authentication)
                 exp.use(basicAuth({
@@ -337,7 +342,7 @@ const application = {
                 server.listen(portNumber, function () {
                     if (!localIpAddressesAndHostnames) {
                         try {
-                            localIpAddressesAndHostnames = require('local-ip-addresses-and-hostnames').getLocalIpAddressesAndHostnames();
+                            localIpAddressesAndHostnames = libLocalIpAddressesAndHostnames.getLocalIpAddressesAndHostnames();
                         } catch (e) {
                             localIpAddressesAndHostnames = [];
                         }
@@ -411,7 +416,7 @@ const application = {
                     liveCssServer({
                         expressApp: router,
                         httpServer: httpServerObject,
-                        configFilePath: Path.resolve(__dirname, '..', '.live-css.config.js')
+                        configFilePath: Path.resolve(__dirname, '..', '.live-css.config.cjs')
                     });
                 }
             } else {
@@ -422,4 +427,4 @@ const application = {
     }
 };
 
-module.exports = application;
+export { application };

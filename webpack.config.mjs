@@ -2,11 +2,11 @@
 
 /* eslint-disable filenames/match-exported */
 
-const path = require('path');
+import path from 'path';
 
-const chalk = require('chalk');
+import chalk from 'chalk';
 
-const configGenerator = require('./webpack/webpack-config-generator.js');
+import { webpackConfigGenerator } from './webpack/webpack-config-generator.mjs';
 
 const showHelp = function () {
     const
@@ -16,18 +16,18 @@ const showHelp = function () {
     console.log(chalk.gray([
         '',
         'Format:',
-        `    ${cmdWebpack} --mode <compilation-mode> --env.config "<path-to-config-file>" --env.<option1> --env.<option2> ... --env.<optionN>`,
+        `    ${cmdWebpack} --mode <compilation-mode> --env config="<path-to-config-file>" --env <option1> --env <option2> ... --env <optionN>`,
         '',
         'Examples:',
-        `    ${cmdWebpack} --mode development --env.config "${pathToConfig}/config.development.local.js"`,
-        `    ${cmdWebpack} --mode development --env.config "${pathToConfig}/config.development.js" --env.silent`,
-        `    NODE_ENV=production ${cmdWebpack} --mode production --env.config "${pathToConfig}/config.production.js"`,
-        `    ${cmdWebpack} --env.help`,
+        `    ${cmdWebpack} --mode development --env config="${pathToConfig}/config.development.local.mjs"`,
+        `    ${cmdWebpack} --mode development --env config="${pathToConfig}/config.development.mjs" --env silent`,
+        `    NODE_ENV=production ${cmdWebpack} --mode production --env config="${pathToConfig}/config.production.mjs"`,
+        `    ${cmdWebpack} --env help`,
         '',
         'Options:',
-        '    --env.config "<path-to-config-file>"',
-        '    --env.silent',
-        '    --env.help',
+        '    --env config="<path-to-config-file>"',
+        '    --env silent',
+        '    --env help',
         ''
     ].join('\n')));
 };
@@ -44,7 +44,7 @@ const showHelpAndExitWithError = function (errMsg) {
 const currentDir = process.cwd();
 
 // https://webpack.js.org/configuration/configuration-types/
-const webpackConfig = function (env, argv) {    // eslint-disable-line no-unused-vars
+const webpackConfig = async function (env, argv) {    // eslint-disable-line no-unused-vars
     env = env || {};
 
     const silent = env.silent;
@@ -55,7 +55,7 @@ const webpackConfig = function (env, argv) {    // eslint-disable-line no-unused
     }
 
     if (!env.config || typeof env.config !== 'string') {
-        showHelpAndExitWithError('You need to pass an appropriate parameter for "--env.config"');
+        showHelpAndExitWithError('You need to pass an appropriate parameter for "--env config=');
         process.exit(1);
     }
 
@@ -66,7 +66,7 @@ const webpackConfig = function (env, argv) {    // eslint-disable-line no-unused
     }
     let flagBasedWebpackConfig;
     try {
-        flagBasedWebpackConfig = require(configFilePath).webpack;
+        flagBasedWebpackConfig = (await import(configFilePath)).default.webpack;
     } catch (e) {
         console.log('An error occurred.');
         console.log('Error stack trace:');
@@ -74,8 +74,9 @@ const webpackConfig = function (env, argv) {    // eslint-disable-line no-unused
         exitWithError('Error summary: Invalid or unavailable file ' + configFilePath);
     }
 
-    const generatedWebpackConfig = configGenerator(flagBasedWebpackConfig);
+    const generatedWebpackConfig = webpackConfigGenerator(flagBasedWebpackConfig);
     return generatedWebpackConfig;
 };
 
-module.exports = webpackConfig;
+// eslint-disable-next-line import/no-default-export
+export default webpackConfig;

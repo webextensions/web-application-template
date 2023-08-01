@@ -1,9 +1,11 @@
 /*
-    Rename this file from config.development.local.example.js to config.development.local.js to run
+    Rename this file from config.development.local.example.mjs to config.development.local.mjs to run
     the build and server in local mode
 */
 
-const inheritedConfig = require('./config.development.js');
+import inheritedConfig from './config.development.mjs';
+
+import extend from 'extend';
 
 const publicDirectory = 'public-development-local';
 
@@ -32,4 +34,5 @@ const configForThisMode = {
     }
 };
 
-module.exports = require('extend')(true, {}, inheritedConfig, configForThisMode);
+// eslint-disable-next-line import/no-default-export
+export default extend(true, {}, inheritedConfig, configForThisMode);
