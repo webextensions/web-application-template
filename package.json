@@ -60,7 +60,7 @@
     "nodemon": "^2.0.20",
     "package-cjson": "^1.2.0",
     "shelljs": "^0.8.5",
-    "webpack": "^5.75.0",
+    "webpack": "^5.76.0",
     "webpack-cli": "^4.10.0"
   },
   "homepage": "https://github.com/webextensions/web-application-template#readme",
