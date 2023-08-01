@@ -97,6 +97,7 @@
         "local-ip-addresses-and-hostnames": "^0.1.3",
 
         // Miscellaneous
+        "concurrently": "^8.2.0",
         "del": "^7.0.0",
         "handlebars": "^4.7.8",
         "node-notifier": "^10.0.1",
@@ -109,7 +110,7 @@
         "hooks": {
             "post-checkout": "./husky/post-checkout.sh",
             "pre-commit": "npm test",
-            "pre-push": "npm test"
+            "pre-push":   "npm test"
         }
     },
 
@@ -124,48 +125,49 @@
 
         /* Build (with webpack) */
         // References: https://stackoverflow.com/questions/16978256/what-is-node-env-in-express/16979503#16979503
-        "build:production:inspect-brk":       "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production  --progress --env config=\"./config/config.production.mjs\"",
         "build:production":                                                              "NODE_ENV=production webpack --mode production  --progress --env config=\"./config/config.production.mjs\"",
+        "build:production:inspect-brk":       "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production  --progress --env config=\"./config/config.production.mjs\"",
 
-        "build:production-local:inspect-brk": "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production  --progress --env config=\"./config/config.production.local.mjs\"",
         "build:production-local":                                                        "NODE_ENV=production webpack --mode production  --progress --env config=\"./config/config.production.local.mjs\"",
+        "build:production-local:inspect-brk": "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production  --progress --env config=\"./config/config.production.local.mjs\"",
 
-        "build:development:inspect-brk":                          "node --inspect-brk ./node_modules/.bin/webpack-cli --mode development --progress --env config=\"./config/config.development.mjs\"",
         "build:development":                                                                                 "webpack --mode development --progress --env config=\"./config/config.development.mjs\"",
+        "build:development:inspect-brk":                          "node --inspect-brk ./node_modules/.bin/webpack-cli --mode development --progress --env config=\"./config/config.development.mjs\"",
 
-        "build:development-local:inspect-brk":                    "node --inspect-brk ./node_modules/.bin/webpack-cli --mode development --progress --env config=\"./config/config.development.local.mjs\"",
         "build:development-local":                                                                           "webpack --mode development --progress --env config=\"./config/config.development.local.mjs\"",
+        "build:development-local:inspect-brk":                    "node --inspect-brk ./node_modules/.bin/webpack-cli --mode development --progress --env config=\"./config/config.development.local.mjs\"",
 
-        "build:inspect-brk": "npm run build:development-local:inspect-brk",
-        "build":             "npm run build:development-local",
+        "build":                   "npm run build:development-local",
+        "build:inspect-brk":       "npm run build:development-local:inspect-brk",
+
+        "start:build":             "npm run build",
+        "start:build:inspect-brk": "npm run build:inspect-brk",
 
         /* Server */
-        "server:production:inspect-brk":       "NODE_ENV=production node --inspect-brk server/server.mjs    --config config/config.production.mjs",
         "server:production":                   "NODE_ENV=production nodemon            server/server.mjs -- --config config/config.production.mjs",
+        "server:production:inspect-brk":       "NODE_ENV=production node --inspect-brk server/server.mjs    --config config/config.production.mjs",
 
-        "server:production-local:inspect-brk": "NODE_ENV=production node --inspect-brk server/server.mjs    --config config/config.production.local.mjs",
         "server:production-local":             "NODE_ENV=production nodemon            server/server.mjs -- --config config/config.production.local.mjs",
+        "server:production-local:inspect-brk": "NODE_ENV=production node --inspect-brk server/server.mjs    --config config/config.production.local.mjs",
 
-        "server:development:inspect-brk":                          "node --inspect-brk server/server.mjs    --config config/config.development.mjs",
         "server:development":                                      "nodemon            server/server.mjs -- --config config/config.development.mjs",
+        "server:development:inspect-brk":                          "node --inspect-brk server/server.mjs    --config config/config.development.mjs",
 
-        "server:development-local:inspect-brk":                    "node --inspect-brk server/server.mjs    --config config/config.development.local.mjs",
         "server:development-local":                                "nodemon            server/server.mjs -- --config config/config.development.local.mjs",
+        "server:development-local:inspect-brk":                    "node --inspect-brk server/server.mjs    --config config/config.development.local.mjs",
 
-        "start:server:inspect-brk": "npm run server:development-local:inspect-brk",
         "start:server":             "npm run server:development-local",
+        "start:server:inspect-brk": "npm run server:development-local:inspect-brk",
 
-        "start:inspect-brk":  "npm run start:server:inspect-brk",
-        "start":              "npm run start:server",
+        "start":             "concurrently \"npm run start:server\"             \"npm run start:build\"",
+        "start:inspect-brk": "concurrently \"npm run start:server:inspect-brk\" \"npm run start:build\"",
 
         "housekeeping:update-package-cjson-and-json": "./scripts/housekeeping/update-package-cjson-and-json.sh",
         "housekeeping:update-package-lock-json":      "./scripts/housekeeping/update-package-lock-json.sh",
+        "housekeeping:review-dependencies":           "./scripts/housekeeping/imperfect/review-dependencies-via-depcheck.sh",
+        "housekeeping:clean":                         "./scripts/housekeeping/clean.mjs",
 
         /* Linting, tests etc */
-        "housekeeping:review-dependencies": "./scripts/housekeeping/imperfect/review-dependencies-via-depcheck.sh",
-
-        "housekeeping:clean": "./scripts/housekeeping/clean.mjs",
-
         "lint":     "eslint . --ext .cjs,.js,.mjs,.ts,.tsx --report-unused-disable-directives",
         "lint:fix": "eslint . --ext .cjs,.js,.mjs,.ts,.tsx --report-unused-disable-directives --fix",
 
