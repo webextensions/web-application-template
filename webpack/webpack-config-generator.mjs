@@ -28,14 +28,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const projectRoot = path.join(__dirname, '..');
 
-const BABEL_QUERY = {
-    presets: ['@babel/preset-react'],
-    plugins: [
-        // 'transform-es2015-modules-commonjs',
-        'react-refresh/babel'
-    ]
-};
-
 const webpackConfigGenerator = function (generatorOptions = {}) {
     const {
         mode,
@@ -50,17 +42,17 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
         // useSafeAndSecure,
         // useTrackTime,
         outputJsFilenamePattern = 'bundle.[name].[contenthash:20].js',
-        outputCssFilenamePattern = 'bundle.[name].[contenthash:20].css',
-        nonProductionWebpackTools = {}
+        outputCssFilenamePattern = 'bundle.[name].[contenthash:20].css'
     } = generatorOptions;
 
     const
         nodeModulesAtProjectRoot = path.resolve(projectRoot, 'node_modules'),
         targetPublicDirectory = path.join(projectRoot, publicDirectory);
 
-    const {
-        useHmr = false
-    } = nonProductionWebpackTools;
+    let useHmr = false;
+    if (process.env.USE_HMR === 'yes') {
+        useHmr = true;
+    }
 
     // const
     //     templateToHtml = generatorOptions.templateToHtml || {},
@@ -120,7 +112,19 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
                 {
                     test: /\.js$/,
                     loader: 'babel-loader',
-                    options: BABEL_QUERY,
+                    options: {
+                        presets: ['@babel/preset-react'],
+                        plugins: (() => {
+                            const arr = [];
+
+                            // arr.push('transform-es2015-modules-commonjs');
+                            if (useHmr) {
+                                arr.push('react-refresh/babel');
+                            }
+
+                            return arr;
+                        })()
+                    },
                     // https://github.com/nuxt/nuxt.js/issues/1668#issuecomment-330510870
                     // https://stackoverflow.com/questions/45246365/webpack-2-how-to-exclude-all-node-modules-except-for/45246482#45246482
                     // https://github.com/webpack/webpack/issues/2031#issuecomment-219040479

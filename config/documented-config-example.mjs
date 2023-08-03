@@ -126,7 +126,6 @@ const configForThisMode = {
         // mode: 'development',                                             // 'development' / 'production'
 
         verbose: true,
-        watch: true,                                                        // false/true
         publicDirectory,
         // templateToHtml: {
         //     useCDNJQuery: true,
@@ -140,10 +139,7 @@ const configForThisMode = {
                                                                             //     'bundle.[name].[chunkhash].js'
                                                                             //     '[name].bundle.[chunkhash].js'
         useMinimize: false,
-        skipEntry: false,                                                   // Set it to true to skip bundling JS/CSS dependencies etc in the ".html.template" file
-        nonProductionWebpackTools: {
-            useHmr: true                                                    // false/true
-        }
+        skipEntry: false                                                    // Set it to true to skip bundling JS/CSS dependencies etc in the ".html.template" file
     }
 };
 

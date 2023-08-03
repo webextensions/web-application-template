@@ -31,6 +31,8 @@ import { logger } from 'note-down';
 
 import libLocalIpAddressesAndHostnames from 'local-ip-addresses-and-hostnames';
 
+import notifier from '../utils/notifications/notifications.mjs';
+
 import hardCodedResponse from 'express-hard-coded-response';
 import networkDelay from 'express-network-delay';
 import redirectToWww from 'express-redirect-to-www';
@@ -45,6 +47,8 @@ const require = createRequire(import.meta.url);
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 let localIpAddressesAndHostnames;
+
+const packageJson = require('../package.json');
 
 const routeSetup = function (exp) {
     const router = express.Router();
@@ -88,6 +92,44 @@ const routeSetup = function (exp) {
     return router;
 };
 
+const logAndNotifyAboutServer = async function ({
+    protocol,
+    portNumber,
+    flagNotifyServerPathsOnLaunch
+}) {
+    if (!localIpAddressesAndHostnames) {
+        try {
+            localIpAddressesAndHostnames = libLocalIpAddressesAndHostnames.getLocalIpAddressesAndHostnames();
+        } catch (e) {
+            localIpAddressesAndHostnames = [];
+        }
+    }
+
+    const localhostPaths = _.uniq(localIpAddressesAndHostnames);
+
+    if (localhostPaths.length) {
+        if (localhostPaths.length === 1) {
+            logger.verbose('This application can be accessed from the following path:' + ' (' + protocol + ' protocol)');
+        } else {
+            logger.verbose('This application can be accessed from any of the following paths:' + ' (' + protocol + ' protocol)');
+        }
+
+        const pathsToNotify = [];
+
+        localhostPaths.forEach(function (localhostPath) {
+            logger.verbose('\t' + protocol + '://' + localhostPath + ':' + portNumber);
+            pathsToNotify.push(protocol + '://' + localhostPath + ':' + portNumber);
+        });
+
+        if (flagNotifyServerPathsOnLaunch) {
+            notifier.info(`[${packageJson.name}] - Server listening at:`, '\t' + pathsToNotify.join('\n\t'));
+        }
+    } else {
+        logger.verbose('This application is running an ' + protocol + ' server on port ' + portNumber);
+        logger.warn('Warning: Unable to get the accessible hostnames / IP addresses');
+    }
+};
+
 const application = {
     start: async function ({ configOptionsFileRootRelativePath }) {
         const projectRootFullPath = path.join(__dirname, '..');
@@ -99,10 +141,10 @@ const application = {
 
         // Just a block
         {
-            const
-                _webpackConfig = config?.webpack,
-                _nonProductionWebpackTools = _webpackConfig?.nonProductionWebpackTools,
-                useHmr = _nonProductionWebpackTools?.useHmr;
+            let useHmr = false;
+            if (process.env.USE_HMR === 'yes') {
+                useHmr = true;
+            }
 
             if (useHmr) {
                 const webpackConfigVal = await webpackConfig({
@@ -368,30 +410,16 @@ const application = {
                     server = https.createServer(httpsConfig, exp);
                 }
 
+                const flagNotifyServerPathsOnLaunch = _nonProductionDevToolsConfig.flagNotifyServerPathsOnLaunch;
+
                 server.listen(portNumber, function () {
-                    if (!localIpAddressesAndHostnames) {
-                        try {
-                            localIpAddressesAndHostnames = libLocalIpAddressesAndHostnames.getLocalIpAddressesAndHostnames();
-                        } catch (e) {
-                            localIpAddressesAndHostnames = [];
-                        }
-                    }
+                    logAndNotifyAboutServer({
+                        protocol,
+                        portNumber,
 
-                    const localhostPaths = _.uniq(localIpAddressesAndHostnames);
-
-                    if (localhostPaths.length) {
-                        if (localhostPaths.length === 1) {
-                            logger.verbose('This application can be accessed from the following path:' + ' (' + protocol + ' protocol)');
-                        } else {
-                            logger.verbose('This application can be accessed from any of the following paths:' + ' (' + protocol + ' protocol)');
-                        }
-                        localhostPaths.forEach(function (localhostPath) {
-                            logger.verbose('\t' + protocol + '://' + localhostPath + ':' + portNumber);
-                        });
-                    } else {
-                        logger.verbose('This application is running an ' + protocol + ' server on port ' + portNumber);
-                        logger.warn('Warning: Unable to get the accessible hostnames / IP addresses');
-                    }
+                        // If 'https' is being used, then don't notify about 'http' server
+                        flagNotifyServerPathsOnLaunch: (useHttps ? false : flagNotifyServerPathsOnLaunch)
+                    });
                 });
                 return server;
             };
