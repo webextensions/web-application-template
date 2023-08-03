@@ -4,12 +4,18 @@
 
 'use strict';
 
-import Path, { dirname } from 'path';
-import https from 'https';
-import http from 'http';
-import fs from 'fs';
+import path, { dirname } from 'node:path';
+import https from 'node:https';
+import http from 'node:http';
+import fs from 'node:fs';
 
 import { fileURLToPath } from 'node:url';
+
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
+
+import webpackConfig from '../webpack.config.mjs';
 
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -84,12 +90,35 @@ const routeSetup = function (exp) {
 
 const application = {
     start: async function ({ configOptionsFileRootRelativePath }) {
-        const projectRootFullPath = Path.join(__dirname, '..');
+        const projectRootFullPath = path.join(__dirname, '..');
 
         // const config = require('../' + configOptionsFileRootRelativePath);
         const config = (await import('../' + configOptionsFileRootRelativePath)).default;
 
         const exp = express();
+
+        // Just a block
+        {
+            const
+                _webpackConfig = config?.webpack,
+                _nonProductionWebpackTools = _webpackConfig?.nonProductionWebpackTools,
+                useHmr = _nonProductionWebpackTools?.useHmr;
+
+            if (useHmr) {
+                const webpackConfigVal = await webpackConfig({
+                    config: path.resolve(projectRootFullPath, configOptionsFileRootRelativePath)
+                });
+                const compiler = webpack(webpackConfigVal);
+
+                exp.use(
+                    webpackDevMiddleware(compiler, {
+                        publicPath: '/'
+                    })
+                );
+
+                exp.use(webpackHotMiddleware(compiler));
+            }
+        }
 
         exp.use(function (req, res, next) {
             // TODO:
@@ -217,7 +246,7 @@ const application = {
             }
 
             if (staticDir) {
-                const faviconPath = Path.join(staticDir, 'favicon.ico');
+                const faviconPath = path.join(staticDir, 'favicon.ico');
                 try {
                     exp.use(
                         favicon(
@@ -255,7 +284,7 @@ const application = {
                     // Source maps (need to add HTTP header 'X-SourceMap' before serving the static files)
                     logger.help('Pass query string parameter "' + obscuredSourceMaps + '" in browser requests to activate source maps through header');
                     exp.use(function (req, res, next) {
-                        if (req.url.indexOf('.bundle.') !== -1 && Path.extname(req.url).split('?')[0] === '.js') {
+                        if (req.url.indexOf('.bundle.') !== -1 && path.extname(req.url).split('?')[0] === '.js') {
                             let parsedUrl = req.headers.referer && url.parse(req.headers.referer, true);
                             parsedUrl = parsedUrl || url.parse(req.url, true);  // This would enable getting source-maps path in header by directly requesting the file with appropriate query string
                             if (parsedUrl && parsedUrl.query && parsedUrl.query[obscuredSourceMaps] !== undefined) {
@@ -285,7 +314,7 @@ const application = {
                     exp.use(
                         '/.well-known',
                         express.static(
-                            Path.join(staticDir, '.well-known')
+                            path.join(staticDir, '.well-known')
                         )
                     );
                 }
@@ -302,16 +331,16 @@ const application = {
                             // maxAge: 0,
 
                             // https://github.com/expressjs/serve-static/issues/32#issuecomment-76226945
-                            setHeaders: function (res, path) {
+                            setHeaders: function (res, resourcePath) {
                                 const numberOfSecondsInFifteenDays = 15 * 24 * 60 * 60;
 
-                                if (path.indexOf('ensure-freshness') !== -1) {
+                                if (resourcePath.indexOf('ensure-freshness') !== -1) {
                                     // Note:
                                     //     The Chrome DevTools do not necessarily show the real HTTP response status code.
                                     //     The following "Cache-Control" setting seems to work well for serving static
                                     //     files where "ensure-freshness" functionality is required (in development mode)
                                     res.setHeader('Cache-Control', 'public, max-age=' + (numberOfSecondsInFifteenDays) + ', no-cache');
-                                } else if (path.match(/.*\.[0-9a-f]{20}\.(css|js)/)) {
+                                } else if (resourcePath.match(/.*\.[0-9a-f]{20}\.(css|js)/)) {
                                     // Cache the requests matching the pattern *.<20-characters-of-hash>.<css/js>
                                     // https://stackoverflow.com/questions/5416250/regex-contains-at-least-8-decimal-digits#comment6129189_5416280
                                     res.setHeader('Cache-Control', 'public, max-age=' + (numberOfSecondsInFifteenDays));
@@ -383,8 +412,8 @@ const application = {
                 if (useHttps) {
                     // http://stackoverflow.com/questions/21397809/create-a-trusted-self-signed-ssl-cert-for-localhost-for-use-with-express-node/21398485#21398485
                     const httpsConfig = {
-                        key: fs.readFileSync(Path.join(projectRootFullPath, _httpsSecretsAndSettings.key)),
-                        cert: fs.readFileSync(Path.join(projectRootFullPath, _httpsSecretsAndSettings.cert))
+                        key: fs.readFileSync(path.join(projectRootFullPath, _httpsSecretsAndSettings.key)),
+                        cert: fs.readFileSync(path.join(projectRootFullPath, _httpsSecretsAndSettings.cert))
 
                         // https://stackoverflow.com/questions/30957793/nodejs-ssl-bad-password-read/33291482#33291482
                         // Also see: http://blog.mgechev.com/2014/02/19/create-https-tls-ssl-application-with-express-nodejs/
@@ -400,7 +429,7 @@ const application = {
                     if (Array.isArray(ca)) {
                         // https://stackoverflow.com/questions/11744975/enabling-https-on-express-js/35628089#35628089
                         httpsConfig.ca = ca.map(function (certificate) {
-                            return fs.readFileSync(Path.join(projectRootFullPath, certificate));
+                            return fs.readFileSync(path.join(projectRootFullPath, certificate));
                         });
                     }
                     httpsServerObject = registerServer('https', useHttpsPortNumber, httpsConfig); // eslint-disable-line no-unused-vars
@@ -416,7 +445,7 @@ const application = {
                     liveCssServer({
                         expressApp: router,
                         httpServer: httpServerObject,
-                        configFilePath: Path.resolve(__dirname, '..', '.live-css.config.cjs')
+                        configFilePath: path.resolve(__dirname, '..', '.live-css.config.cjs')
                     });
                 }
             } else {

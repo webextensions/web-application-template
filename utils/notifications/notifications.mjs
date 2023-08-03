@@ -1,4 +1,4 @@
-import path, { dirname } from 'path';
+import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 let notifier;

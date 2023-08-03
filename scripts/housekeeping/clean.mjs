@@ -2,7 +2,7 @@
 
 /* global exec */
 
-import path, { dirname } from 'path';
+import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import _ from 'lodash';
@@ -19,6 +19,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // TODO: Use globs for these patterns
 
 const patternsMarkedToKeep = [
+    '.husky/_/',
     'node_modules/',
     'config/config.development.local.mjs',
     'config/config.production.local.mjs'

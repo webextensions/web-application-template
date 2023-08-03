@@ -40,12 +40,18 @@ const configForThisMode = {
         }
     },
     webpack: {
+        mode: 'development', // Explicitly mentioning it so that it can be used when called programmatically (and not via webpack-cli with "--mode" parameter)
+
         verbose: false,
         watch: true,
         publicDirectory,
         devtool: 'source-map',
         outputCssFilenamePattern: 'bundle.[name].ensure-freshness.css',
-        outputJsFilenamePattern:  'bundle.[name].ensure-freshness.js'
+        outputJsFilenamePattern:  'bundle.[name].ensure-freshness.js',
+
+        nonProductionWebpackTools: {
+            useHmr: true
+        }
     }
 };
 

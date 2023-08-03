@@ -1,11 +1,10 @@
-import path, { dirname } from 'path';
-
+import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import webpack from 'webpack';
 
-import { createRequire } from 'node:module';
-const require = createRequire(import.meta.url);
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 
 import chalk from 'chalk';
 
@@ -13,8 +12,13 @@ import { notifyCompletionStatus } from './utils/notify-completion-status.mjs';
 
 import { TemplateToHtmlPlugin } from './plugins/TemplateToHtmlPlugin/TemplateToHtmlPlugin.mjs';
 
-// Somehow using "import" is not working, so using the "require" way:
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+
+// Somehow using "import" is not working:
 //     import CopyWebpackPlugin from 'copy-webpack-plugin';
+// So, using the "require" way:
+//     const CopyWebpackPlugin = require('copy-webpack-plugin');
 // Probably because of this:
 //     https://github.com/webpack-contrib/copy-webpack-plugin/issues/709#issuecomment-1242330791
 // Probably using `import(...)` based syntax would make it work
@@ -26,29 +30,37 @@ const projectRoot = path.join(__dirname, '..');
 
 const BABEL_QUERY = {
     presets: ['@babel/preset-react'],
-    plugins: ['transform-es2015-modules-commonjs']
+    plugins: [
+        // 'transform-es2015-modules-commonjs',
+        'react-refresh/babel'
+    ]
 };
 
 const webpackConfigGenerator = function (generatorOptions = {}) {
-    const
-        {
-            verbose,
-            watch = false,
-            useMinimize,
-            useCopyWebpackPlugin,
-            publicDirectory,
-            // obscuredSourceMaps = false,
-            skipEntry = false,
-            // useCDNJQuery,
-            // useSafeAndSecure,
-            // useTrackTime,
-            outputJsFilenamePattern = 'bundle.[name].[contenthash:20].js',
-            outputCssFilenamePattern = 'bundle.[name].[contenthash:20].css'
-        } = generatorOptions;
+    const {
+        mode,
+        verbose,
+        watch = false,
+        useMinimize,
+        useCopyWebpackPlugin,
+        publicDirectory,
+        // obscuredSourceMaps = false,
+        skipEntry = false,
+        // useCDNJQuery,
+        // useSafeAndSecure,
+        // useTrackTime,
+        outputJsFilenamePattern = 'bundle.[name].[contenthash:20].js',
+        outputCssFilenamePattern = 'bundle.[name].[contenthash:20].css',
+        nonProductionWebpackTools = {}
+    } = generatorOptions;
 
     const
         nodeModulesAtProjectRoot = path.resolve(projectRoot, 'node_modules'),
         targetPublicDirectory = path.join(projectRoot, publicDirectory);
+
+    const {
+        useHmr = false
+    } = nonProductionWebpackTools;
 
     // const
     //     templateToHtml = generatorOptions.templateToHtml || {},
@@ -72,7 +84,10 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
                 };
             } else {
                 return {
-                    index: [path.join(projectRoot, 'src', 'index.js')]
+                    index: [
+                        useHmr ? 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000' : null,
+                        path.join(projectRoot, 'src', 'index.js')
+                    ].filter(x => x)
                     // custom: [path.join(projectRoot, 'src', 'custom.js')]
                     // chunkSafeAndSecure: [ path.join(projectRoot, 'src', '1stparty', 'safe-and-secure', 'safe-and-secure.js') ]
                 };
@@ -204,7 +219,8 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
             }
         },
 
-        devtool: 'source-map',
+        // devtool: 'source-map',
+        devtool: 'inline-source-map',
 
         plugins: (function () {
             const plugins = [];
@@ -266,6 +282,11 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
                 }
             }));
 
+            if (useHmr) {
+                plugins.push(new webpack.HotModuleReplacementPlugin());
+                plugins.push(new ReactRefreshWebpackPlugin());
+            }
+
             // https://webpack.js.org/api/compiler-hooks/#hooks
             // https://github.com/kossnocorp/on-build-webpack/issues/5#issuecomment-432192978
             // https://stackoverflow.com/questions/30312715/run-command-after-webpack-build/49786887#49786887
@@ -288,6 +309,10 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
             errorDetails: true
         }
     };
+
+    if (mode) {
+        config.mode = mode;
+    }
 
     if (verbose) {
         console.log(chalk.blue('Generated webpack configuration:'));

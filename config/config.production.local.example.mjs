@@ -32,7 +32,10 @@ const configForThisMode = {
         // verbose: false,
         watch: true,
         publicDirectory,
-        useMinimize: true
+        useMinimize: true,
+        nonProductionWebpackTools: {
+            // useHmr: false
+        }
     }
 };
 

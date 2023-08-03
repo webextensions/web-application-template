@@ -14,9 +14,16 @@
         "url": "https://github.com/webextensions/web-application-template/issues"
     },
 
+    // "type": "module",
     "main": "server/application.mjs",
 
     "dependencies": {
+        "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
+        "react-refresh": "^0.14.0",
+        "webpack": "^5.88.2",
+        "webpack-dev-middleware": "^6.1.1",
+        "webpack-hot-middleware": "^2.25.4",
+
         // Server - Express
         "express": "^4.18.2",
 
@@ -78,10 +85,9 @@
         "@babel/preset-env": "^7.22.9",
         "@babel/preset-react": "^7.22.5",
         "@babel/preset-typescript": "^7.22.5",
-        "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+        "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2", // TODO: CLEANUP: Doesn't seem to be required anymore. Also search for "transform-es2015-modules-commonjs" in the project for its usage when removing it
 
         // Build - Bundling
-        "webpack": "^5.88.2",
         "webpack-cli": "^5.1.4",
         "copy-webpack-plugin": "^11.0.0",
         "babel-loader": "^9.1.3",
