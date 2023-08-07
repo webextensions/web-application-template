@@ -170,6 +170,16 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
                             options: {
                                 // https://webpack.js.org/loaders/css-loader/#object-2
                                 modules: {
+                                    auto: function (resourcePath) {
+                                        if (
+                                            // TODO: FIXME: Create a separate "vendor.css" or similarly named file
+                                            resourcePath.indexOf('/node_modules/') >= 0
+                                        ) {
+                                            return false;
+                                        } else {
+                                            return true;
+                                        }
+                                    },
                                     localIdentName: '[name]__[local]--[hash:base64:5]'
                                 }
                             }
