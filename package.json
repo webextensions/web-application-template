@@ -7,7 +7,7 @@
         "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
         "@mui/icons-material": "^5.14.3",
-        "@mui/material": "^5.14.3",
+        "@mui/material": "^5.14.4",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
         "@webextensions/react": "=0.0.2",
         "basic-auth": "^2.0.1",
