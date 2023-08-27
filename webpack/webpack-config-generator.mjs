@@ -2,9 +2,9 @@ import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import webpack from 'webpack';
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 
 import chalk from 'chalk';
 
