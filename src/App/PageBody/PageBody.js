@@ -2,10 +2,9 @@ import React from 'react';
 
 import styles from './PageBody.css';
 
-import {
-    Loading,
-    LoadingTriggeredAfterDelay
-} from '../../ImportedComponents/Loading/Loading.js';
+import { AfterDelay } from '@webextensions/react/components/AfterDelay/AfterDelay.js';
+
+import { Loading } from '../../ImportedComponents/Loading/Loading.js';
 
 import { ClickToShow } from '@webextensions/react/components/ClickToShow/ClickToShow.js';
 
@@ -27,12 +26,13 @@ const PageBody = function () {
             </div>
 
             <div>
-                <LoadingTriggeredAfterDelay
-                    type="line-scale"
-                    style={{ width: '100px', height: '100px' }}
-                    theme="dark"
-                    delay={1000}
-                />
+                <AfterDelay delay={1000}>
+                    <Loading
+                        type="line-scale"
+                        style={{ width: '100px', height: '100px' }}
+                        theme="dark"
+                    />
+                </AfterDelay>
             </div>
 
             <div>
