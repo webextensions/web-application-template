@@ -22,7 +22,7 @@ const PageBody = function () {
             </div>
 
             <div>
-                <CopyIcon data={'Dummy content copied to clipboard'} />
+                <CopyIcon data="Dummy content copied to clipboard" />
             </div>
 
             <div>

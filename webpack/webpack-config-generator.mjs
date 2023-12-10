@@ -79,7 +79,7 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
                     index: [
                         useHmr ? 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000' : null,
                         path.join(projectRoot, 'src', 'index.js')
-                    ].filter(x => x)
+                    ].filter((x) => x)
                     // custom: [path.join(projectRoot, 'src', 'custom.js')]
                     // chunkSafeAndSecure: [ path.join(projectRoot, 'src', '1stparty', 'safe-and-secure', 'safe-and-secure.js') ]
                 };
@@ -95,7 +95,6 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
         // externals: {
         //     jquery: 'jQuery'
         // },
-
 
         // // https://webpack.js.org/configuration/resolve/
         // resolve: {

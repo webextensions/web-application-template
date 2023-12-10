@@ -10,6 +10,7 @@ class TemplateToHtmlPlugin {
     constructor(options) {
         this.options = options;
     }
+
     apply(compiler) {
         const _this = this;
         const
