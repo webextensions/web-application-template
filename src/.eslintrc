@@ -2,6 +2,6 @@
     "root": true,
 
     "extends": [
-        "eslint-config-ironplate/frontend-react"
+        "eslint-config-ironplate/react.js"
     ]
 }
