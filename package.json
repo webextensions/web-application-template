@@ -32,7 +32,7 @@
         "serve-favicon": "^2.5.0",
         "strip-ansi": "^7.1.0",
         "webpack": "^5.89.0",
-        "webpack-dev-middleware": "^7.0.0",
+        "webpack-dev-middleware": "^7.1.0",
         "webpack-hot-middleware": "^2.26.0"
     },
     "description": "A web application project template, based on: Node.js, Babel, ESLint, Express, React, Webpack, etc",
