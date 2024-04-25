@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './Message.css';
+import * as styles from './Message.css';
 
 const msgText = 'This message comes from a variable';
 

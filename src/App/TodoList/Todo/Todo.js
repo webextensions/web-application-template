@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import styles from './Todo.css';
+import * as styles from './Todo.css';
 
 const Todo = function ({ summary, status }) {
     return (

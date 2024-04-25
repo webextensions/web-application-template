@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './PageHeader.css';
+import * as styles from './PageHeader.css';
 
 import { CurrentTime } from 'generic-components/CurrentTime/CurrentTime.js';
 import { UserAgent } from 'generic-components/UserAgent/UserAgent.js';

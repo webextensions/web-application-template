@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './PageFooter.css';
+import * as styles from './PageFooter.css';
 
 import { Message } from '../Message/Message.js';
 

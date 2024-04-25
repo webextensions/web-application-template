@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './TodoList.css';
+import * as styles from './TodoList.css';
 
 import { Todo } from './Todo/Todo.js';
 

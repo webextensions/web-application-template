@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './PageBody.css';
+import * as styles from './PageBody.css';
 
 import { AfterDelay } from '@webextensions/react/components/AfterDelay/AfterDelay.js';
 
