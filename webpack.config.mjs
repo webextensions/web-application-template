@@ -74,7 +74,9 @@ const webpackConfig = async function (env, argv) {    // eslint-disable-line no-
         console.log('An error occurred.');
         console.log('Error stack trace:');
         console.log(e);
-        exitWithError('Error summary: Invalid or unavailable file ' + configFilePath);
+        const exampleConfigFilePath = path.resolve(__dirname, 'config/config.development.local.example.mjs');
+        console.info(chalk.yellow('Ref: You may want to check the example file at ' + exampleConfigFilePath));
+        return exitWithError('Error summary: Invalid or unavailable file ' + configFilePath);
     }
 
     const generatedWebpackConfig = webpackConfigGenerator(flagBasedWebpackConfig);

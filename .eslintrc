@@ -18,5 +18,18 @@
     // Add ESLint rules here. If they are stable and useful, move those as a pull
     // request to https://github.com/webextensions/eslint-config-ironplate/
     "rules": {
+        // https://github.com/mysticatea/eslint-plugin-node/blob/master/docs/rules/callback-return.md
+        "node/callback-return": [
+            "error",
+            [
+                "callback",
+                "done",
+                "res.end",
+                "res.send",
+                "res.status",
+                "next",
+                "exitWithError"
+            ]
+        ]
     }
 }
