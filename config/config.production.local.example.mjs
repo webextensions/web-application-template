@@ -3,7 +3,7 @@
     the build and server in local mode
 */
 
-import inheritedConfig from './config.production.mjs';
+import inheritedConfig from './config.production._.mjs';
 
 import extend from 'extend';
 

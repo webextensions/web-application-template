@@ -128,41 +128,29 @@
 
         /* Build (with webpack) */
         // References: https://stackoverflow.com/questions/16978256/what-is-node-env-in-express/16979503#16979503
-        "build:production":                                                              "NODE_ENV=production webpack --mode production          --progress --env config=\"./config/config.production.mjs\"",
-        "build:production:inspect-brk":       "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production          --progress --env config=\"./config/config.production.mjs\"",
+        "build:production:local":                                                        "NODE_ENV=production webpack --mode production  --watch --progress --env config=\"./config/config.production.local.mjs\"",
+        "build:production:local:inspect-brk": "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production          --progress --env config=\"./config/config.production.local.mjs\"",
 
-        "build:production-local":                                                        "NODE_ENV=production webpack --mode production  --watch --progress --env config=\"./config/config.production.local.mjs\"",
-        "build:production-local:inspect-brk": "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production          --progress --env config=\"./config/config.production.local.mjs\"",
+        "build:development:local":                                                                           "webpack --mode development --watch --progress --env config=\"./config/config.development.local.mjs\"",
+        "build:development:local:inspect-brk":                    "node --inspect-brk ./node_modules/.bin/webpack-cli --mode development         --progress --env config=\"./config/config.development.local.mjs\"",
 
-        "build:development":                                                                                 "webpack --mode development --watch --progress --env config=\"./config/config.development.mjs\"",
-        "build:development:inspect-brk":                          "node --inspect-brk ./node_modules/.bin/webpack-cli --mode development         --progress --env config=\"./config/config.development.mjs\"",
-
-        "build:development-local":                                                                           "webpack --mode development --watch --progress --env config=\"./config/config.development.local.mjs\"",
-        "build:development-local:inspect-brk":                    "node --inspect-brk ./node_modules/.bin/webpack-cli --mode development         --progress --env config=\"./config/config.development.local.mjs\"",
-
-        "build":                   "npm run build:development-local",
-        "build:inspect-brk":       "npm run build:development-local:inspect-brk",
+        "build":                   "npm run build:development:local",
+        "build:inspect-brk":       "npm run build:development:local:inspect-brk",
 
         "start:build":             "npm run build",
         "start:build:inspect-brk": "npm run build:inspect-brk",
 
         /* Server */
-        "server:production":                   "NODE_ENV=production node               server/server.mjs    --config config/config.production.mjs",
-        "server:production:inspect-brk":       "NODE_ENV=production node --inspect-brk server/server.mjs    --config config/config.production.mjs",
+        "server:production:local":             "NODE_ENV=production nodemon            server/server.mjs -- --config config/config.production.local.mjs",
+        "server:production:local:inspect-brk": "NODE_ENV=production node --inspect-brk server/server.mjs    --config config/config.production.local.mjs",
 
-        "server:production-local":             "NODE_ENV=production nodemon            server/server.mjs -- --config config/config.production.local.mjs",
-        "server:production-local:inspect-brk": "NODE_ENV=production node --inspect-brk server/server.mjs    --config config/config.production.local.mjs",
+        "server:development:local":                                "nodemon            server/server.mjs -- --config config/config.development.local.mjs",
+        "server:development:local:inspect-brk":                    "node --inspect-brk server/server.mjs    --config config/config.development.local.mjs",
+        "server:development:local:use-hmr":            "USE_HMR=yes nodemon            server/server.mjs -- --config config/config.development.local.mjs",
 
-        "server:development":                                      "nodemon            server/server.mjs -- --config config/config.development.mjs",
-        "server:development:inspect-brk":                          "node --inspect-brk server/server.mjs    --config config/config.development.mjs",
-
-        "server:development-local":                                "nodemon            server/server.mjs -- --config config/config.development.local.mjs",
-        "server:development-local:inspect-brk":                    "node --inspect-brk server/server.mjs    --config config/config.development.local.mjs",
-        "server:development-local:use-hmr":            "USE_HMR=yes nodemon            server/server.mjs -- --config config/config.development.local.mjs",
-
-        "start:server":             "npm run server:development-local",
-        "start:server:inspect-brk": "npm run server:development-local:inspect-brk",
-        "start:server:use-hmr":     "npm run server:development-local:use-hmr",
+        "start:server":             "npm run server:development:local",
+        "start:server:inspect-brk": "npm run server:development:local:inspect-brk",
+        "start:server:use-hmr":     "npm run server:development:local:use-hmr",
 
         "start:app":         "concurrently \"npm run start:server\" \"npm run start:build\"",
         "start:app:use-hmr": "npm run start:server:use-hmr",
