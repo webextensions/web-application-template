@@ -20,7 +20,8 @@ const configForThisMode = {
                         key: 'config/local/https-keys/example.com+1-key.pem',
                         cert: 'config/local/https-keys/example.com+1.pem'
                     }
-                }
+                },
+                redirectToWww: false
             }
         },
         nonProductionDevTools: {

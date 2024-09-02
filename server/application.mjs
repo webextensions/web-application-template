@@ -50,7 +50,7 @@ let localIpAddressesAndHostnames;
 
 const packageJson = require('../package.json');
 
-const routeSetup = function (exp) {
+const routeSetup = async function (exp) {
     const router = express.Router();
 
     router
@@ -78,11 +78,18 @@ const routeSetup = function (exp) {
                 // TODO: Validate whether "reqBody.username" exists or not
                 res.send(`TODO: Create a user with ID ${reqBody.username} (if available)`);
             })
-        );
+        )
+
+        .use('/taskCategories', await (await import('./handlers/taskCategories/taskCategories.mjs')).setupTaskCategoriesRoutes())
+
+        // TODO: Add this with some accessCode based restrictive usage
+        // .get('/kill', (await import('./handlers/generic/kill/kill.mjs')).kill)
+
+        .get('/help', (await import('./handlers/expressHandlers/expressHandlers.mjs')).expressHandlers(exp));
 
     setTimeout(function () {
         // Setting up this router after a delay so that live-css server router is able to attach itself before it
-        router.use('*', function (req, res) {
+        router.use(function (req, res) {
             return res.status(404).send('Page not found');
         });
     }, 1000);
@@ -161,6 +168,21 @@ const application = {
                 exp.use(webpackHotMiddleware(compiler));
             }
         }
+
+        exp.use(function (req, res, next) {
+            const
+                protocol = req.protocol,
+                host = req.get('host'),
+                originalUrl = req.originalUrl;
+
+            const origin  = protocol + '://' + host;
+            const fullUrl = origin + originalUrl;
+
+            res.locals.origin = origin;
+            res.locals.fullUrl = fullUrl;
+
+            return next();
+        });
 
         exp.use(function (req, res, next) {
             // TODO:
@@ -280,7 +302,7 @@ const application = {
                             const directivesToUse = {
                                 ...helmet.contentSecurityPolicy.getDefaultDirectives()
                             };
-                            delete directivesToUse['upgrade-insecure-requests'];
+                            directivesToUse['upgrade-insecure-requests'] = null;
                             return directivesToUse;
                         })()
                     })
@@ -400,7 +422,7 @@ const application = {
             exp.use(bodyParser.json()); // support json encoded bodies
             exp.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-            const router = routeSetup(exp);
+            const router = await routeSetup(exp);
 
             const registerServer = function (protocol, portNumber, httpsConfig) {
                 let server;

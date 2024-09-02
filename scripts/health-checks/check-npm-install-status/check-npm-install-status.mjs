@@ -98,7 +98,25 @@ async function main(rootPath) {
         if (!valid) {
             invalidFound = true;
         }
-        const match = valid && semver.satisfies(packageJson.version, allDependencies[packageName]);
+        const match = (
+            valid &&
+            (
+                semver.satisfies(packageJson.version, allDependencies[packageName]) ||
+
+                // Allow remote URLs
+                // Ref: https://docs.npmjs.com/cli/v10/commands/npm-install#description
+                allDependencies[packageName].indexOf('git+https://') === 0 ||
+                allDependencies[packageName].indexOf('git+http://') === 0 ||
+                allDependencies[packageName].indexOf('git+ssh://') === 0 ||
+                allDependencies[packageName].indexOf('git://') === 0 ||
+                allDependencies[packageName].indexOf('https://') === 0 ||
+                allDependencies[packageName].indexOf('http://') === 0 ||
+                allDependencies[packageName].indexOf('bitbucket:') === 0 ||
+                allDependencies[packageName].indexOf('gist:') === 0 ||
+                allDependencies[packageName].indexOf('github:') === 0 ||
+                allDependencies[packageName].indexOf('gitlab:') === 0
+            )
+        );
         if (!match) {
             mismatchFound = true;
         }
