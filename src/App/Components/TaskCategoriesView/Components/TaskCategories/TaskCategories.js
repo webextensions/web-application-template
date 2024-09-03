@@ -5,7 +5,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { Loading } from '../../../../../ImportedComponents/Loading/Loading.js';
 
-import { errAndDataArrayToPromise } from '../../../../utils/errAndDataArrayToPromise.js';
+import { safeArrayPromiseToErrorPromise } from '../../../../utils/safeArrayPromiseToErrorPromise.js';
 import {
     listTaskCategories,
     deleteTaskCategory
@@ -20,8 +20,9 @@ const DeleteTaskCategory = ({ taskCategoryId, onDelete }) => {
         isPending
     } = useMutation({
         mutationFn: () => {
-            const p = errAndDataArrayToPromise(deleteTaskCategory, [taskCategoryId]);
-            return p;
+            const p = deleteTaskCategory(taskCategoryId);
+            const querifiedP = safeArrayPromiseToErrorPromise(p);
+            return querifiedP;
         }
     });
 
@@ -108,8 +109,9 @@ const TaskCategoriesList = ({ refreshedAt }) => {
     } = useQuery({
         queryKey: ['taskCategoriesList'],
         queryFn: () => {
-            const p = errAndDataArrayToPromise(listTaskCategories);
-            return p;
+            const p = listTaskCategories();
+            const querifiedP = safeArrayPromiseToErrorPromise(p);
+            return querifiedP;
         }
     });
 

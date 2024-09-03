@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { toast } from '../../../../../ImportedComponents/react-toastify.js';
 
-import { errAndDataArrayToPromise } from '../../../../utils/errAndDataArrayToPromise.js';
+import { safeArrayPromiseToErrorPromise } from '../../../../utils/safeArrayPromiseToErrorPromise.js';
 
 import { createTaskCategory } from '../../../../dal.js';
 
@@ -20,25 +20,26 @@ const AddCategory = function () {
         mutate
     } = useMutation({
         mutationFn: function () {
-            const p = errAndDataArrayToPromise(createTaskCategory, [title]);
+            const p = createTaskCategory(title);
             const cachedTitle = title;
             (async function () {
-                try {
-                    await p;
-                    // TODO: HARDCODING: Get rid of this hardcoding ('taskCategoriesList')
-                    queryClient.invalidateQueries(['taskCategoriesList']);
-                    setTitle('');
-                    toast.success('Category added successfully');
-                } catch (error) {
-                    const httpResponseStatus = error?.response?.status;
+                const [err] = await p;
+                if (err) {
+                    const httpResponseStatus = err?.response?.status;
                     if (httpResponseStatus === 409) {
                         toast.error(`Error - Category "${cachedTitle}" already exists`);
                     } else {
                         toast.error(`Error - Failed to add category "${cachedTitle}"`);
                     }
+                } else {
+                    // TODO: HARDCODING: Get rid of this hardcoding ('taskCategoriesList')
+                    queryClient.invalidateQueries(['taskCategoriesList']);
+                    setTitle('');
+                    toast.success('Category added successfully');
                 }
             }());
-            return p;
+            const querifiedP = safeArrayPromiseToErrorPromise(p);
+            return querifiedP;
         }
     });
 
