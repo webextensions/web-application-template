@@ -59,6 +59,9 @@ const routeSetup = async function (exp) {
                 logger.log('TODO: The access to this route needs to be limited to administrators only');
                 next();
             })
+            .get('/help', (await import('./handlers/admin/help/help.mjs')).help(exp))
+            .get('/info', (await import('./handlers/admin/info/info.mjs')).info)
+            .get('/kill', (await import('./handlers/admin/kill/kill.mjs')).kill)
             .use('/users', express.Router()
                 .get('/', function (req, res) {
                     res.send('TODO: Serve the /GET request for /admin/users');

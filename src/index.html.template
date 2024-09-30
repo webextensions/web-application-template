@@ -1,8 +1,12 @@
 <!doctype html>
-<html>
+<html data-app-version="{{appVersion}}">
 
 <head>
     <title>Web Application Template</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shrink-to-fit=no" />
+
+    <meta name="theme-color" content="#777">
 
     <style>
         /* If most of the times, the page would have a vertical scroll, then this style should be added to the html file

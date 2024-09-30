@@ -1,10 +1,14 @@
-import path from 'node:path';
-
 import fs from 'node:fs';
+import path, { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import handlebars from 'handlebars';
 
 import { logger } from 'note-down';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const packageJsonPath = path.resolve(__dirname, '..', '..', '..', 'package.json');
 
 class TemplateToHtmlPlugin {
     constructor(options) {
@@ -112,6 +116,9 @@ class TemplateToHtmlPlugin {
 
                     const context = JSON.parse(JSON.stringify(_this.options.contextData));
                     context.chunks = context.chunks || {};
+
+                    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+                    context.appVersion = packageJson.version;
 
                     compilation.chunks.forEach(function (chunk) {
                         const chunkFiles = chunk.files;

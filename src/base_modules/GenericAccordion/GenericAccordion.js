@@ -7,8 +7,8 @@ import BaseAccordion from '@mui/material/Accordion/index.js';
 import AccordionSummary from '@mui/material/AccordionSummary/index.js';
 import AccordionDetails from '@mui/material/AccordionDetails/index.js';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore.js';
-import AutorenewIcon from '@mui/icons-material/Autorenew.js';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'; // eslint-disable-line node/file-extension-in-import
+import AutorenewIcon from '@mui/icons-material/Autorenew'; // eslint-disable-line node/file-extension-in-import
 
 import { useLocalStorage } from 'react-use';
 
