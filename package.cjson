@@ -121,6 +121,7 @@
 
         // Testing
         "mocha": "^10.7.3",
+        "semver": "^7.6.3",
 
         // Development assistants
         "nodemon": "^3.1.7",

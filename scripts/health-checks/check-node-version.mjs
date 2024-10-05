@@ -12,6 +12,8 @@ import fs from 'node:fs';
 import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import semver from 'semver';
+
 import { logger } from '../../utils/logger.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -32,7 +34,7 @@ try {
     const
         dotNvmrcPath = path.resolve(__dirname, '../../.nvmrc'),
         dotNvmrcContents = fs.readFileSync(dotNvmrcPath, 'utf8');
-    if (dotNvmrcContents !== nodeVersion) {
+    if (!semver.satisfies(nodeVersion, dotNvmrcContents)) {
         logger.log('');
         logger.success(' ✓   .nvmrc suggests: Node JS ' + dotNvmrcContents);
         loggerWarnOrError(' ✗ You currently use: Node JS ' + nodeVersion);
