@@ -28,7 +28,7 @@ class CurrentTime extends React.Component {
 
     render() {
         if (this.props.zone === 'utc') {
-            return <>{this.state.date.toISOString().substring(11, 19)}</>;
+            return <>{this.state.date.toISOString().slice(11, 19)}</>;
         } else {
             return <>{new Date().toLocaleTimeString()}</>;
         }

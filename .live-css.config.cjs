@@ -1,3 +1,5 @@
+/* eslint-disable @stylistic/quotes */
+
 /*
     This configuration file is used for running "live-css" server (https://www.npmjs.com/package/@webextensions/live-css)
     It is meant to be used along with browser extension "Live editor for CSS, Less & Sass - Magic CSS":
@@ -28,7 +30,6 @@ module.exports = {                          // Learn more about "module.exports"
                                             //     http://stackabuse.com/how-to-use-module-exports-in-node-js/
                                             //     https://nodejs.org/api/modules.html#modules_module_exports
 
-
     // The "port" configuration option is used as a suggested port number when the live-css server needs to run
     // on a separate port of its own. If the specified port is busy, the next available port may be used.
     // It will be used when:
@@ -39,7 +40,6 @@ module.exports = {                          // Learn more about "module.exports"
                                             // Learn more about ports:
                                             //     https://computer.howstuffworks.com/web-server8.htm
                                             //     https://en.wikipedia.org/wiki/Registered_port
-
 
     // IMPORTANT NOTE: Setting "root" to an incorrect value may result in failure to auto-refresh styles in the browser.
     //                 If you are in doubt, don't use the "root" configuration option, live-css would still work fine.
@@ -58,7 +58,6 @@ module.exports = {                          // Learn more about "module.exports"
                                             // Learn more:
                                             //     https://en.wikipedia.org/wiki/Path_(computing)
 
-
     "watch-patterns": [                     // <Array/String/RegExp/Function>
                                             // Glob patterns or paths of files and directories to be watched recursively
                                             // Learn more:
@@ -68,7 +67,6 @@ module.exports = {                          // Learn more about "module.exports"
 
         "**/*.css"                          // Include all the ".css" files to watch for changes
     ],
-
 
     "watch-ignore-patterns": [              // <Array/String/RegExp/Function>
                                             // Glob patterns or paths of files and directories to be ignored from being watched
@@ -96,12 +94,10 @@ module.exports = {                          // Learn more about "module.exports"
                                                     //     https://github.com/isaacs/minimatch/blob/master/README.md#properties ("negate" property)
     ],
 
-
     "allow-symlinks": false,                // <true/false>
                                             // Learn more about symlinks / symbolic-links:
                                             //     https://en.wikipedia.org/wiki/Symbolic_link
                                             //     https://github.com/paulmillr/chokidar#path-filtering ("followSymlinks")
-
 
     "list-files": false,                    // <true/false>
                                             // true: List the paths of the files being watched
@@ -109,11 +105,9 @@ module.exports = {                          // Learn more about "module.exports"
                                             // This setting is applicable only during the initial launch of the "live-css" server. When a file matching the
                                             // "watch-pattern" is newly created while the "live-css" server is already running, the path is listed anyways
 
-
     "debug": false,                         // <true/false>
                                             // true: Logs some extra information which is helpful in debugging
                                             // false: Does not log the extra debugging related information
-
 
     "version": "7.0.9"                      // This represents the version of the live-css server which was used for generating this configuration file
                                             // This may be helpful while debugging some issues and informing users about new features

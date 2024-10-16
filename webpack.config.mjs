@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-/* eslint-disable filenames/match-exported */
+/* eslint-disable n/no-process-exit */
 
 import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';

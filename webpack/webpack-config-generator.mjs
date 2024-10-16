@@ -59,7 +59,7 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
 
     if (verbose) {
         console.log(chalk.blue('Generating webpack configuration for:'));
-        console.log(chalk.blue('    ' + JSON.stringify(generatorOptions, null, '    ').replace(/\n/g, '\n    ')));
+        console.log(chalk.blue('    ' + JSON.stringify(generatorOptions, null, '    ').replaceAll('\n', '\n    ')));
     }
 
     const config = {
@@ -79,7 +79,7 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
                     index: [
                         useHmr ? 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000' : null,
                         path.join(projectRoot, 'src', 'index.js')
-                    ].filter((x) => x)
+                    ].filter(Boolean)
                     // custom: [path.join(projectRoot, 'src', 'custom.js')]
                     // chunkSafeAndSecure: [ path.join(projectRoot, 'src', '1stparty', 'safe-and-secure', 'safe-and-secure.js') ]
                 };
@@ -172,7 +172,7 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
                                     auto: function (resourcePath) {
                                         if (
                                             // TODO: FIXME: Create a separate "vendor.css" or similarly named file
-                                            resourcePath.indexOf('/node_modules/') >= 0
+                                            resourcePath.includes('/node_modules/')
                                         ) {
                                             return false;
                                         } else {
@@ -329,7 +329,7 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
 
     if (verbose) {
         console.log(chalk.blue('Generated webpack configuration:'));
-        console.log(chalk.blue('    ' + JSON.stringify(config, null, '    ').replace(/\n/g, '\n    ')));
+        console.log(chalk.blue('    ' + JSON.stringify(config, null, '    ').replaceAll('\n', '\n    ')));
     }
 
     return config;

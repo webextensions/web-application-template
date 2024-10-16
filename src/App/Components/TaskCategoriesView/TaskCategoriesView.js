@@ -1,6 +1,6 @@
 import React from 'react';
 
-import InfoIcon from '@mui/icons-material/Info'; // eslint-disable-line node/file-extension-in-import
+import InfoIcon from '@mui/icons-material/Info';
 
 import { GenericAccordion } from '../../../base_modules/GenericAccordion/GenericAccordion.js';
 

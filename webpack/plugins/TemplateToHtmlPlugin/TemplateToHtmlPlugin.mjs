@@ -42,7 +42,7 @@ class TemplateToHtmlPlugin {
                         let
                             cssCode = '',
                             jsCode = '';
-                        Object.keys(chunks).forEach(function (key) {
+                        for (const key of Object.keys(chunks)) {
                             const
                                 chunk = chunks[key],
                                 filePath = chunk.filePath;
@@ -51,7 +51,7 @@ class TemplateToHtmlPlugin {
                             } else if (filePath.match(/\.js$/)) {
                                 jsCode += `\n<script src="${filePath}"></script>`;
                             }
-                        });
+                        }
 
                         return cssCode + '\n' + jsCode;
                     });
@@ -114,13 +114,13 @@ class TemplateToHtmlPlugin {
 
                     const compiledTemplate = handlebars.compile(templateFileContents);
 
-                    const context = JSON.parse(JSON.stringify(_this.options.contextData));
+                    const context = structuredClone(_this.options.contextData);
                     context.chunks = context.chunks || {};
 
                     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
                     context.appVersion = packageJson.version;
 
-                    compilation.chunks.forEach(function (chunk) {
+                    for (const chunk of compilation.chunks) {
                         const chunkFiles = chunk.files;
 
                         const isFileCssOrJs = function (fileName) {
@@ -145,7 +145,7 @@ class TemplateToHtmlPlugin {
                                 };
                             }
                         }
-                    });
+                    }
 
                     try {
                         const html = compiledTemplate(context);

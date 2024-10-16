@@ -1,6 +1,6 @@
 import React from 'react';
 
-import VisibilityIcon from '@mui/icons-material/Visibility'; // eslint-disable-line node/file-extension-in-import
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import { toast } from '../../../ImportedComponents/react-toastify.js';
 

@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+/* eslint-disable n/no-process-exit */
+
 // This script finds mismatches between top-level node_modules/ and package.json and informs the user
 
 // How to use:
@@ -63,7 +65,7 @@ function mergeObjects(obj1, obj2) {
 function readFileAsJson(filePath) {
     try {
         const
-            data = fs.readFileSync(filePath, 'utf-8'),
+            data = fs.readFileSync(filePath, 'utf8'),
             json = JSON.parse(data);
         return json;
     } catch (e) {
@@ -91,7 +93,7 @@ async function main(rootPath) {
         invalidFound = false;
 
     const updateMessages = [];
-    Object.keys(allDependencies).forEach(function (packageName) {
+    for (const packageName of Object.keys(allDependencies)) {
         const
             packageJson = readFileAsJson(path.resolve(rootPath, 'node_modules', packageName, 'package.json')),
             valid = packageJson && semver.valid(packageJson.version);
@@ -123,7 +125,7 @@ async function main(rootPath) {
         if (!valid || !match) {
             updateMessages.push(packageName + ' : ' + ((packageJson && packageJson.version) || 'NA') + ' -> ' + allDependencies[packageName]);
         }
-    });
+    }
 
     const t2 = new Date();
     if (!mismatchFound && !invalidFound) {

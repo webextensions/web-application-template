@@ -76,7 +76,7 @@ const routeSetup = async function (exp) {
         )
         .use('/user-account', express.Router()
             .post('/create', function (req, res) {
-                const reqBody = JSON.parse(JSON.stringify(req.body));
+                const reqBody = structuredClone(req.body);
 
                 // TODO: Validate whether "reqBody.username" exists or not
                 res.send(`TODO: Create a user with ID ${reqBody.username} (if available)`);
@@ -126,10 +126,10 @@ const logAndNotifyAboutServer = async function ({
 
         const pathsToNotify = [];
 
-        localhostPaths.forEach(function (localhostPath) {
+        for (const localhostPath of localhostPaths) {
             logger.verbose('\t' + protocol + '://' + localhostPath + ':' + portNumber);
             pathsToNotify.push(protocol + '://' + localhostPath + ':' + portNumber);
-        });
+        }
 
         if (flagNotifyServerPathsOnLaunch) {
             notifier.info(`[${packageJson.name}] - Server listening at:`, '\t' + pathsToNotify.join('\n\t'));
@@ -401,7 +401,7 @@ const application = {
                             setHeaders: function (res, resourcePath) {
                                 const numberOfSecondsInFifteenDays = 15 * 24 * 60 * 60;
 
-                                if (resourcePath.indexOf('ensure-freshness') !== -1) {
+                                if (resourcePath.includes('ensure-freshness')) {
                                     // Note:
                                     //     The Chrome DevTools do not necessarily show the real HTTP response status code.
                                     //     The following "Cache-Control" setting seems to work well for serving static
@@ -503,7 +503,7 @@ const application = {
                 }
             } else {
                 logger.fatal('Fatal error: HTTPS & HTTP, both the modes are disabled in the configuration. Exiting.');
-                process.exit(1);
+                process.exit(1); // eslint-disable-line n/no-process-exit
             }
         }
     }

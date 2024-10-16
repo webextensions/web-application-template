@@ -1,7 +1,5 @@
-/* eslint-disable filenames/no-index */
-
 import React from 'react';
-import { createRoot } from 'react-dom/client'; // eslint-disable-line node/file-extension-in-import
+import { createRoot } from 'react-dom/client';
 
 import './index.css';
 

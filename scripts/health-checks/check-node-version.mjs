@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+/* eslint-disable n/no-process-exit */
+
 // This script finds mismatches between Node version in use and the .nvmrc file
 //
 // How to use:

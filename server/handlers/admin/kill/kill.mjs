@@ -2,7 +2,7 @@ import { sendSuccessResponse } from '../../../utils/express-utils/express-utils.
 
 const kill = async (req, res) => {
     setTimeout(() => {
-        // eslint-disable-next-line unicorn/no-process-exit
+        // eslint-disable-next-line n/no-process-exit
         process.exit(1);
     }, 1000);
 

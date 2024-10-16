@@ -46,7 +46,7 @@ const notifyCompletionStatus = (stats) => {
                 d.getTime() -
                 d.getTimezoneOffset() * 60 * 1000
             )
-        ).toISOString().substring(11, 19);
+        ).toISOString().slice(11, 19);
     }());
     const packageJson = JSON.parse(
         fs.readFileSync(

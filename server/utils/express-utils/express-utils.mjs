@@ -23,7 +23,7 @@ const sendErrorResponse = function (res, statusCode, errorMessage, output) {
 const sendSuccessResponse = function (
     res,
     output,
-    options = { beautify: false }
+    options = { beautify: false } // eslint-disable-line unicorn/no-object-as-default-parameter
 ) {
     const responseToSend = {
         status: 'success'

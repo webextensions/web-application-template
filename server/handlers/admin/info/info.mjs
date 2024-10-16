@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 import os from 'node:os';
 
-import { createRequire } from 'module';
+import { createRequire } from 'node:module';
 
 import si from 'systeminformation';
 import { diskSpaceForFilesystemOwningPath } from '@sindresorhus/df';
@@ -25,7 +25,7 @@ const projectRoot = path.resolve(__dirname, '..', '..', '..', '..');
 
 // Note: Keep this as the first line of the application code to ensure that this global variable is available throughout the worker
 // LAZY: HACK: Generate a 4 character long alphanumeric string ('1234' ensures that there are 4 characters even if the random string is empty)
-global.instanceId = global.instanceId || (Math.random().toString(36).slice(2) + '1234').substring(0, 4);
+global.instanceId = global.instanceId || (Math.random().toString(36).slice(2) + '1234').slice(0, 4);
 
 const info = async (req, res) => {
     const infoOb = {};
@@ -76,12 +76,12 @@ const info = async (req, res) => {
             cores: cpu.cores
         };
         infoOb.cpus = [];
-        os.cpus().forEach((cpu) => {
+        for (const cpu of os.cpus()) {
             infoOb.cpus.push({
                 model: cpu.model,
                 speed: cpu.speed
             });
-        });
+        }
 
         infoOb.env = process.env;
     } catch (error) {

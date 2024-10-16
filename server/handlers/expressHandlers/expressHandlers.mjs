@@ -20,7 +20,7 @@ const expressHandlers = function (app) {
                 if (entryPath.includes('RegExp')) {
                     // do nothing
                 } else {
-                    entryPath = entryPath.replace(/\\/g, ''); // Useful for removing the backslash escaping like "\.path" to ".path"
+                    entryPath = entryPath.replaceAll('\\', ''); // Useful for removing the backslash escaping like "\.path" to ".path"
                 }
                 const url = res.locals.origin + entryPath;
 
