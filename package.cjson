@@ -25,7 +25,7 @@
         "webpack-hot-middleware": "^2.26.1",
 
         // Server - Express
-        "express": "^4.21.0",
+        "express": "^4.21.1",
 
         // Server - Express middleware
         "body-parser": "^1.20.3",
@@ -54,12 +54,12 @@
         "react-dom": "^18.3.1",
         "prop-types": "^15.8.1",
 
-        "@tanstack/react-query": "^5.59.0",
-        "react-toastify": "^10.0.5",
+        "@tanstack/react-query": "^5.59.15",
+        "react-toastify": "^10.0.6",
 
         // Material UI
-        "@mui/material": "^6.1.2",
-        "@mui/icons-material": "^6.1.2",
+        "@mui/material": "^6.1.4",
+        "@mui/icons-material": "^6.1.4",
         "@emotion/react": "^11.13.3",
         "@emotion/styled": "^11.13.0",
 
@@ -79,7 +79,7 @@
         // Miscellaneous
         "helpmate": "=1.7.1",
 
-        "execa": "^9.4.0",
+        "execa": "^9.4.1",
 
         "json-stringify-pretty-compact": "^4.0.0",
 
@@ -101,13 +101,13 @@
         "eslint-plugin-import": "^2.31.0",
         "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-react": "^7.37.1",
-        "eslint-plugin-react-hooks": "^4.6.2",
+        "eslint-plugin-react-hooks": "^5.0.0",
         "eslint-plugin-unicorn": "^56.0.0",
 
         // Build - Transpilation
         "@babel/cli": "^7.25.7",
-        "@babel/core": "^7.25.7",
-        "@babel/preset-env": "^7.25.7",
+        "@babel/core": "^7.25.8",
+        "@babel/preset-env": "^7.25.8",
         "@babel/preset-react": "^7.25.7",
         "@babel/preset-typescript": "^7.25.7",
         "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2", // TODO: CLEANUP: Doesn't seem to be required anymore. Also search for "transform-es2015-modules-commonjs" in the project for its usage when removing it
@@ -131,7 +131,7 @@
 
         // Miscellaneous
         "concurrently": "^9.0.1",
-        "del": "^7.1.0",
+        "del": "^8.0.0",
         "handlebars": "^4.7.8",
         "node-notifier": "^10.0.1",
         "package-cjson": "^1.4.0", // Required in scripts "health-checks/compare-package-json-cjson.sh" and "housekeeping/generate-package-json.sh"
