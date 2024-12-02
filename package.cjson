@@ -54,12 +54,12 @@
         "react-dom": "^18.3.1",
         "prop-types": "^15.8.1",
 
-        "@tanstack/react-query": "^5.61.0",
+        "@tanstack/react-query": "^5.62.0",
         "react-toastify": "^10.0.6",
 
         // Material UI
-        "@mui/material": "^6.1.8",
-        "@mui/icons-material": "^6.1.8",
+        "@mui/material": "^6.1.9",
+        "@mui/icons-material": "^6.1.9",
         "@emotion/react": "^11.13.5",
         "@emotion/styled": "^11.13.5",
 
@@ -92,9 +92,9 @@
         "husky": "^9.1.7",
 
         // Linting
-        "eslint": "^9.15.0",
+        "eslint": "^9.16.0",
 
-        "globals": "^15.12.0",
+        "globals": "^15.13.0",
 
         // "eslint-config-ironplate" and its dependencies
         "eslint-config-ironplate": "^1.0.1",
@@ -122,7 +122,7 @@
         "mini-css-extract-plugin": "^2.9.2",
 
         // Testing
-        "mocha": "^10.8.2",
+        "mocha": "^11.0.1",
         "semver": "^7.6.3",
 
         // Development assistants
