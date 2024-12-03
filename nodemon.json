@@ -12,6 +12,6 @@
     "./node_modules/"
   ],
   "ignore": [
-    "./config/*.example.mjs"
+    "./config/*.example.js"
   ]
 }

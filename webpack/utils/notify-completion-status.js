@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import notifier from '../../utils/notifications/notifications.mjs';
+import notifier from '../../utils/notifications/notifications.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

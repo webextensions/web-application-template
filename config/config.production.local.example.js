@@ -1,9 +1,9 @@
 /*
-    Rename this file from config.production.local.example.mjs to config.production.local.mjs to run
+    Rename this file from config.production.local.example.js to config.production.local.js to run
     the build and server in local mode
 */
 
-import inheritedConfig from './config.production._.mjs';
+import inheritedConfig from './config.production._.js';
 
 import extend from 'extend';
 

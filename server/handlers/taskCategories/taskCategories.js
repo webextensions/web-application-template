@@ -7,9 +7,9 @@ import Datastore from '@seald-io/nedb';
 import {
     sendErrorResponse,
     sendSuccessResponse
-} from '../../utils/express-utils/express-utils.mjs';
+} from '../../utils/express-utils/express-utils.js';
 
-import notifier from '../../../utils/notifications/notifications.mjs';
+import notifier from '../../../utils/notifications/notifications.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

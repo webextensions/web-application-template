@@ -1,9 +1,9 @@
 /*
-    Rename this file from config.development.local.example.mjs to config.development.local.mjs to run
+    Rename this file from config.development.local.example.js to config.development.local.js to run
     the build and server in local mode
 */
 
-import inheritedConfig from './config.development._.mjs';
+import inheritedConfig from './config.development._.js';
 
 import extend from 'extend';
 

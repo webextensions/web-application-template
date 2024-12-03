@@ -1,4 +1,4 @@
-import inheritedConfig from './config.common.mjs';
+import inheritedConfig from './config.common.js';
 
 import extend from 'extend';
 

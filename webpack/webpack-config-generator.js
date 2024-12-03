@@ -8,9 +8,9 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 import chalk from 'chalk';
 
-import { notifyCompletionStatus } from './utils/notify-completion-status.mjs';
+import { notifyCompletionStatus } from './utils/notify-completion-status.js';
 
-import { TemplateToHtmlPlugin } from './plugins/TemplateToHtmlPlugin/TemplateToHtmlPlugin.mjs';
+import { TemplateToHtmlPlugin } from './plugins/TemplateToHtmlPlugin/TemplateToHtmlPlugin.js';
 
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);

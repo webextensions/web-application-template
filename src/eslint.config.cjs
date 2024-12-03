@@ -1,5 +1,3 @@
-/* globals require, module */
-
 const eslintConfigIronPlateReact = require('eslint-config-ironplate/react.js');
 
 module.exports = [

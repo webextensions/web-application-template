@@ -2,7 +2,7 @@
 /node_modules/
 
 # Local configuration file
-/config/*.local.mjs
+/config/*.local.js
 
 # Auto-generated directories
 /public-*/

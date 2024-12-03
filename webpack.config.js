@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 import chalk from 'chalk';
 
-import { webpackConfigGenerator } from './webpack/webpack-config-generator.mjs';
+import { webpackConfigGenerator } from './webpack/webpack-config-generator.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -22,9 +22,9 @@ const showHelp = function () {
         `    ${cmdWebpack} --mode <compilation-mode> --env config="<path-to-config-file>" --env <option1> --env <option2> ... --env <optionN>`,
         '',
         'Examples:',
-        `    ${cmdWebpack} --mode development --env config="${pathToConfig}/config.development.local.mjs"`,
-        `    ${cmdWebpack} --mode development --env config="${pathToConfig}/config.development.local.mjs" --env silent`,
-        `    NODE_ENV=production ${cmdWebpack} --mode production --env config="${pathToConfig}/config.production.local.mjs"`,
+        `    ${cmdWebpack} --mode development --env config="${pathToConfig}/config.development.local.js"`,
+        `    ${cmdWebpack} --mode development --env config="${pathToConfig}/config.development.local.js" --env silent`,
+        `    NODE_ENV=production ${cmdWebpack} --mode production --env config="${pathToConfig}/config.production.local.js"`,
         `    ${cmdWebpack} --env help`,
         '',
         'Options:',
@@ -74,7 +74,7 @@ const webpackConfig = async function (env, argv) {    // eslint-disable-line no-
         console.log('An error occurred.');
         console.log('Error stack trace:');
         console.log(e);
-        const exampleConfigFilePath = path.resolve(__dirname, 'config/config.development.local.example.mjs');
+        const exampleConfigFilePath = path.resolve(__dirname, 'config/config.development.local.example.js');
         console.info(chalk.yellow('Ref: You may want to check the example file at ' + exampleConfigFilePath));
         return exitWithError('Error summary: Invalid or unavailable file ' + configFilePath);
     }

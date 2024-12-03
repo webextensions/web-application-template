@@ -1,6 +1,6 @@
 import listEndpoints from 'express-list-endpoints';
 
-import { sendSuccessResponse } from '../../../utils/express-utils/express-utils.mjs';
+import { sendSuccessResponse } from '../../../utils/express-utils/express-utils.js';
 
 // IMPORTANT: Ensure that res.locals.origin is set in some middleware before this handler is called
 

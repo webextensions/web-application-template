@@ -13,7 +13,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 // import extend from 'extend';
 
-// import inheritedConfig from './config.development._.mjs';
+// import inheritedConfig from './config.development._.js';
 
 const publicDirectory = 'public-development-local';
 

@@ -15,7 +15,7 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-import webpackConfig from '../webpack.config.mjs';
+import webpackConfig from '../webpack.config.js';
 
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -31,7 +31,7 @@ import { logger } from 'note-down';
 
 import libLocalIpAddressesAndHostnames from 'local-ip-addresses-and-hostnames';
 
-import notifier from '../utils/notifications/notifications.mjs';
+import notifier from '../utils/notifications/notifications.js';
 
 import hardCodedResponse from 'express-hard-coded-response';
 import networkDelay from 'express-network-delay';
@@ -39,7 +39,7 @@ import redirectToWww from 'express-redirect-to-www';
 import redirectToHttps from 'express-redirect-to-https';
 import matchRequest from 'express-match-request';
 
-import { basicAuth } from './middleware/basic-auth.mjs';
+import { basicAuth } from './middleware/basic-auth.js';
 
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
@@ -59,9 +59,9 @@ const routeSetup = async function (exp) {
                 logger.log('TODO: The access to this route needs to be limited to administrators only');
                 next();
             })
-            .get('/help', (await import('./handlers/admin/help/help.mjs')).help(exp))
-            .get('/info', (await import('./handlers/admin/info/info.mjs')).info)
-            .get('/kill', (await import('./handlers/admin/kill/kill.mjs')).kill)
+            .get('/help', (await import('./handlers/admin/help/help.js')).help(exp))
+            .get('/info', (await import('./handlers/admin/info/info.js')).info)
+            .get('/kill', (await import('./handlers/admin/kill/kill.js')).kill)
             .use('/users', express.Router()
                 .get('/', function (req, res) {
                     res.send('TODO: Serve the /GET request for /admin/users');
@@ -83,12 +83,12 @@ const routeSetup = async function (exp) {
             })
         )
 
-        .use('/taskCategories', await (await import('./handlers/taskCategories/taskCategories.mjs')).setupTaskCategoriesRoutes())
+        .use('/taskCategories', await (await import('./handlers/taskCategories/taskCategories.js')).setupTaskCategoriesRoutes())
 
         // TODO: Add this with some accessCode based restrictive usage
-        // .get('/kill', (await import('./handlers/generic/kill/kill.mjs')).kill)
+        // .get('/kill', (await import('./handlers/generic/kill/kill.js')).kill)
 
-        .get('/help', (await import('./handlers/expressHandlers/expressHandlers.mjs')).expressHandlers(exp));
+        .get('/help', (await import('./handlers/expressHandlers/expressHandlers.js')).expressHandlers(exp));
 
     setTimeout(function () {
         // Setting up this router after a delay so that live-css server router is able to attach itself before it

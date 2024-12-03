@@ -18,8 +18,8 @@
         "node": "22.x"
     },
 
-    // "type": "module",
-    "main": "server/application.mjs",
+    "type": "module",
+    "main": "server/application.js",
 
     "dependencies": {
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
@@ -58,7 +58,7 @@
         "react-dom": "^18.3.1",
         "prop-types": "^15.8.1",
 
-        "@tanstack/react-query": "^5.62.0",
+        "@tanstack/react-query": "^5.62.2",
         "react-toastify": "^10.0.6",
 
         // Material UI
@@ -156,11 +156,11 @@
 
         /* Build (with webpack) */
         // References: https://stackoverflow.com/questions/16978256/what-is-node-env-in-express/16979503#16979503
-        "build:production:local":                                                        "NODE_ENV=production webpack --mode production  --watch --progress --env config=\"./config/config.production.local.mjs\"",
-        "build:production:local:inspect-brk": "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production          --progress --env config=\"./config/config.production.local.mjs\"",
+        "build:production:local":                                                        "NODE_ENV=production webpack --mode production  --watch --progress --env config=\"./config/config.production.local.js\"",
+        "build:production:local:inspect-brk": "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production          --progress --env config=\"./config/config.production.local.js\"",
 
-        "build:development:local":                                                                           "webpack --mode development --watch --progress --env config=\"./config/config.development.local.mjs\"",
-        "build:development:local:inspect-brk":                    "node --inspect-brk ./node_modules/.bin/webpack-cli --mode development         --progress --env config=\"./config/config.development.local.mjs\"",
+        "build:development:local":                                                                           "webpack --mode development --watch --progress --env config=\"./config/config.development.local.js\"",
+        "build:development:local:inspect-brk":                    "node --inspect-brk ./node_modules/.bin/webpack-cli --mode development         --progress --env config=\"./config/config.development.local.js\"",
 
         "build":                   "npm run build:development:local",
         "build:inspect-brk":       "npm run build:development:local:inspect-brk",
@@ -169,12 +169,12 @@
         "start:build:inspect-brk": "npm run build:inspect-brk",
 
         /* Server */
-        "server:production:local":             "NODE_ENV=production nodemon            server/server.mjs -- --config config/config.production.local.mjs",
-        "server:production:local:inspect-brk": "NODE_ENV=production node --inspect-brk server/server.mjs    --config config/config.production.local.mjs",
+        "server:production:local":             "NODE_ENV=production nodemon            server/server.js -- --config config/config.production.local.js",
+        "server:production:local:inspect-brk": "NODE_ENV=production node --inspect-brk server/server.js    --config config/config.production.local.js",
 
-        "server:development:local":                                "nodemon            server/server.mjs -- --config config/config.development.local.mjs",
-        "server:development:local:inspect-brk":                    "node --inspect-brk server/server.mjs    --config config/config.development.local.mjs",
-        "server:development:local:use-hmr":            "USE_HMR=yes nodemon            server/server.mjs -- --config config/config.development.local.mjs",
+        "server:development:local":                                "nodemon            server/server.js -- --config config/config.development.local.js",
+        "server:development:local:inspect-brk":                    "node --inspect-brk server/server.js    --config config/config.development.local.js",
+        "server:development:local:use-hmr":            "USE_HMR=yes nodemon            server/server.js -- --config config/config.development.local.js",
 
         "start:server":             "npm run server:development:local",
         "start:server:inspect-brk": "npm run server:development:local:inspect-brk",
@@ -191,7 +191,7 @@
         "housekeeping:update-package-cjson-and-json": "./scripts/housekeeping/update-package-cjson-and-json.sh",
         "housekeeping:update-package-lock-json":      "./scripts/housekeeping/update-package-lock-json.sh",
         "housekeeping:review-dependencies":           "./scripts/housekeeping/imperfect/review-dependencies-via-depcheck.sh",
-        "housekeeping:clean":                         "./scripts/housekeeping/clean.mjs",
+        "housekeeping:clean":                         "./scripts/housekeeping/clean.js",
 
         /* Linting, tests etc */
         "lint":     "eslint --flag unstable_config_lookup_from_file .",

@@ -24,7 +24,9 @@ module.exports = [
             '**/*.cjs',
             '**/*.js',
             '**/*.jsx',
-            '**/*.mjs'
+            '**/*.mjs',
+            '**/*.ts',
+            '**/*.tsx'
         ],
 
         // Add ESLint plugins here. If they are stable and useful, move those as a pull

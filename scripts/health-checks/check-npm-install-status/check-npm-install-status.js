@@ -6,9 +6,9 @@
 
 // How to use:
 //
-//     $ ./check-npm-install-status.mjs
+//     $ ./check-npm-install-status.js
 //           OR
-//     $ ./check-npm-install-status.mjs --return-exit-code
+//     $ ./check-npm-install-status.js --return-exit-code
 
 import fs from 'node:fs';
 import path, { dirname } from 'node:path';
@@ -161,7 +161,7 @@ try {
     await initiateCheck();
 } catch (e) {
     const url = 'https://unpkg.com/semver@6.3.0/semver.js';
-    console.log('\nDownloading (timeout: 15s) ' + url + ' (to be used in check-npm-install-status.mjs)');
+    console.log('\nDownloading (timeout: 15s) ' + url + ' (to be used in check-npm-install-status.js)');
     download(url, semverFilePath, async function (errMsg) {
         if (errMsg) {
             console.log('Error: ' + errMsg);
