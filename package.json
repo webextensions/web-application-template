@@ -82,6 +82,9 @@
         "shelljs": "^0.8.5",
         "webpack-cli": "^5.1.4"
     },
+    "engines": {
+        "node": "22.x"
+    },
     "homepage": "https://github.com/webextensions/web-application-template#readme",
     "license": "MIT",
     "main": "server/application.mjs",

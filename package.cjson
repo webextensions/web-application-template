@@ -14,6 +14,10 @@
         "url": "https://github.com/webextensions/web-application-template/issues"
     },
 
+    "engines": {
+        "node": "22.x"
+    },
+
     // "type": "module",
     "main": "server/application.mjs",
 
