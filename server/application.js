@@ -83,12 +83,7 @@ const routeSetup = async function (exp) {
             })
         )
 
-        .use('/taskCategories', await (await import('./handlers/taskCategories/taskCategories.js')).setupTaskCategoriesRoutes())
-
-        // TODO: Add this with some accessCode based restrictive usage
-        // .get('/kill', (await import('./handlers/generic/kill/kill.js')).kill)
-
-        .get('/help', (await import('./handlers/expressHandlers/expressHandlers.js')).expressHandlers(exp));
+        .use('/taskCategories', await (await import('./handlers/taskCategories/taskCategories.js')).setupTaskCategoriesRoutes());
 
     setTimeout(function () {
         // Setting up this router after a delay so that live-css server router is able to attach itself before it
