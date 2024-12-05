@@ -6,8 +6,8 @@
     "dependencies": {
         "@emotion/react": "^11.13.5",
         "@emotion/styled": "^11.13.5",
-        "@mui/icons-material": "^6.1.9",
-        "@mui/material": "^6.1.9",
+        "@mui/icons-material": "^6.1.10",
+        "@mui/material": "^6.1.10",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
         "@seald-io/nedb": "^4.0.4",
         "@sindresorhus/df": "^4.0.0",
@@ -41,7 +41,7 @@
         "serve-favicon": "^2.5.0",
         "strip-ansi": "^7.1.0",
         "systeminformation": "^5.23.5",
-        "webpack": "^5.96.1",
+        "webpack": "^5.97.0",
         "webpack-dev-middleware": "^7.4.2",
         "webpack-hot-middleware": "^2.26.1"
     },
@@ -50,7 +50,7 @@
         "@babel/cli": "^7.25.9",
         "@babel/core": "^7.26.0",
         "@babel/preset-env": "^7.26.0",
-        "@babel/preset-react": "^7.25.9",
+        "@babel/preset-react": "^7.26.3",
         "@babel/preset-typescript": "^7.26.0",
         "@stylistic/eslint-plugin": "^2.11.0",
         "@webextensions/live-css": "=8.0.3",
