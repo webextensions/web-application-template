@@ -41,6 +41,8 @@ import matchRequest from 'express-match-request';
 
 import { basicAuth } from './middleware/basic-auth.js';
 
+import { enabledMiddlewareOrNoop } from './utils/express-utils/enabledMiddlewareOrNoop.js';
+
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
@@ -50,15 +52,20 @@ let localIpAddressesAndHostnames;
 
 const packageJson = require('../package.json');
 
-const routeSetup = async function (exp) {
+const routeSetup = async function (exp, _accessSecurityConfig) {
     const router = express.Router();
 
     router
         .use('/admin', express.Router()
-            .use('/', function (req, res, next) {
-                logger.log('TODO: The access to this route needs to be limited to administrators only');
-                next();
-            })
+            .use(
+                enabledMiddlewareOrNoop(
+                    _accessSecurityConfig.limitAccess?.admin?.basicAuth?.enabled,
+                    // Limit access to this route to administrators only
+                    basicAuth({
+                        obUsernamePassword: _accessSecurityConfig.limitAccess?.admin?.basicAuth?.obUsernamePassword || {}
+                    })
+                )
+            )
             .get('/help', (await import('./handlers/admin/help/help.js')).help(exp))
             .get('/info', (await import('./handlers/admin/info/info.js')).info)
             .get('/kill', (await import('./handlers/admin/kill/kill.js')).kill)
@@ -330,10 +337,11 @@ const application = {
                 exp.use(hardCodedResponse({ verbose: true, conditions: hardCodedResponsesForDebugging, baseDir: projectRootFullPath, console: logger }));
             }
 
-            if (_accessSecurityConfig.limitAccessWithBasicAuth) {
+            if (_accessSecurityConfig.limitAccess?.all?.basicAuth?.enabled) {
                 // Authentication should be used after redirects are already done
                 // (eg: redirecting to "www." should happen before authentication)
                 exp.use(basicAuth({
+                    obUsernamePassword: _accessSecurityConfig.limitAccess?.all?.basicAuth?.obUsernamePassword || {},
                     skipPaths: [/^\/.well-known\/.+/]
                 }));
             }
@@ -420,7 +428,7 @@ const application = {
             exp.use(bodyParser.json()); // support json encoded bodies
             exp.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-            const router = await routeSetup(exp);
+            const router = await routeSetup(exp, _accessSecurityConfig);
 
             const registerServer = function (protocol, portNumber, httpsConfig) {
                 let server;

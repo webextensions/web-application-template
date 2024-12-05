@@ -14,13 +14,10 @@ import auth from 'basic-auth';
 // const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 // const packageName = packageJson.name;
 
-const obUsernamePassword = {
-    Username: 'Password' // TODO: Move this object to config
-};
-
 const basicAuth = function (options) {
     options = options || {};
     const skipPaths = options.skipPaths || [];
+    const obUsernamePassword = options.obUsernamePassword || {};
     return function (req, res, next) {
         const skipAuthForThisRequest = skipPaths.some(function (skipPath) {
             if (req.originalUrl.match(skipPath)) {

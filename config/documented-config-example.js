@@ -64,10 +64,27 @@ const configForThisMode = {
                                                                     // Note:
                                                                     //     example.com should get redirected to www.example.com, but canonical hostnames,
                                                                     //     like: localhost, user-laptop, 127.0.0.1, 192.168.193.10 would not get redirected
+            },
+            security: {
+                limitAccess: {
+                    all: {
+                        basicAuth: {
+                            enabled: false,       // false/true (When set to a truthy value, basic HTTP authentication would be used before loading any of the contents)
+                            obUsernamePassword: {
+                                // user: '123456'
+                            }
+                        }
+                    },
+                    admin: {
+                        basicAuth: {              // false/true (When set to a truthy value, basic HTTP authentication would be used before loading the "/admin" contents)
+                            enabled: true,
+                            obUsernamePassword: {
+                                admin: 'P!3d_P!p3r'
+                            }
+                        }
+                    }
+                }
             }
-            // security: {
-            //     limitAccessWithBasicAuth: false                  // false/true (When set to a truthy value, basic HTTP authentication would be used before loading any of the contents)
-            // }
         },
         nonProductionDevTools: {
             skipHSTS: true,

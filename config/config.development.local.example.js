@@ -25,6 +25,26 @@ const configForThisMode = {
                     enabled: false,
                     port: 4430
                 }
+            },
+            security: {
+                limitAccess: {
+                    all: {
+                        basicAuth: {
+                            enabled: false,
+                            obUsernamePassword: {
+                                // user: '123456'
+                            }
+                        }
+                    },
+                    admin: {
+                        basicAuth: {
+                            enabled: false,
+                            obUsernamePassword: {
+                                // admin: 'P!3d_P!p3r'
+                            }
+                        }
+                    }
+                }
             }
         }
     },
