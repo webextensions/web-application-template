@@ -23,13 +23,13 @@
 
     "dependencies": {
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
-        "react-refresh": "^0.14.2",
-        "webpack": "^5.97.0",
+        "react-refresh": "^0.16.0",
+        "webpack": "^5.97.1",
         "webpack-dev-middleware": "^7.4.2",
         "webpack-hot-middleware": "^2.26.1",
 
         // Server - Express
-        "express": "^4.21.1",
+        "express": "^4.21.2",
 
         // Server - Express middleware
         "body-parser": "^1.20.3",
@@ -54,8 +54,8 @@
         "strip-ansi": "^7.1.0",
 
         // React
-        "react": "^18.3.1",
-        "react-dom": "^18.3.1",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
         "prop-types": "^15.8.1",
 
         "@tanstack/react-query": "^5.62.2",
@@ -107,11 +107,11 @@
         "eslint-plugin-import": "^2.31.0",
         "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-react": "^7.37.2",
-        "eslint-plugin-react-hooks": "^5.0.0",
+        "eslint-plugin-react-hooks": "^5.1.0",
         "eslint-plugin-unicorn": "^56.0.1",
 
         // Build - Transpilation
-        "@babel/cli": "^7.25.9",
+        "@babel/cli": "^7.26.4",
         "@babel/core": "^7.26.0",
         "@babel/preset-env": "^7.26.0",
         "@babel/preset-react": "^7.26.3",
@@ -143,6 +143,11 @@
         "package-cjson": "^1.5.0", // Required in scripts "health-checks/compare-package-json-cjson.sh" and "housekeeping/generate-package-json.sh"
         "shelljs": "^0.8.5",
         "commander": "^12.1.0"
+    },
+
+    "overrides": {
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0"
     },
 
     "scripts": {
