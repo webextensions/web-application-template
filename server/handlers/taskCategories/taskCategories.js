@@ -7,7 +7,7 @@ import Datastore from '@seald-io/nedb';
 import {
     sendErrorResponse,
     sendSuccessResponse
-} from '../../utils/express-utils/sendResponse.js';
+} from '../../utils/express/sendResponse.js';
 
 import notifier from '../../../utils/notifications/notifications.js';
 

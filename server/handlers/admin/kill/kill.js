@@ -1,4 +1,4 @@
-import { sendSuccessResponse } from '../../../utils/express-utils/sendResponse.js';
+import { sendSuccessResponse } from '../../../utils/express/sendResponse.js';
 
 const kill = async (req, res) => {
     setTimeout(() => {

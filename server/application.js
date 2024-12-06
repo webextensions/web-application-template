@@ -41,7 +41,7 @@ import matchRequest from 'express-match-request';
 
 import { basicAuth } from './middleware/basic-auth.js';
 
-import { enabledMiddlewareOrNoop } from './utils/express-utils/enabledMiddlewareOrNoop.js';
+import { enabledMiddlewareOrNoop } from './utils/express/enabledMiddlewareOrNoop.js';
 
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
