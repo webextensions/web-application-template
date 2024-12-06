@@ -13,7 +13,7 @@ import { diskSpaceForFilesystemOwningPath } from '@sindresorhus/df';
 import { humanReadableByteSize } from 'helpmate/dist/misc/humanReadableByteSize.cjs';
 import { getReadableRelativeTime } from 'helpmate/dist/misc/getReadableRelativeTime.cjs';
 
-import { sendSuccessResponse } from '../../../utils/express-utils/express-utils.js';
+import { sendSuccessResponse } from '../../../utils/express-utils/sendResponse.js';
 
 const packageJson = createRequire(import.meta.url)('../../../../package.json');
 // TODO: Refactor to `import packageJson from '../../../../package.json' assert { type: 'json' };` when the "ExperimentalWarning: Importing JSON modules" goes away (https://github.com/nodejs/node/issues/51347)
