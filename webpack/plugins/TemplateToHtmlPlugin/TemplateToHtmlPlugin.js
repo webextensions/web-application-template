@@ -18,6 +18,7 @@ class TemplateToHtmlPlugin {
     apply(compiler) {
         const _this = this;
         const
+            frontEndConfig = _this.options.frontEndConfig,
             templateFilePath = _this.options.template,
             templateFileName = path.basename(templateFilePath),
             outputHtmlFilename = templateFileName.replace(/\.template$/, '');
@@ -34,6 +35,11 @@ class TemplateToHtmlPlugin {
                     compilation.fileDependencies.add(templateFilePath);
 
                     const templateFileContents = fs.readFileSync(_this.options.template, 'utf8');
+
+                    // TODO: Refactor it
+                    handlebars.registerHelper('loadAppConfig', function (context, options) { // eslint-disable-line no-unused-vars
+                        return `<script>var frontEndConfig=${JSON.stringify(frontEndConfig)};</script>`;
+                    });
 
                     // TODO: Refactor it
                     handlebars.registerHelper('loadAllCssAndJsChunks', function (context, options) { // eslint-disable-line no-unused-vars

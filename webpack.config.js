@@ -67,9 +67,26 @@ const webpackConfig = async function (env, argv) {    // eslint-disable-line no-
     if (!silent) {
         console.log(chalk.blue('Reading config from file: ' + configFilePath));
     }
+
+    let fullConfig = {};
+    try {
+        fullConfig = (await import(configFilePath)).default;
+    } catch (e) {
+        console.log(e);
+        await showHelpAndExitWithError('Error: Invalid or unavailable file ' + configFilePath);
+    }
+
+    let frontEndConfig = {};
+    try {
+        frontEndConfig = fullConfig.application.frontEnd;
+    } catch (e) {
+        console.log(e);
+        await showHelpAndExitWithError('Error: Invalid or unavailable "frontEnd" config');
+    }
+
     let flagBasedWebpackConfig;
     try {
-        flagBasedWebpackConfig = (await import(configFilePath)).default.webpack;
+        flagBasedWebpackConfig = fullConfig.webpack;
     } catch (e) {
         console.log('An error occurred.');
         console.log('Error stack trace:');
@@ -79,7 +96,16 @@ const webpackConfig = async function (env, argv) {    // eslint-disable-line no-
         return exitWithError('Error summary: Invalid or unavailable file ' + configFilePath);
     }
 
-    const generatedWebpackConfig = webpackConfigGenerator(flagBasedWebpackConfig);
+    const generatedWebpackConfig = [];
+
+    for (const configName of flagBasedWebpackConfig.configs) {
+        generatedWebpackConfig.push(webpackConfigGenerator(
+            flagBasedWebpackConfig,
+            frontEndConfig,
+            configName
+        ));
+    }
+
     return generatedWebpackConfig;
 };
 

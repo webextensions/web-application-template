@@ -1,6 +1,15 @@
 const configForThisMode = {
     application: {
-        name: 'Web Application Template'
+        name: 'Web Application Template',
+        frontEnd: {
+            useCdn: false,
+
+            storageConsent: {
+                enabled: false
+            },
+
+            showDevTools: false
+        }
     },
     server: {
         verbose: true,
@@ -27,6 +36,10 @@ const configForThisMode = {
         }
     },
     webpack: {
+        configs: [
+            'index.html',
+            '.admin/admin.html'
+        ],
         verbose: true,
         publicDirectory: null,
         useCopyWebpackPlugin: true,

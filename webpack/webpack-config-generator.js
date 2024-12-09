@@ -26,9 +26,11 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const projectRoot = path.join(__dirname, '..');
+const
+    projectRootFrontend = path.join(__dirname, '..'),
+    projectRoot = path.join(__dirname, '..');
 
-const webpackConfigGenerator = function (generatorOptions = {}) {
+const webpackConfigGenerator = function (generatorOptions = {}, frontEndConfig = {}, configName) {
     const {
         mode,
         verbose,
@@ -45,9 +47,15 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
         outputCssFilenamePattern = 'bundle.[name].[contenthash:20].css'
     } = generatorOptions;
 
-    const
-        nodeModulesAtProjectRoot = path.resolve(projectRoot, 'node_modules'),
-        targetPublicDirectory = path.join(projectRoot, publicDirectory);
+    const nodeModulesAtProjectRoot = path.resolve(projectRoot, 'node_modules');
+    const targetPublicDirectory = (function () {
+        const basePublicDirectory = path.join(projectRoot, publicDirectory);
+        if (configName === '.admin/admin.html') {
+            return path.join(basePublicDirectory, '.admin');
+        } else {
+            return basePublicDirectory;
+        }
+    })();
 
     let useHmr = false;
     if (process.env.USE_HMR === 'yes') {
@@ -75,14 +83,27 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
                     return {};
                 };
             } else {
-                return {
-                    index: [
-                        useHmr ? 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000' : null,
-                        path.join(projectRoot, 'src', 'index.js')
-                    ].filter(Boolean)
-                    // custom: [path.join(projectRoot, 'src', 'custom.js')]
-                    // chunkSafeAndSecure: [ path.join(projectRoot, 'src', '1stparty', 'safe-and-secure', 'safe-and-secure.js') ]
-                };
+                const entry = {};
+
+                if (configName === 'index.html') {
+                    const entryPointName = 'index';
+                    entry[entryPointName] = [
+                        // useHmr ? 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000' : null,
+                        useHmr ? `webpack-hot-middleware/client?path=/__webpack_hmr_${entryPointName}&timeout=20000` : null,
+                        path.join(projectRootFrontend, 'src', 'index.js')
+                    ].filter(Boolean);
+                } else if (configName === '.admin/admin.html') {
+                    const entryPointName = 'admin';
+                    entry[entryPointName] = [
+                        // useHmr ? 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000' : null,
+                        useHmr ? `webpack-hot-middleware/client?path=/__webpack_hmr_${entryPointName}&timeout=20000` : null,
+                        path.join(projectRootFrontend, 'src', '.admin', 'admin.js')
+                    ].filter(Boolean);
+                }
+                return entry;
+
+                // chunkSafeAndSecure: [ path.join(projectRootFrontend, 'src', '1stparty', 'safe-and-secure', 'safe-and-secure.js') ]
+                // custom: [path.join(projectRootFrontend, 'src', 'custom.js')]
             }
         }()),
         output: {
@@ -263,37 +284,53 @@ const webpackConfigGenerator = function (generatorOptions = {}) {
             }));
 
             if (useCopyWebpackPlugin) {
-                plugins.push(
-                    new CopyWebpackPlugin(
-                        {
-                            patterns: (function () {
-                                const arr = [
-                                    {
-                                        from: path.join(projectRoot, 'src', 'favicon.ico'),
-                                        to: targetPublicDirectory
-                                    }
-                                ];
-                                return arr;
-                            }())
-                        },
-                        {
-                            copyUnmodified: false
-                        }
-                    )
-                );
+                if (configName === 'index.html') {
+                    plugins.push(
+                        new CopyWebpackPlugin(
+                            {
+                                patterns: (function () {
+                                    const arr = [
+                                        {
+                                            from: path.join(projectRootFrontend, 'src', 'favicon.ico'),
+                                            to: targetPublicDirectory
+                                        }
+                                    ];
+                                    return arr;
+                                }())
+                            },
+                            {
+                                copyUnmodified: false
+                            }
+                        )
+                    );
+                }
             }
 
-            plugins.push(new TemplateToHtmlPlugin({
-                template: path.join(projectRoot, 'src', 'index.html.template'),
-                entry: {
-                    // chunkSafeAndSecure: entry.chunkSafeAndSecure
-                },
-                contextData: {
-                    // useCDNJQuery,
-                    // useSafeAndSecure,
-                    // useTrackTime
-                }
-            }));
+            if (configName === 'index.html') {
+                plugins.push(new TemplateToHtmlPlugin({
+                    frontEndConfig,
+
+                    template: path.join(projectRootFrontend, 'src', 'index.html.template'),
+                    entry: {
+                        // chunkSafeAndSecure: entry.chunkSafeAndSecure
+                    },
+                    contextData: {
+                        // useCDNJQuery,
+                        // useSafeAndSecure,
+                        // useTrackTime
+                    }
+                }));
+            } else if (configName === '.admin/admin.html') {
+                plugins.push(new TemplateToHtmlPlugin({
+                    frontEndConfig,
+
+                    // TODO: Should we rename it to "templateFilePath"
+                    template: path.join(projectRootFrontend, 'src', '.admin', 'admin.html.template'),
+
+                    entry: {},
+                    contextData: {}
+                }));
+            }
 
             if (useHmr) {
                 plugins.push(new webpack.HotModuleReplacementPlugin());

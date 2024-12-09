@@ -11,12 +11,6 @@ import fs from 'node:fs';
 
 import { fileURLToPath } from 'node:url';
 
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
-
-import webpackConfig from '../webpack.config.js';
-
 import express from 'express';
 import bodyParser from 'body-parser';
 import compression from 'compression';
@@ -159,18 +153,42 @@ const application = {
             }
 
             if (useHmr) {
+                const webpack = (await import('webpack')).default;
+                const webpackDevMiddleware = (await import('webpack-dev-middleware')).default;
+                const webpackHotMiddleware = (await import('webpack-hot-middleware')).default;
+                const webpackConfig = (await import('../webpack.config.js')).default; // TODO: Check if the path is relative to the file or the project root
+
                 const webpackConfigVal = await webpackConfig({
-                    config: path.resolve(projectRootFullPath, configOptionsFileRootRelativePath)
+                    config: configOptionsFileRootRelativePath
                 });
-                const compiler = webpack(webpackConfigVal);
+                const multiCompiler = webpack(webpackConfigVal);
 
                 exp.use(
-                    webpackDevMiddleware(compiler, {
-                        publicPath: '/'
+                    webpackDevMiddleware(multiCompiler, {
+                        publicPath: '/',
+
+                        // While writeToDisk may be useful in fixing an HMR related issue. References:
+                        //     * https://stackoverflow.com/questions/67580364/react-routing-with-express-webpack-dev-middleware-react-router-dom/67607646#67607646
+                        //     * https://github.com/webpack/webpack-dev-middleware/issues/88#issuecomment-252048006
+                        //     * https://github.com/webpack/webpack-dev-middleware/issues/88#issuecomment-382973142
+                        // But seemingly, we don't face the issue mentioned in these links.
+                        // We are using it for simpler debugging of the generated files.
+                        writeToDisk: true
                     })
                 );
 
-                exp.use(webpackHotMiddleware(compiler));
+                for (const compiler of multiCompiler.compilers) {
+                    const
+                        options = compiler.options,
+                        entryPoints = options.entry;
+
+                    for (const entryPointName in entryPoints) {
+                        exp.use(webpackHotMiddleware(compiler, {
+                            // Specifying the path to the entry point's output for HMR
+                            path: `/__webpack_hmr_${entryPointName}`
+                        }));
+                    }
+                }
             }
         }
 
@@ -388,6 +406,22 @@ const application = {
                         )
                     );
                 }
+
+                exp.use(
+                    '/.admin',
+                    [
+                        enabledMiddlewareOrNoop(
+                            _accessSecurityConfig.limitAccess?.admin?.basicAuth?.enabled,
+                            // Limit access to this route to administrators only
+                            basicAuth({
+                                obUsernamePassword: _accessSecurityConfig.limitAccess?.admin?.basicAuth?.obUsernamePassword || {}
+                            })
+                        ),
+                        express.static(
+                            path.resolve(projectRootFullPath, staticDir, '.admin')
+                        )
+                    ]
+                );
 
                 logger.info('Setting up static server for path ' + staticDir);
                 exp.use(

@@ -1,0 +1,12 @@
+* {
+    font-size: 12px;
+}
+
+html {
+    word-break: break-word;
+}
+
+/* https://stackoverflow.com/questions/41169791/word-break-on-whitespace-pre/41170010#41170010 */
+pre {
+    white-space: pre-wrap;
+}
