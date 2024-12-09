@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import notifier from '../../utils/notifications/notifications.js';
+import notifier from '../../../utils/notifications/notifications.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -52,8 +52,8 @@ const notifyCompletionStatus = (stats) => {
         fs.readFileSync(
             path.resolve(
                 __dirname,
-                '../../package.json' // NOTE: Using path.resolve(...) instead of just `/../../package.json` to avoid a
-                                     //       build-time issue with deployment on DigitalOcean.
+                '../../../package.json' // NOTE: Using path.resolve(...) instead of just `/../../package.json` to avoid a
+                                        //       build-time issue with deployment on DigitalOcean.
             ),
             'utf8'
         )

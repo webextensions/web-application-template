@@ -156,7 +156,7 @@ const application = {
                 const webpack = (await import('webpack')).default;
                 const webpackDevMiddleware = (await import('webpack-dev-middleware')).default;
                 const webpackHotMiddleware = (await import('webpack-hot-middleware')).default;
-                const webpackConfig = (await import('../webpack.config.js')).default; // TODO: Check if the path is relative to the file or the project root
+                const webpackConfig = (await import('../frontend/webpack.config.js')).default;
 
                 const webpackConfigVal = await webpackConfig({
                     config: configOptionsFileRootRelativePath

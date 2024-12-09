@@ -28,7 +28,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const
     projectRootFrontend = path.join(__dirname, '..'),
-    projectRoot = path.join(__dirname, '..');
+    projectRoot = path.join(__dirname, '..', '..');
 
 const webpackConfigGenerator = function (generatorOptions = {}, frontEndConfig = {}, configName) {
     const {

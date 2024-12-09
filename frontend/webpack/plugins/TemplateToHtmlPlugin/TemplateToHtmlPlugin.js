@@ -8,7 +8,7 @@ import { logger } from 'note-down';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const packageJsonPath = path.resolve(__dirname, '..', '..', '..', 'package.json');
+const packageJsonPath = path.resolve(__dirname, '..', '..', '..', '..', 'package.json');
 
 class TemplateToHtmlPlugin {
     constructor(options) {

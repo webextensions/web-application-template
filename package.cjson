@@ -163,11 +163,11 @@
 
         /* Build (with webpack) */
         // References: https://stackoverflow.com/questions/16978256/what-is-node-env-in-express/16979503#16979503
-        "build:production:local":             "NODE_ENV=production                                        webpack     --mode production  --watch --progress --env config=\"./config/config.production.local.js\"",
-        "build:production:local:inspect-brk": "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production          --progress --env config=\"./config/config.production.local.js\"",
+        "build:production:local":             "NODE_ENV=production                                        webpack     --mode production  --watch --progress --config ./frontend/webpack.config.js --env config=\"./config/config.production.local.js\"",
+        "build:production:local:inspect-brk": "NODE_ENV=production node --inspect-brk ./node_modules/.bin/webpack-cli --mode production          --progress --config ./frontend/webpack.config.js --env config=\"./config/config.production.local.js\"",
 
-        "build:development:local":                                                                       "webpack     --mode development --watch --progress --env config=\"./config/config.development.local.js\"",
-        "build:development:local:inspect-brk":                    "node --inspect-brk ./node_modules/.bin/webpack-cli --mode development         --progress --env config=\"./config/config.development.local.js\"",
+        "build:development:local":                                                                       "webpack     --mode development --watch --progress --config ./frontend/webpack.config.js --env config=\"./config/config.development.local.js\"",
+        "build:development:local:inspect-brk":                    "node --inspect-brk ./node_modules/.bin/webpack-cli --mode development         --progress --config ./frontend/webpack.config.js --env config=\"./config/config.development.local.js\"",
 
         "build":                   "npm run build:development:local",
         "build:inspect-brk":       "npm run build:development:local:inspect-brk",
