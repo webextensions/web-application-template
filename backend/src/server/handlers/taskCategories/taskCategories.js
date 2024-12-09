@@ -9,11 +9,11 @@ import {
     sendSuccessResponse
 } from '../../utils/express/sendResponse.js';
 
-import notifier from '../../../utils/notifications/notifications.js';
+import notifier from '../../../../../utils/notifications/notifications.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const dbFilePath = path.resolve(__dirname, '../../../app-data/taskCategories.db');
+const dbFilePath = path.resolve(__dirname, '../../../../../app-data/taskCategories.db');
 const db = new Datastore({
     filename: dbFilePath,
     autoload: true

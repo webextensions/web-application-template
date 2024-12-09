@@ -45,6 +45,7 @@
         "basic-auth": "^2.0.1",
         "compression": "^1.7.5",
         "helmet": "^8.0.0",
+        "csp-dev": "^1.0.2",    // Alternatively, try npm package "csp-header"
         "serve-favicon": "^2.5.0",
 
         // Logging
@@ -176,12 +177,12 @@
         "start:build:inspect-brk": "npm run build:inspect-brk",
 
         /* Server */
-        "server:production:local":             "NODE_ENV=production nodemon            server/server.js -- --config config/config.production.local.js",
-        "server:production:local:inspect-brk": "NODE_ENV=production node --inspect-brk server/server.js    --config config/config.production.local.js",
+        "server:production:local":             "NODE_ENV=production nodemon            backend/src/server/server.js -- --config config/config.production.local.js",
+        "server:production:local:inspect-brk": "NODE_ENV=production node --inspect-brk backend/src/server/server.js    --config config/config.production.local.js",
 
-        "server:development:local":                                "nodemon            server/server.js -- --config config/config.development.local.js",
-        "server:development:local:inspect-brk":                    "node --inspect-brk server/server.js    --config config/config.development.local.js",
-        "server:development:local:use-hmr":            "USE_HMR=yes nodemon            server/server.js -- --config config/config.development.local.js",
+        "server:development:local":                                "nodemon            backend/src/server/server.js -- --config config/config.development.local.js",
+        "server:development:local:inspect-brk":                    "node --inspect-brk backend/src/server/server.js    --config config/config.development.local.js",
+        "server:development:local:use-hmr":            "USE_HMR=yes nodemon            backend/src/server/server.js -- --config config/config.development.local.js",
 
         "start:server":             "npm run server:development:local",
         "start:server:inspect-brk": "npm run server:development:local:inspect-brk",

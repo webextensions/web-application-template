@@ -15,8 +15,8 @@ import { getReadableRelativeTime } from 'helpmate/dist/misc/getReadableRelativeT
 
 import { sendSuccessResponse } from '../../../utils/express/sendResponse.js';
 
-const packageJson = createRequire(import.meta.url)('../../../../package.json');
-// TODO: Refactor to `import packageJson from '../../../../package.json' assert { type: 'json' };` when the "ExperimentalWarning: Importing JSON modules" goes away (https://github.com/nodejs/node/issues/51347)
+const packageJson = createRequire(import.meta.url)('../../../../../../package.json');
+// TODO: Refactor to `import packageJson from '../../../../../../package.json' assert { type: 'json' };` when the "ExperimentalWarning: Importing JSON modules" goes away (https://github.com/nodejs/node/issues/51347)
 
 const beginTimestamp = Date.now();
 

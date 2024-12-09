@@ -15,6 +15,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import helmet from 'helmet';
+import ContentSecurityPolicy from 'csp-dev';
 import favicon from 'serve-favicon';
 
 import extend from 'extend';
@@ -25,7 +26,7 @@ import { logger } from 'note-down';
 
 import libLocalIpAddressesAndHostnames from 'local-ip-addresses-and-hostnames';
 
-import notifier from '../utils/notifications/notifications.js';
+import notifier from '../../../utils/notifications/notifications.js';
 
 import hardCodedResponse from 'express-hard-coded-response';
 import networkDelay from 'express-network-delay';
@@ -44,7 +45,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 let localIpAddressesAndHostnames;
 
-const packageJson = require('../package.json');
+const packageJson = require('../../../package.json');
 
 const routeSetup = async function (exp, _accessSecurityConfig) {
     const router = express.Router();
@@ -136,12 +137,55 @@ const logAndNotifyAboutServer = async function ({
     }
 };
 
+// Useful for reporting error in importing module
+// TODO: Move this to a separate file as a reusable function
+const importAsync = async function (src) {
+    try {
+        const module = await import(src);
+        return module;
+    } catch (e) {
+        console.error('Error in importing module:', src);
+        throw new Error(e);
+    }
+};
+
+// eslint-disable-next-line no-unused-vars
+const generateCspHeaderForHtmlPage = function ({ allowHosts, allowKnownExternalSources }) {
+    const cspConfig = {
+        // 'default-src': ['self'],
+        'script-src': [
+            'unsafe-inline',
+            'self'
+        ]
+    };
+
+    if (Array.isArray(allowHosts)) {
+        for (const allowHost of allowHosts) {
+            cspConfig['script-src'].push(allowHost);
+        }
+    }
+
+    if (Array.isArray(allowKnownExternalSources)) {
+        for (const allowKnownExternalSource of allowKnownExternalSources) {
+            cspConfig['script-src'].push(allowKnownExternalSource);
+        }
+    }
+
+    const
+        cspBuilder = new ContentSecurityPolicy(),
+        cspParser = cspBuilder.load(cspConfig),
+        parsedCspValue = cspParser.share('string');
+
+    return parsedCspValue;
+};
+
 const application = {
     start: async function ({ configOptionsFileRootRelativePath }) {
-        const projectRootFullPath = path.join(__dirname, '..');
+        const projectRootFullPath = path.join(__dirname, '..', '..', '..');
 
-        // const config = require('../' + configOptionsFileRootRelativePath);
-        const config = (await import('../' + configOptionsFileRootRelativePath)).default;
+        const configModuleFullPath = path.resolve(projectRootFullPath, configOptionsFileRootRelativePath);
+        // const config = require(configModuleFullPath);
+        const config = (await importAsync(configModuleFullPath)).default;
 
         const exp = express();
 
@@ -156,7 +200,7 @@ const application = {
                 const webpack = (await import('webpack')).default;
                 const webpackDevMiddleware = (await import('webpack-dev-middleware')).default;
                 const webpackHotMiddleware = (await import('webpack-hot-middleware')).default;
-                const webpackConfig = (await import('../frontend/webpack.config.js')).default;
+                const webpackConfig = (await import('../../../frontend/webpack.config.js')).default;
 
                 const webpackConfigVal = await webpackConfig({
                     config: configOptionsFileRootRelativePath
@@ -319,18 +363,29 @@ const application = {
             // https://github.com/helmetjs/helmet#quick-start
             exp.use(helmet(helmetConfig));
             if (!useHttps || _nonProductionDevToolsConfig.skipUpgradeInsecureRequests) {
-                exp.use(
-                    helmet.contentSecurityPolicy({
-                        directives: (function () {
-                            const directivesToUse = {
-                                ...helmet.contentSecurityPolicy.getDefaultDirectives()
-                            };
-                            directivesToUse['upgrade-insecure-requests'] = null;
-                            return directivesToUse;
-                        })()
-                    })
-                );
+                // TODO: Improve the logic to be a better one
+                // exp.use(
+                //     helmet.contentSecurityPolicy({
+                //         directives: (function () {
+                //             const directivesToUse = {
+                //                 ...helmet.contentSecurityPolicy.getDefaultDirectives()
+                //             };
+                //             directivesToUse['upgrade-insecure-requests'] = null;
+                //             return directivesToUse;
+                //         })()
+                //     })
+                // );
             }
+
+            // TODO: Improve the logic to be a better one
+            // exp.use(function (req, res, next) {
+            //     const parsedCspValue = generateCspHeaderForHtmlPage({
+            //         allowHosts: [],
+            //         allowKnownExternalSources: []
+            //     });
+            //     res.setHeader('Content-Security-Policy', parsedCspValue);
+            //     return next();
+            // });
 
             if (staticDir) {
                 const faviconPath = path.join(staticDir, 'favicon.ico');
@@ -535,7 +590,7 @@ const application = {
                     liveCssServer({
                         expressApp: router,
                         httpServer: httpServerObject,
-                        configFilePath: path.resolve(__dirname, '..', '.live-css.config.cjs')
+                        configFilePath: path.resolve(__dirname, '..', '..', '..', '.live-css.config.cjs')
                     });
                 }
             } else {
