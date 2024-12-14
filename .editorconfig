@@ -13,6 +13,9 @@
 #     http://editorconfig.org/#download (Plugins)
 #     http://davidensinger.com/2013/07/why-i-use-editorconfig/ (Reference)
 #     https://github.com/eslint/eslint/blob/master/.editorconfig (Sample file)
+#
+# Further reading:
+#     https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#ideas-for-domain-specific-properties
 
 # No .editorconfig files above the root directory
 root = true
@@ -25,7 +28,7 @@ indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[{.babelrc,bower.json,nodemon.json,*.yml}]
+[{*.yaml,*.yml}]
 indent_size = 2
 
 [Makefile]
@@ -34,10 +37,18 @@ indent_style = tab
 [{*.json,.node-version,.nvmrc,*.svg}]
 insert_final_newline = false
 
-[{*.markdown,*.md,*.mdown,*.mkd,*.mkdn,*.text}] # https://superuser.com/questions/249436/file-extension-for-markdown-files/285878#285878
-trim_trailing_whitespace = false                # https://stackoverflow.com/editing-help#linebreaks
+[{nodemon.json}]
+insert_final_newline = true
 
-[/node_modules/**] # Glob/minimatch pattern to match the "node_modules" directory at the project root
+# [{*.markdown,*.md,*.mdown,*.mkd,*.mkdn,*.text}] # https://superuser.com/questions/249436/file-extension-for-markdown-files/285878#285878
+[{*.md}]
+trim_trailing_whitespace = false # https://stackoverflow.com/editing-help#linebreaks
+
+[{*.bat,*.cmd}]
+end_of_line = crlf
+
+# [/node_modules/**] # Glob/minimatch pattern to match the "node_modules" directory only at the project root
+[node_modules/**]    # Glob/minimatch pattern to match the "node_modules" directory at any level
 charset = unset
 end_of_line = unset
 indent_size = unset
