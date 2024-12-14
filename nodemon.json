@@ -1,17 +1,17 @@
 {
-  "verbose": true,
-  "watch": [
-    "./config/",
-    "./nodemon.json",
-    "./server/",
-    "./server/.env"
-  ],
-  "ext": "cjs env js json mjs ts tsx",
-  "ignoreRoot": [
-    ".git",
-    "./node_modules/"
-  ],
-  "ignore": [
-    "./config/*.example.js"
-  ]
+    "verbose": true,
+    "watch": [
+        "./config/",
+        "./nodemon.json",
+        "./backend/",
+        "./backend/.env"
+    ],
+    "ext": "cjs env js json mjs ts tsx",
+    "ignoreRoot": [
+        ".git",
+        "./node_modules/"
+    ],
+    "ignore": [
+        "./config/*.example.js"
+    ]
 }
