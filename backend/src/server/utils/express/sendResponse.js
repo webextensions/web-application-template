@@ -23,7 +23,7 @@ const sendErrorResponse = function (res, statusCode, errorMessage, output) {
 const sendSuccessResponse = function (
     res,
     output,
-    options = { beautify: false } // eslint-disable-line unicorn/no-object-as-default-parameter
+    options = {}
 ) {
     const responseToSend = {
         status: 'success'
@@ -33,13 +33,14 @@ const sendSuccessResponse = function (
         responseToSend.output = output;
     }
 
-    if (options?.beautify) {
-        return (
-            res
-                .header('Content-Type', 'application/json')
-                // .send(JSON.stringify(responseToSend, null, '\t'))
-                .send(stringifyCompact(responseToSend, { maxLength: 120, indent: 4 }))
-        );
+    if (options?.readable || options?.beautify) {
+        res.header('Content-Type', 'application/json');
+
+        if (options?.readable) {
+            return res.send(stringifyCompact(responseToSend, { maxLength: 120, indent: 4 }));
+        } else { // else if (options?.beautify)
+            return res.send(JSON.stringify(responseToSend, null, 4));
+        }
     }
 
     return res.send(responseToSend);

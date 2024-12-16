@@ -15,9 +15,13 @@ const help = function (app) {
         const routesList = listEndpoints(app, { includeMiddlewareRoutes: true });
 
         if (req.query.format === 'json') {
-            // return res.json(routesList);
             return sendSuccessResponse(res, routesList, { beautify: true });
         } else {
+            routesList.sort((a, b) => {
+                const pathA = a.path;
+                const pathB = b.path;
+                return pathA.localeCompare(pathB);
+            });
             let links = routesList.map((entry) => {
                 let entryPath = entry.path;
                 if (entryPath.includes('RegExp')) {
@@ -40,7 +44,6 @@ const help = function (app) {
                 return str;
             });
 
-            links.sort();
             links = links.join('\n');
 
             /* eslint-disable @stylistic/indent */

@@ -10,10 +10,17 @@ import { Admin } from './Admin/Admin.js';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '../common/queryClient/queryClient.js';
 
+import { PageWidgets } from './Admin/PageWidgets/PageWidgets.js';
+
 const AdminApp = function () {
     return (
         <QueryClientProvider client={queryClient}>
-            <Admin />
+            <div>
+                <div>
+                    <Admin />
+                </div>
+                <PageWidgets />
+            </div>
         </QueryClientProvider>
     );
 };

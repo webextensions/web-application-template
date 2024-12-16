@@ -1,3 +1,8 @@
+import path, { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 const configForThisMode = {
     application: {
         name: 'Web Application Template',
@@ -32,6 +37,12 @@ const configForThisMode = {
             showLogLine: {
                 enabled: true,
                 showRelativePath: true
+            }
+        },
+        database: {
+            sqlite: {
+                // databaseFilePath: ':memory:' // DEBUG-HELPER
+                databaseFilePath: path.resolve(__dirname, '..', 'app-data', 'sqlite.db')
             }
         }
     },

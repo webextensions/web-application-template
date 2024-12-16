@@ -72,7 +72,7 @@ const webpackConfig = async function (env, argv) {    // eslint-disable-line no-
     try {
         fullConfig = (await import(configFilePath)).default;
     } catch (e) {
-        console.log(e);
+        console.error(e);
         await showHelpAndExitWithError('Error: Invalid or unavailable file ' + configFilePath);
     }
 
@@ -80,7 +80,7 @@ const webpackConfig = async function (env, argv) {    // eslint-disable-line no-
     try {
         frontEndConfig = fullConfig.application.frontEnd;
     } catch (e) {
-        console.log(e);
+        console.error(e);
         await showHelpAndExitWithError('Error: Invalid or unavailable "frontEnd" config');
     }
 
@@ -88,9 +88,9 @@ const webpackConfig = async function (env, argv) {    // eslint-disable-line no-
     try {
         flagBasedWebpackConfig = fullConfig.webpack;
     } catch (e) {
-        console.log('An error occurred.');
-        console.log('Error stack trace:');
-        console.log(e);
+        console.error('An error occurred.');
+        console.error('Error stack trace:');
+        console.error(e);
         const exampleConfigFilePath = path.resolve(__dirname, 'config/config.development.local.example.js');
         console.info(chalk.yellow('Ref: You may want to check the example file at ' + exampleConfigFilePath));
         return exitWithError('Error summary: Invalid or unavailable file ' + configFilePath);

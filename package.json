@@ -14,6 +14,7 @@
         "@tanstack/react-query": "^5.62.7",
         "@webextensions/react": "=0.1.1",
         "basic-auth": "^2.0.1",
+        "better-sqlite3": "^11.7.0",
         "body-parser": "^1.20.3",
         "boxen": "^8.0.1",
         "chalk": "^5.3.0",
@@ -43,9 +44,11 @@
         "strip-ansi": "^7.1.0",
         "styles-reset": "=0.3.0",
         "systeminformation": "^5.23.10",
+        "uuid": "^11.0.3",
         "webpack": "^5.97.1",
         "webpack-dev-middleware": "^7.4.2",
-        "webpack-hot-middleware": "^2.26.1"
+        "webpack-hot-middleware": "^2.26.1",
+        "zod": "^3.24.1"
     },
     "description": "A web application project template, based on: Node.js, Babel, ESLint, Express, React, Webpack, etc",
     "devDependencies": {

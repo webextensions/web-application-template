@@ -168,7 +168,7 @@ class TemplateToHtmlPlugin {
 
                         logger.success(`\nCompiled ${templateFilePath} to ${outputHtmlFilename}`);
                     } catch (e) {
-                        console.log(e);
+                        console.error(e);
                         logger.error(
                             `\nCould not compile the HTML template:` +
                             `\n    Input: ${templateFilePath}` +

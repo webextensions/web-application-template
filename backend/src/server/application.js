@@ -38,6 +38,8 @@ import { basicAuth } from './middleware/basic-auth.js';
 
 import { enabledMiddlewareOrNoop } from './utils/express/enabledMiddlewareOrNoop.js';
 
+import { getUsersConstructorParam } from '../database/AppDal/Users/getUsersConstructorParam.js';
+
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
@@ -47,8 +49,10 @@ let localIpAddressesAndHostnames;
 
 const packageJson = require('../../../package.json');
 
-const routeSetup = async function (exp, _accessSecurityConfig) {
+const routeSetup = async function (exp, _accessSecurityConfig, { databaseFilePath }) {
     const router = express.Router();
+
+    const constructorParamForUsers = await getUsersConstructorParam({ sqliteDbPath: databaseFilePath });
 
     router
         .use('/admin', express.Router()
@@ -64,25 +68,22 @@ const routeSetup = async function (exp, _accessSecurityConfig) {
             .get('/help', (await import('./handlers/admin/help/help.js')).help(exp))
             .get('/info', (await import('./handlers/admin/info/info.js')).info)
             .get('/kill', (await import('./handlers/admin/kill/kill.js')).kill)
-            .use('/users', express.Router()
-                .get('/', function (req, res) {
-                    res.send('TODO: Serve the /GET request for /admin/users');
-                })
-                .get('/list', function (req, res) {
-                    res.send('TODO: Serve the /GET request for /admin/users/list (List all the users)');
-                })
-            )
+            .get('/setupDb', (await import('./handlers/admin/setupDb/setupDb.js')).setupDb({ constructorParamForUsers }))
+            .use('/users', (await import('./handlers/admin/users/usersRoutes.js')).setupUsersRoutes({ constructorParamForUsers }))
             .get('/', function (req, res) {
                 res.send('TODO: Serve the /GET request for /admin');
             })
         )
-        .use('/user-account', express.Router()
-            .post('/create', function (req, res) {
-                const reqBody = structuredClone(req.body);
+        .use('/api/v1', express.Router()
+            .use('/user-account', express.Router()
+                .post('/create', function (req, res) {
+                    const reqBody = structuredClone(req.body);
 
-                // TODO: Validate whether "reqBody.username" exists or not
-                res.send(`TODO: Create a user with ID ${reqBody.username} (if available)`);
-            })
+                    // TODO: Validate whether "reqBody.username" exists or not
+                    res.send(`TODO: Create a user with ID ${reqBody.username} (if available)`);
+                })
+            )
+            .use('/users', (await import('./handlers/user/userRoutes.js')).setupUsersRoutes({ constructorParamForUsers }))
         )
 
         .use('/taskCategories', await (await import('./handlers/taskCategories/taskCategories.js')).setupTaskCategoriesRoutes());
@@ -517,7 +518,13 @@ const application = {
             exp.use(bodyParser.json()); // support json encoded bodies
             exp.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-            const router = await routeSetup(exp, _accessSecurityConfig);
+            const router = await routeSetup(
+                exp,
+                _accessSecurityConfig,
+                {
+                    databaseFilePath: _serverConfig.database.sqlite.databaseFilePath
+                }
+            );
 
             const registerServer = function (protocol, portNumber, httpsConfig) {
                 let server;
