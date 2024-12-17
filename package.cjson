@@ -82,6 +82,9 @@
         "systeminformation": "^5.23.13",
         "@sindresorhus/df": "^4.0.0",
 
+        // Security
+        "bcrypt": "^5.1.1",
+
         // Miscellaneous
         "helpmate": "=1.7.1",
 

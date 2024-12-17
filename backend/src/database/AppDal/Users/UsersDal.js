@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import bcrypt from 'bcrypt';
 
 class UsersDal {
     constructor({ sqliteDb }) {
@@ -24,13 +25,19 @@ class UsersDal {
     }
 
     async create({ id, name, email, password }) {
-        const uuid = uuidv4();
         try {
             const statement = this.db.prepare(`
                 INSERT INTO users ( uuid,  id,  name,  email,  password)
                 VALUES            (@uuid, @id, @name, @email, @password)
             `);
-            statement.run({ uuid, id, name, email, password });
+            const uuid = uuidv4();
+
+            const passwordHash = await bcrypt.hash(password, 10);
+            // // The above approach works same as below, but with implicit call to `bcrypt.genSalt()`
+            // const salt = await bcrypt.genSalt(10);
+            // const passwordHash = await bcrypt.hash(password, salt);
+
+            statement.run({ uuid, id, name, email, password: passwordHash });
             return [null];
         } catch (e) {
             const maskedPassword = password.replaceAll(/./g, '*');
