@@ -68,6 +68,12 @@
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.0",
 
+        "rc-collapse": "^3.9.0",
+        "react-responsive": "^10.0.0",
+        "react-inspector": "^6.0.2",
+        "prism-react-renderer": "^2.4.1",
+        "react-hotkeys-hook": "^4.6.1",
+
         // React components
         "@webextensions/react": "=0.1.1",
 

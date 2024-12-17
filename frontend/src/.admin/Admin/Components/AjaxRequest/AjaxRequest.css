@@ -1,0 +1,7 @@
+:global(.AjaxRequest .rc-collapse-content > .rc-collapse-content-box) {
+    margin-top: 0;
+}
+
+:global(.AjaxRequest .rc-collapse:not(:first-child)) {
+    margin-top: 5px;
+}
