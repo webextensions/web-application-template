@@ -17,10 +17,7 @@ const setupUsersRoutes = function ({ constructorParamForUsers }) {
             .get('/list', async function (req, res) {
                 const [err, users] = await usersDal.selectAll();
                 if (err) {
-                    return res.status(500).json({
-                        status: 'error',
-                        error: 'Internal Server Error'
-                    });
+                    return sendErrorResponse(res, 500, 'Internal Server Error');
                 }
                 return sendSuccessResponse(res, users, { beautify: true });
             })

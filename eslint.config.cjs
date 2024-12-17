@@ -50,7 +50,9 @@ module.exports = [
                     'res.send',
                     'res.status',
                     'next',
-                    'exitWithError'
+                    'exitWithError',
+                    'sendErrorResponse',
+                    'sendSuccessResponse'
                 ]
             ]
         }
