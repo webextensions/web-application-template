@@ -11,11 +11,13 @@ import { useMediaQuery } from 'react-responsive';
 
 import { randomUUID } from 'helpmate/dist/uuid/randomUUID.js';
 
+import { useQuery } from '@tanstack/react-query';
+
 import { Loading } from '../../../../ImportedComponents/Loading/Loading.js';
 
 import { ViewJson } from '../../../base_modules/ViewJson/ViewJson.js';
 
-import { useAjax } from '@webextensions/react/hooks/useAjax/useAjax.js';
+import { safeArrayPromiseToErrorPromise } from '../../../../App/utils/safeArrayPromiseToErrorPromise.js';
 
 import './AjaxRequest.css';
 
@@ -62,63 +64,68 @@ const getUrlAsJson = async function (url) {
 const AjaxRequest = function () {
     const canHoldInputElementsInRow = useMediaQuery({ query: '(min-width: 1024px)' });
 
+    const [requestedUrl, setRequestedUrl] = useState('');
+
+    const [selectedAjaxUrl, setSelectedAjaxUrl] = useState('none');
+    const [typedValueForUrl, setTypedValueForUrl] = useState('');
+
     const [
         ajaxHistory,
         setAjaxHistory
     ] = useState([]);
 
-    const [
-        ajaxStatus, // eslint-disable-line no-unused-vars
-        { triggerAjax }
-    ] = useAjax({
-        ajaxCall: async (url) => {
-            const entry = {
-                uuid: randomUUID(),
-                url,
-                initiatedAt: Date.now()
-            };
+    const { refetch } = useQuery({
+        enabled: false,
+        queryKey: ['ajaxHistory'],
+        queryFn: () => {
+            const url = typedValueForUrl;
 
-            const arrHistory = [
-                entry,
-                ...ajaxHistory
-            ];
+            const p = getUrlAsJson(url);
 
-            setAjaxHistory(arrHistory);
+            (async () => {
+                const [err, response] = await p;
+                const data = response.json;
 
-            const [err, response] = await getUrlAsJson(url);
-            const data = response.json;
+                const entry = {
+                    uuid: randomUUID(),
+                    url,
+                    initiatedAt: Date.now()
+                };
 
-            setAjaxHistory((prevState) => {
-                const clonedState = structuredClone(prevState);
-                clonedState.some((item) => {
-                    if (item.uuid === entry.uuid) {
-                        if (err) {
-                            item.err = {
-                                message: err.message,
-                                stack: err.stack
-                            };
+                const arrHistory = [
+                    entry,
+                    ...ajaxHistory
+                ];
+
+                setAjaxHistory(arrHistory);
+
+                setAjaxHistory((prevState) => {
+                    const clonedState = structuredClone(prevState);
+                    clonedState.some((item) => {
+                        if (item.uuid === entry.uuid) {
+                            if (err) {
+                                item.err = {
+                                    message: err.message,
+                                    stack: err.stack
+                                };
+                            }
+                            if (data) {
+                                item.data = data;
+                            }
+                            item.completedAt = Date.now();
+                            return true;
                         }
-                        if (data) {
-                            item.data = data;
-                        }
-                        item.completedAt = Date.now();
-                        return true;
-                    }
-                    return false;
+                        return false;
+                    });
+
+                    return clonedState;
                 });
+            })();
 
-                return clonedState;
-            });
-
-            return [err, data];
+            const querifiedP = safeArrayPromiseToErrorPromise(p);
+            return querifiedP;
         }
     });
-
-    const [requestedUrl, setRequestedUrl] = useState('');
-    // const { readyState, data } = ajaxStatus;
-
-    const [selectedAjaxUrl, setSelectedAjaxUrl] = useState('none');
-    const [typedValueForUrl, setTypedValueForUrl] = useState('');
 
     return (
         <div className="AjaxRequest">
@@ -219,9 +226,9 @@ const AjaxRequest = function () {
                     <button
                         type="button"
                         disabled={typedValueForUrl === 'none' || typedValueForUrl === ''}
-                        onClick={async () => {
+                        onClick={() => {
                             setRequestedUrl(typedValueForUrl);
-                            await triggerAjax(typedValueForUrl);
+                            refetch();
                         }}
                         style={{ height: 28 }}
                     >
