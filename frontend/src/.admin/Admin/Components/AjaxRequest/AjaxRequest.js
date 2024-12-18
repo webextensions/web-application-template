@@ -69,10 +69,7 @@ const AjaxRequest = function () {
     const [selectedAjaxUrl, setSelectedAjaxUrl] = useState('none');
     const [typedValueForUrl, setTypedValueForUrl] = useState('');
 
-    const [
-        ajaxHistory,
-        setAjaxHistory
-    ] = useState([]);
+    const [ajaxHistory, setAjaxHistory] = useState([]);
 
     const { refetch } = useQuery({
         enabled: false,
@@ -82,22 +79,22 @@ const AjaxRequest = function () {
 
             const p = getUrlAsJson(url);
 
+            const entry = {
+                uuid: randomUUID(),
+                url,
+                initiatedAt: Date.now()
+            };
+
+            const arrHistory = [
+                entry,
+                ...ajaxHistory
+            ];
+
+            setAjaxHistory(arrHistory);
+
             (async () => {
                 const [err, response] = await p;
                 const data = response.json;
-
-                const entry = {
-                    uuid: randomUUID(),
-                    url,
-                    initiatedAt: Date.now()
-                };
-
-                const arrHistory = [
-                    entry,
-                    ...ajaxHistory
-                ];
-
-                setAjaxHistory(arrHistory);
 
                 setAjaxHistory((prevState) => {
                     const clonedState = structuredClone(prevState);
