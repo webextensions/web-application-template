@@ -15,13 +15,60 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Loading } from '../../../../ImportedComponents/Loading/Loading.js';
 
-import { ViewJson } from '../../../base_modules/ViewJson/ViewJson.js';
+import { ViewCode } from '../../../base_modules/ViewCode/ViewCode.js';
 
 import { safeArrayPromiseToErrorPromise } from '../../../../App/utils/safeArrayPromiseToErrorPromise.js';
 
 import './AjaxRequest.css';
 
-const getUrlAsJson = async function (url) {
+const ajaxRequestConfigs = [
+    {
+        label: 'Admin',
+        options: [
+            {
+                text: 'Help (Routes)',
+                url: '/admin/help?format=json'
+            },
+            {
+                text: 'Help (Routes)',
+                url: '/admin/help?format=json'
+            },
+            {
+                text: 'Info',
+                url: '/admin/info'
+            },
+            {
+                text: 'Kill server instance',
+                url: '/admin/kill'
+            },
+            {
+                text: 'Setup database',
+                url: '/admin/setupDb'
+            }
+        ]
+    },
+    {
+        label: 'Admin - Users list',
+        options: [
+            {
+                text: 'List all users',
+                url: '/admin/users/list'
+            }
+        ]
+    },
+    {
+        label: 'General',
+        options: [
+            {
+
+                text: 'List all task categories',
+                url: 'http://localhost:8000/taskCategories/list'
+            }
+        ]
+    }
+];
+
+const getUrlAndParse = async function (url) {
     try {
         const text = await ky.get(url, { retry: 0 }).text();
 
@@ -29,15 +76,7 @@ const getUrlAsJson = async function (url) {
             const json = JSON.parse(text);
             return [null, { text, json }];
         } catch (err) { // eslint-disable-line no-unused-vars
-            return [
-                null,
-                {
-                    text,
-                    json: {
-                        body: text
-                    }
-                }
-            ];
+            return [null, { text }];
         }
     } catch (err) {
         const parsedResponse = {};
@@ -77,7 +116,7 @@ const AjaxRequest = function () {
         queryFn: () => {
             const url = typedValueForUrl;
 
-            const p = getUrlAsJson(url);
+            const p = getUrlAndParse(url);
 
             const entry = {
                 uuid: randomUUID(),
@@ -94,7 +133,8 @@ const AjaxRequest = function () {
 
             (async () => {
                 const [err, response] = await p;
-                const data = response.json;
+                const jsonData = response.json;
+                const textData = response.text;
 
                 setAjaxHistory((prevState) => {
                     const clonedState = structuredClone(prevState);
@@ -106,8 +146,11 @@ const AjaxRequest = function () {
                                     stack: err.stack
                                 };
                             }
-                            if (data) {
-                                item.data = data;
+                            if (jsonData) {
+                                item.jsonData = jsonData;
+                            }
+                            if (textData) {
+                                item.textData = textData;
                             }
                             item.completedAt = Date.now();
                             return true;
@@ -143,38 +186,7 @@ const AjaxRequest = function () {
                             -- Select an AJAX request --
                         </option>
                         {
-                            [
-                                {
-                                    label: 'Admin',
-                                    options: [
-                                        {
-                                            text: 'Help (Routes)',
-                                            url: '/admin/help?format=json'
-                                        },
-                                        {
-                                            text: 'Info',
-                                            url: '/admin/info'
-                                        },
-                                        {
-                                            text: 'Kill server instance',
-                                            url: '/admin/kill'
-                                        },
-                                        {
-                                            text: 'Setup database',
-                                            url: '/admin/setupDb'
-                                        }
-                                    ]
-                                },
-                                {
-                                    label: 'Admin - Users list',
-                                    options: [
-                                        {
-                                            text: 'List all users',
-                                            url: '/admin/users/list'
-                                        }
-                                    ]
-                                }
-                            ].map((optgroup, index) => {
+                            ajaxRequestConfigs.map((optgroup, index) => {
                                 const {
                                     label,
                                     options
@@ -242,7 +254,8 @@ const AjaxRequest = function () {
                                 uuid,
                                 err,
                                 url: requestedUrl,
-                                data,
+                                jsonData,
+                                textData,
                                 initiatedAt,
                                 completedAt
                             } = entry;
@@ -284,38 +297,43 @@ const AjaxRequest = function () {
                                             extra,
                                             children: (
                                                 <div>
-                                                    {
-                                                        !!err &&
-                                                        <div style={{ marginTop: 5, fontWeight: 'bold', color: 'red' }}>
-                                                            Error: {err.message}
-                                                        </div>
-                                                    }
-                                                    {
-                                                        !!data &&
-                                                        <div>
-                                                            <ViewJson
-                                                                json={data}
-                                                                style={{
-                                                                    paddingLeft: 16,
-                                                                    paddingRight: 16
-                                                                }}
-                                                                panelStyle={{
-                                                                    marginTop: 10,
-                                                                    marginBottom: 10,
-                                                                    paddingLeft: 20
-                                                                }}
-                                                                directLink={{
-                                                                    href: requestedUrl
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    }
-                                                    {
-                                                        !err && !data &&
-                                                        <div>
-                                                            <Loading type="line-scale" />
-                                                        </div>
-                                                    }
+                                                    {(function () {
+                                                        if (err) {
+                                                            return (
+                                                                <div style={{ marginTop: 5, fontWeight: 'bold', color: 'red' }}>
+                                                                    Error: {err.message}
+                                                                </div>
+                                                            );
+                                                        } else if (textData) {
+                                                            return (
+                                                                <div>
+                                                                    <ViewCode
+                                                                        type={jsonData ? 'json' : 'text'}
+                                                                        json={jsonData}
+                                                                        textData={textData}
+                                                                        style={{
+                                                                            paddingLeft: 16,
+                                                                            paddingRight: 16
+                                                                        }}
+                                                                        panelStyle={{
+                                                                            marginTop: 10,
+                                                                            marginBottom: 10,
+                                                                            paddingLeft: 20
+                                                                        }}
+                                                                        directLink={{
+                                                                            href: requestedUrl
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                            );
+                                                        } else {
+                                                            return (
+                                                                <div>
+                                                                    <Loading type="line-scale" />
+                                                                </div>
+                                                            );
+                                                        }
+                                                    })()}
                                                 </div>
                                             )
                                         }

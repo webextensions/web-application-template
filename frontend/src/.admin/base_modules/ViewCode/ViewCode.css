@@ -1,3 +1,7 @@
+.ViewCode textarea {
+    overflow: auto !important;
+}
+
 pre.prism-code {
     font-size: 13px;
     line-height: normal;

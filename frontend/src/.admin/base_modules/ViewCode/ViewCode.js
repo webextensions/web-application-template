@@ -16,7 +16,7 @@ import { useHotkeys } from 'react-hotkeys-hook';
 
 import { useLocalStorage } from '@webextensions/react/hooks/useLocalStorage/useLocalStorage.js';
 
-import './ViewJson.css';
+import * as styles from './ViewCode.css';
 
 function TabPanel(props) {
     const { children, value, index, style, ...other } = props;
@@ -54,13 +54,20 @@ TabPanel.propTypes = {
     style: PropTypes.object
 };
 
-const TextareaJson = function (props) {
+const CodeTextarea = function (props) {
     const {
+        textData,
         json,
+        format,
         rawViewHeight
     } = props;
 
-    const jsonAsString = JSON.stringify(json, null, '    ');
+    let jsonAsString;
+    if (format) {
+        jsonAsString = JSON.stringify(json, null, '    ');
+    } else {
+        jsonAsString = textData;
+    }
 
     return (
         <TextareaAutosize
@@ -78,17 +85,21 @@ const TextareaJson = function (props) {
         />
     );
 };
-TextareaJson.propTypes = {
-    json: PropTypes.any.isRequired,
+CodeTextarea.propTypes = {
+    textData: PropTypes.string.isRequired,
+    json: PropTypes.object,
+    format: PropTypes.bool,
     rawViewHeight: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string
     ])
 };
 
-const HighlightedJson = function (props) {
+const CodeHighlighted = function (props) {
     const {
+        textData,
         json,
+        format,
         rawViewHeight
     } = props;
 
@@ -108,7 +119,12 @@ const HighlightedJson = function (props) {
         evt.preventDefault();
     });
 
-    const jsonAsString = JSON.stringify(json, null, '    ');
+    let jsonAsString;
+    if (format) {
+        jsonAsString = JSON.stringify(json, null, '    ');
+    } else {
+        jsonAsString = textData;
+    }
 
     return (
         <Highlight theme={themes.vsLight} code={jsonAsString || ''} language="jsx">
@@ -126,60 +142,91 @@ const HighlightedJson = function (props) {
         </Highlight>
     );
 };
-HighlightedJson.propTypes = {
-    json: PropTypes.any.isRequired,
+CodeHighlighted.propTypes = {
+    textData: PropTypes.string.isRequired,
+    json: PropTypes.object,
+    format: PropTypes.bool,
     rawViewHeight: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string
     ])
 };
 
-const RawJson = React.memo(function (props) {
+const CodeRaw = React.memo(function (props) {
     const {
+        textData,
         json,
         rawViewHeight
     } = props;
 
-    const [syntaxHighlightingViewJsonTab, setSyntaxHighlightingViewJsonTab] = useLocalStorage('flagSyntaxHighlightingViewJsonTab', 'yes');
-    const [flagSyntaxHighlighting, setFlagSyntaxHighlighting] = React.useState(syntaxHighlightingViewJsonTab === 'yes');
+    const [syntaxHighlightingViewCodeTab, setSyntaxHighlightingViewCodeTab] = useLocalStorage('flagSyntaxHighlightingViewCodeTab', 'yes');
+    const [flagSyntaxHighlighting, setFlagSyntaxHighlighting] = React.useState(syntaxHighlightingViewCodeTab === 'yes');
+
+    const [formatJsonViewCodeTab, setFormatJsonViewCodeTab] = useLocalStorage('flagFormatViewCodeTab', 'yes');
+    const [flagFormat, setFlagFormat] = React.useState(formatJsonViewCodeTab === 'yes');
 
     return (
         <div>
-            <div>
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={flagSyntaxHighlighting}
-                            onChange={function (evt, checked) {
-                                // Using a "setTimeout" because for large contents, it might take time for rendering the
-                                // updated view. With this delay, we let the checkbox render the updated
-                                // "checked"/"unchecked" state before we initiate the heavy render update.
-                                setTimeout(() => {
-                                    setFlagSyntaxHighlighting(checked);
-                                    setSyntaxHighlightingViewJsonTab(checked ? 'yes' : 'no');
-                                });
-                            }}
+            <div style={{ display: 'flex' }}>
+                <div>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={flagSyntaxHighlighting}
+                                onChange={function (evt, checked) {
+                                    // Using a "setTimeout" because for large contents, it might take time for rendering the
+                                    // updated view. With this delay, we let the checkbox render the updated
+                                    // "checked"/"unchecked" state before we initiate the heavy render update.
+                                    setTimeout(() => {
+                                        setFlagSyntaxHighlighting(checked);
+                                        setSyntaxHighlightingViewCodeTab(checked ? 'yes' : 'no');
+                                    });
+                                }}
+                            />
+                        }
+                        label="Use syntax highlighting"
+                    />
+                </div>
+                {
+                    json &&
+                    <div>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={flagFormat}
+                                    onChange={function (evt, checked) {
+                                        // Using a "setTimeout" because for large contents, it might take time for rendering the
+                                        // updated view. With this delay, we let the checkbox render the updated
+                                        // "checked"/"unchecked" state before we initiate the heavy render update.
+                                        setTimeout(() => {
+                                            setFlagFormat(checked);
+                                            setFormatJsonViewCodeTab(checked ? 'yes' : 'no');
+                                        });
+                                    }}
+                                />
+                            }
+                            label="Format JSON"
                         />
-                    }
-                    label="Use syntax highlighting"
-                />
+                    </div>
+                }
             </div>
             <React.Fragment>
                 {
                     flagSyntaxHighlighting &&
-                    <HighlightedJson json={json} rawViewHeight={rawViewHeight} />
+                    <CodeHighlighted textData={textData} json={json} format={json && flagFormat} rawViewHeight={rawViewHeight} />
                 }
                 {
                     !flagSyntaxHighlighting &&
-                    <TextareaJson json={json} rawViewHeight={rawViewHeight} />
+                    <CodeTextarea textData={textData} json={json} format={json && flagFormat} rawViewHeight={rawViewHeight} />
                 }
             </React.Fragment>
         </div>
     );
 });
-RawJson.displayName = 'RawJson';
-RawJson.propTypes = {
-    json: PropTypes.any.isRequired,
+CodeRaw.displayName = 'CodeRaw';
+CodeRaw.propTypes = {
+    textData: PropTypes.string.isRequired,
+    json: PropTypes.object,
     rawViewHeight: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string
@@ -263,8 +310,10 @@ InspectorJson.propTypes = {
     showExpandCollapse: PropTypes.bool
 };
 
-const ViewJson = function (props) {
+const ViewCode = function (props) {
     const {
+        type,
+        textData,
         json,
         sortObjectKeys = true,
         expandLevel = 1,
@@ -275,15 +324,18 @@ const ViewJson = function (props) {
         rawViewHeight = '65vh'
     } = props;
 
-    const [selectedViewJsonTab, setSelectedViewJsonTab] = useLocalStorage('flagViewJsonTab', '0');
-    const [value, setValue] = React.useState(Number.parseInt(selectedViewJsonTab, 10));
+    const [selectedViewCodeTab, setSelectedViewCodeTab] = useLocalStorage('flagViewCodeTab', '0');
+    const [value, setValue] = React.useState(
+        type === 'text' ? 0 : Number.parseInt(selectedViewCodeTab, 10)
+    );
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
-        setSelectedViewJsonTab(newValue);
+        setSelectedViewCodeTab(newValue);
     };
 
-    const sizeInKb = Math.ceil(JSON.stringify(json).length / 1024);
+    // const sizeInKb = Math.ceil(JSON.stringify(json).length / 1024);
+    const sizeInKb = Math.ceil(textData.length / 1024);
     let sizeInKbColor;
     if (sizeInKb >= 500) {
         sizeInKbColor = 'red';
@@ -292,10 +344,13 @@ const ViewJson = function (props) {
     }
 
     return (
-        <div className="ViewJson" style={style}>
+        <div className={styles.ViewCode} style={style}>
             <div style={{ display: 'flex' }}>
                 <Tabs value={value} onChange={handleChange}>
-                    <Tab label="Preview" />
+                    {
+                        type === 'json' &&
+                        <Tab label="Preview" />
+                    }
                     <Tab
                         label={
                             <span>
@@ -337,18 +392,22 @@ const ViewJson = function (props) {
                     </a>
                 }
             </div>
-            <TabPanel value={value} index={0} style={panelStyle}>
-                <InspectorJson
+            {
+                type === 'json' &&
+                <TabPanel value={value} index={0} style={panelStyle}>
+                    <InspectorJson
+                        json={json}
+                        rawViewHeight={rawViewHeight}
+                        sortObjectKeys={sortObjectKeys}
+                        expandLevel={expandLevel}
+                        showExpandCollapse={showExpandCollapse}
+                    />
+                </TabPanel>
+            }
+            <TabPanel value={value} index={type === 'text' ? 0 : 1} style={panelStyle}>
+                <CodeRaw
                     json={json}
-                    rawViewHeight={rawViewHeight}
-                    sortObjectKeys={sortObjectKeys}
-                    expandLevel={expandLevel}
-                    showExpandCollapse={showExpandCollapse}
-                />
-            </TabPanel>
-            <TabPanel value={value} index={1} style={panelStyle}>
-                <RawJson
-                    json={json}
+                    textData={textData}
                     rawViewHeight={rawViewHeight}
                 />
             </TabPanel>
@@ -356,8 +415,9 @@ const ViewJson = function (props) {
     );
 };
 
-ViewJson.propTypes = {
+ViewCode.propTypes = {
     type: PropTypes.string,
+    textData: PropTypes.string,
     style: PropTypes.object,
     json: PropTypes.any.isRequired,
     sortObjectKeys: PropTypes.bool,
@@ -371,4 +431,4 @@ ViewJson.propTypes = {
     ])
 };
 
-export { ViewJson };
+export { ViewCode };
