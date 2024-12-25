@@ -50,7 +50,7 @@
 
         // Logging
         "note-down": "=1.0.2", // TODO: Upgrade to v2.0.0 or newer once this project upgrades to Node.js v22.9.0 or newer
-        "chalk": "^5.3.0",
+        "chalk": "^5.4.1",
         "boxen": "^8.0.1",
         "strip-ansi": "^7.1.0",
 
@@ -59,12 +59,12 @@
         "react-dom": "^19.0.0",
         "prop-types": "^15.8.1",
 
-        "@tanstack/react-query": "^5.62.7",
+        "@tanstack/react-query": "^5.62.10",
         "react-toastify": "^10.0.6",
 
         // Material UI
-        "@mui/material": "^6.2.0",
-        "@mui/icons-material": "^6.2.0",
+        "@mui/material": "^6.3.0",
+        "@mui/icons-material": "^6.3.0",
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.0",
 
@@ -83,14 +83,14 @@
         "@rjsf/validator-ajv8": "^5.23.2",
 
         // Network
-        "ky": "^1.7.3",
+        "ky": "^1.7.4",
 
         // Database
         "@seald-io/nedb": "^4.0.4",
         "better-sqlite3": "^11.7.0",
 
         // System and I/O devices
-        "systeminformation": "^5.23.13",
+        "systeminformation": "^5.23.21",
         "@sindresorhus/df": "^4.0.0",
 
         // Security
@@ -119,7 +119,7 @@
         // Linting
         "eslint": "^9.17.0",
 
-        "globals": "^15.13.0",
+        "globals": "^15.14.0",
 
         // "eslint-config-ironplate" and its dependencies
         "eslint-config-ironplate": "^1.0.1",
@@ -127,7 +127,7 @@
         "eslint-plugin-filenames": "^1.3.2",
         "eslint-plugin-import": "^2.31.0",
         "eslint-plugin-node": "^11.1.0",
-        "eslint-plugin-react": "^7.37.2",
+        "eslint-plugin-react": "^7.37.3",
         "eslint-plugin-react-hooks": "^5.1.0",
         "eslint-plugin-unicorn": "^56.0.1",
 
