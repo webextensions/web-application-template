@@ -1,0 +1,15 @@
+.ajaxForm label {
+    margin-right: 5px;
+}
+
+:global(.form-group:not(:first-child)) {
+    margin-top: 5px;
+}
+:global(.form-group .control-label) {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 3px;
+}
+:global(.form-control) {
+    display: block;
+}

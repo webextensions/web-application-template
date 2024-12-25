@@ -14,7 +14,7 @@ const help = function (app) {
 
         const routesList = listEndpoints(app, { includeMiddlewareRoutes: true });
 
-        if (req.query.format === 'json') {
+        if (req.query.responseFormat === 'json') {
             return sendSuccessResponse(res, routesList, { beautify: true });
         } else {
             routesList.sort((a, b) => {

@@ -1,9 +1,15 @@
 .ViewCode textarea {
     overflow: auto !important;
+    font-family: monospace;
+    font-size: 11px;
 }
 
-pre.prism-code {
-    font-size: 13px;
+:global(pre.prism-code) {
     line-height: normal;
     letter-spacing: normal;
+    font-family: monospace;
+}
+
+:global(pre.prism-code *) {
+    font-size: 11px;
 }

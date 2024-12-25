@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import ky from 'ky';
 
 import 'rc-collapse/assets/index.css';
 import Collapse from 'rc-collapse';
 
+import Button from '@mui/material/Button/index.js';
+import IconButton from '@mui/material/IconButton/index.js';
+
 import CloseIcon from '@mui/icons-material/Close';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 import { useMediaQuery } from 'react-responsive';
 
@@ -20,39 +25,111 @@ import { ViewCode } from '../../../base_modules/ViewCode/ViewCode.js';
 import { safeArrayPromiseToErrorPromise } from '../../../../App/utils/safeArrayPromiseToErrorPromise.js';
 
 import './AjaxRequest.css';
+import { BuildForm } from './BuildForm.js';
 
 const ajaxRequestConfigs = [
     {
         label: 'Admin',
         options: [
             {
-                text: 'Help (Routes)',
-                url: '/admin/help?format=json'
+                id: 'Help (Routes)',
+                method: 'GET',
+                url:        '/admin/help',
+                defaultUrl: '/admin/help?responseFormat=json',
+                // form: {
+                //     schema: {
+                //         type: 'object',
+                //         // required: ['responseFormat'],
+                //         properties: {
+                //             responseFormat: {
+                //                 type: 'string',
+                //                 title: 'Type of response'
+                //             }
+                //         }
+                //     },
+                //     uiSchema: {
+                //         responseFormat: {
+                //             'ui:placeholder': 'html or json'
+                //         }
+                //     },
+                //     formData: {
+                //         responseFormat: 'json'
+                //     }
+                // }
+                form: {
+                    schema: {
+                        type: 'object',
+                        properties: {
+                            responseFormat: {
+                                type: 'string',
+                                title: 'responseFormat',
+                                enum: ['', 'html', 'json'],
+                                default: 'json'
+                            }
+                        }
+                    }
+                }
             },
             {
-                text: 'Help (Routes)',
-                url: '/admin/help?format=json'
-            },
-            {
-                text: 'Info',
+                id: 'Info',
                 url: '/admin/info'
             },
             {
-                text: 'Kill server instance',
+                id: 'Kill server instance',
                 url: '/admin/kill'
             },
             {
-                text: 'Setup database',
+                id: 'Setup database',
                 url: '/admin/setupDb'
             }
         ]
     },
     {
-        label: 'Admin - Users list',
+        label: 'Admin - Users',
         options: [
             {
-                text: 'List all users',
+                id: 'List all users',
                 url: '/admin/users/list'
+            },
+            {
+                id: 'Create a user',
+                method: 'POST',
+                url: '/admin/users/create',
+                form: {
+                    schema: {
+                        type: 'object',
+                        required: ['id', 'name', 'email', 'password'],
+                        properties: {
+                            id: {
+                                type: 'string',
+                                title: 'id'
+                            },
+                            name: {
+                                type: 'string',
+                                title: 'name'
+                            },
+                            email: {
+                                type: 'string',
+                                title: 'email'
+                            },
+                            password: {
+                                type: 'string',
+                                title: 'password'
+                            }
+                        }
+                    },
+                    uiSchema: {
+                        password: {
+                            'ui:widget': 'password'
+                        }
+                    },
+                    formData: {
+                        id: 'abc',
+                        name: 'Abc Xyz',
+                        email: 'mail@example.com',
+                        password: '123456'
+                    }
+                }
             }
         ]
     },
@@ -60,18 +137,73 @@ const ajaxRequestConfigs = [
         label: 'General',
         options: [
             {
-
-                text: 'List all task categories',
-                url: 'http://localhost:8000/taskCategories/list'
+                id: 'List all task categories',
+                url: '/taskCategories/list'
             }
         ]
     }
 ];
 
-const getUrlAndParse = async function (url) {
-    try {
-        const text = await ky.get(url, { retry: 0 }).text();
+const ResetUrl = function ({
+    canHoldInputElementsInRow,
+    requestConfig,
+    setTypedValueForUrl
+}) {
+    return (
+        <div
+            style={{
+                marginLeft: canHoldInputElementsInRow ? 15 : 5,
+                textAlign: 'center'
+            }}
+        >
+            <IconButton
+                type="button"
+                size="small"
+                title="Reset URL"
+                onClick={() => {
+                    if (requestConfig) {
+                        setTypedValueForUrl(requestConfig.defaultUrl || requestConfig.url);
 
+                        // // TODO: Check how something on the following lines can be implemented to reset the form.
+                        // //       Currently, this will not work because the state for the form isn't being controlled
+                        // //       like this.
+                        // setProvidedParameters(requestConfig.form?.formData || {});
+                    }
+                }}
+            >
+                <RestartAltIcon />
+            </IconButton>
+        </div>
+    );
+};
+ResetUrl.propTypes = {
+    canHoldInputElementsInRow: PropTypes.bool.isRequired,
+    requestConfig: PropTypes.object.isRequired,
+    setTypedValueForUrl: PropTypes.func.isRequired
+};
+
+const accessUrlAndParse = async function ({
+    method,
+    url,
+    parameters
+}) {
+    try {
+        const response = await ky(url, {
+            method,
+            json: (function () {
+                if (method !== 'POST' && method !== 'PUT' && method !== 'PATCH') {
+                    return undefined;
+                }
+                if (JSON.stringify(parameters) === '{}') {
+                    return undefined;
+                }
+
+                return parameters;
+            })(),
+            retry: 0
+        });
+
+        const text = await response.text();
         try {
             const json = JSON.parse(text);
             return [null, { text, json }];
@@ -107,6 +239,8 @@ const AjaxRequest = function () {
 
     const [selectedAjaxUrl, setSelectedAjaxUrl] = useState('none');
     const [typedValueForUrl, setTypedValueForUrl] = useState('');
+    const [providedParameters, setProvidedParameters] = useState({});
+    const [requestConfig, setRequestConfig] = useState(null);
 
     const [ajaxHistory, setAjaxHistory] = useState([]);
 
@@ -116,7 +250,11 @@ const AjaxRequest = function () {
         queryFn: () => {
             const url = typedValueForUrl;
 
-            const p = getUrlAndParse(url);
+            const p = accessUrlAndParse({
+                method: requestConfig.method,
+                url,
+                parameters: providedParameters
+            });
 
             const entry = {
                 uuid: randomUUID(),
@@ -167,17 +305,33 @@ const AjaxRequest = function () {
         }
     });
 
+    const handleValueChange = function (evt) {
+        const value = evt.target.value;
+
+        for (const optgroup of ajaxRequestConfigs) {
+            for (const option of optgroup.options) {
+                if (option.id === value) {
+                    setSelectedAjaxUrl(value);
+
+                    setRequestConfig(option);
+                    setTypedValueForUrl(option.defaultUrl || option.url);
+                    setProvidedParameters(option.form?.formData || {});
+
+                    return;
+                }
+            }
+        }
+    };
+
     return (
         <div className="AjaxRequest">
             <div style={{ display: canHoldInputElementsInRow ? 'flex' : null }}>
                 <div>
                     <select
                         value={selectedAjaxUrl}
-                        onChange={(evt) => {
-                            setSelectedAjaxUrl(evt.target.value);
-                            setTypedValueForUrl(evt.target.value);
-                        }}
+                        onChange={handleValueChange}
                         style={{
+                            width: canHoldInputElementsInRow ? undefined : '100%',
                             maxWidth: '100%',
                             height: 28
                         }}
@@ -195,8 +349,8 @@ const AjaxRequest = function () {
                                     <optgroup key={index} label={label}>
                                         {options.map((entry, index) => {
                                             return (
-                                                <option key={index} value={entry.url}>
-                                                    {entry.text}
+                                                <option key={index} value={entry.id}>
+                                                    {entry.id}
                                                 </option>
                                             );
                                         })}
@@ -213,27 +367,107 @@ const AjaxRequest = function () {
                         marginTop: canHoldInputElementsInRow ? undefined : 10
                     }}
                 >
-                    <input
-                        type="text"
-                        spellCheck="false"
-                        placeholder="AJAX Request URL"
-                        value={typedValueForUrl}
-                        onChange={function (evt) {
-                            setTypedValueForUrl(evt.target.value);
-                        }}
-                        style={{
-                            width: '100%',
-                            height: 28
-                        }}
-                    />
-                </div>
-                <div
-                    style={
-                        canHoldInputElementsInRow ? { marginLeft: 15 } : { marginTop: 10 }
+                    <div style={{ display: 'flex' }}>
+                        <div
+                            style={{
+                                fontFamily: 'monospace',
+                                lineHeight: '28px',
+                                minWidth: '32px',
+                                textAlign: canHoldInputElementsInRow ? 'center' : undefined
+                            }}
+                        >
+                            {requestConfig ? (requestConfig.method || 'GET') : '---'}
+                        </div>
+                        <div style={{ flex: 1, marginLeft: 5 }}>
+                            <input
+                                type="text"
+                                spellCheck="false"
+                                placeholder="AJAX Request URL"
+                                value={typedValueForUrl}
+                                onChange={function (evt) {
+                                    setTypedValueForUrl(evt.target.value);
+                                }}
+                                style={{
+                                    width: '100%',
+                                    padding: 5,
+                                    height: 28
+                                }}
+                            />
+                        </div>
+                        {
+                            !canHoldInputElementsInRow &&
+                            <ResetUrl
+                                canHoldInputElementsInRow={canHoldInputElementsInRow}
+                                requestConfig={requestConfig}
+                                setTypedValueForUrl={setTypedValueForUrl}
+                            />
+                        }
+                    </div>
+                    {
+                        requestConfig?.form &&
+                        <div
+                            style={{
+                                marginTop: 10,
+                                display: 'flex',
+                                justifyContent: 'center',
+
+                                background: 'linear-gradient(90deg, #fff, #eee 50%, #fff)',
+
+                                padding: 10
+                            }}
+                        >
+                            <BuildForm
+                                requestConfig={requestConfig}
+                                onFormChange={({
+                                    formData,
+                                    result, // eslint-disable-line no-unused-vars
+                                    formChangeId // eslint-disable-line no-unused-vars
+                                }) => {
+                                    let url = requestConfig.url;
+
+                                    if (requestConfig.method === 'GET') {
+                                        const searchParams = new URLSearchParams();
+                                        for (const key in formData) {
+                                            if (
+                                                formData[key] !== undefined &&
+                                                formData[key] !== ''
+                                            ) {
+                                                searchParams.set(key, formData[key]);
+                                            }
+                                        }
+                                        const searchParamsString = searchParams.toString();
+                                        if (searchParamsString !== '') {
+                                            url += `?${searchParamsString}`;
+                                        }
+                                    } else {
+                                        setProvidedParameters(formData);
+                                    }
+
+                                    setTypedValueForUrl(url);
+                                }}
+                            />
+                        </div>
                     }
+                </div>
+                {
+                    canHoldInputElementsInRow &&
+                    <ResetUrl
+                        canHoldInputElementsInRow={canHoldInputElementsInRow}
+                        requestConfig={requestConfig}
+                        setTypedValueForUrl={setTypedValueForUrl}
+                    />
+                }
+                <div
+                    style={{
+                        marginLeft: canHoldInputElementsInRow ? 15 : undefined,
+                        marginTop: canHoldInputElementsInRow ? undefined : 10,
+                        textAlign: 'center'
+                    }}
                 >
-                    <button
+                    <Button
                         type="button"
+                        variant="contained"
+                        size="small"
                         disabled={typedValueForUrl === 'none' || typedValueForUrl === ''}
                         onClick={() => {
                             setRequestedUrl(typedValueForUrl);
@@ -242,7 +476,7 @@ const AjaxRequest = function () {
                         style={{ height: 28 }}
                     >
                         Make request
-                    </button>
+                    </Button>
                 </div>
             </div>
             {

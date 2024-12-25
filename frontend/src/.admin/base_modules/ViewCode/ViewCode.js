@@ -78,7 +78,6 @@ const CodeTextarea = function (props) {
                 border: 'none',
                 width: '100%',
                 maxHeight: rawViewHeight,
-                fontSize: 12,
                 padding: 0,
                 overflow: 'auto'
             }}

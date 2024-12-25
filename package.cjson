@@ -77,6 +77,11 @@
         // React components
         "@webextensions/react": "=0.1.1",
 
+        // Form builder
+        "@rjsf/core": "^5.23.2",
+        "@rjsf/utils": "^5.23.2",
+        "@rjsf/validator-ajv8": "^5.23.2",
+
         // Network
         "ky": "^1.7.3",
 
