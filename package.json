@@ -52,7 +52,7 @@
         "serve-favicon": "^2.5.0",
         "strip-ansi": "^7.1.0",
         "styles-reset": "=0.3.0",
-        "systeminformation": "^5.23.21",
+        "systeminformation": "^5.23.23",
         "uuid": "^11.0.3",
         "webpack": "^5.97.1",
         "webpack-dev-middleware": "^7.4.2",
@@ -94,7 +94,7 @@
         "package-cjson": "^1.5.0",
         "semver": "^7.6.3",
         "shelljs": "^0.8.5",
-        "webpack-cli": "^5.1.4"
+        "webpack-cli": "^6.0.1"
     },
     "engines": {
         "node": "22.x"

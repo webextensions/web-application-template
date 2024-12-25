@@ -90,7 +90,7 @@
         "better-sqlite3": "^11.7.0",
 
         // System and I/O devices
-        "systeminformation": "^5.23.21",
+        "systeminformation": "^5.23.23",
         "@sindresorhus/df": "^4.0.0",
 
         // Security
@@ -140,7 +140,7 @@
         "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2", // TODO: CLEANUP: Doesn't seem to be required anymore. Also search for "transform-es2015-modules-commonjs" in the project for its usage when removing it
 
         // Build - Bundling
-        "webpack-cli": "^5.1.4",
+        "webpack-cli": "^6.0.1",
         "copy-webpack-plugin": "^12.0.2",
         "babel-loader": "^9.2.1",
         "css-loader": "^7.1.2",
