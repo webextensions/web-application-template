@@ -6,7 +6,7 @@ import {
 } from '../../../utils/express/sendResponse.js';
 
 import { UsersDal } from '../../../../database/AppDal/Users/UsersDal.js';
-import { userObjectSchema } from '../../../../database/AppDal/Users/UsersFieldsSchema.js';
+import { userObjectFullSchema } from '../../../../database/AppDal/Users/UsersFieldsSchema.js';
 
 const setupUsersRoutes = function ({ constructorParamForUsers }) {
     const usersDal = new UsersDal(constructorParamForUsers);
@@ -22,11 +22,17 @@ const setupUsersRoutes = function ({ constructorParamForUsers }) {
                 return sendSuccessResponse(res, users, { beautify: true });
             })
             .post('/create', async function (req, res) {
-                const { id, name, email, password } = req.body;
-                const userOb = { id, name, email, password };
+                const { id, name, email, password, joinedAt } = req.body;
+                const userOb = {
+                    id,
+                    name,
+                    email,
+                    password,
+                    joinedAt: Number.parseInt(joinedAt)
+                };
 
                 try {
-                    userObjectSchema.parse(userOb);
+                    userObjectFullSchema.parse(userOb);
                 } catch (e) {
                     console.error(e);
                     return sendErrorResponse(res, 400, `Error in creating user ${JSON.stringify(req.body)}`);

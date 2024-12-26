@@ -115,6 +115,10 @@ const ajaxRequestConfigs = [
                             password: {
                                 type: 'string',
                                 title: 'password'
+                            },
+                            joinedAt: {
+                                type: 'number',
+                                title: 'joinedAt'
                             }
                         }
                     },
@@ -127,7 +131,8 @@ const ajaxRequestConfigs = [
                         id: 'abc',
                         name: 'Abc Xyz',
                         email: 'mail@example.com',
-                        password: '123456'
+                        password: '123456',
+                        joinedAt: Date.now()
                     }
                 }
             }

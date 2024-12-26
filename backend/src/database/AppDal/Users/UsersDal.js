@@ -10,11 +10,12 @@ class UsersDal {
         try {
             this.db.exec(`
                 CREATE TABLE users (
-                    uuid     TEXT          PRIMARY KEY,
-                    id       TEXT NOT NULL UNIQUE,
-                    name     TEXT NOT NULL,
-                    email    TEXT NOT NULL UNIQUE,
-                    password TEXT NOT NULL
+                    uuid     TEXT             PRIMARY KEY,
+                    id       TEXT    NOT NULL UNIQUE,
+                    name     TEXT    NOT NULL,
+                    email    TEXT    NOT NULL UNIQUE,
+                    password TEXT    NOT NULL,
+                    joinedAt INTEGER NOT NULL
                 )
             `);
             return [null, 'Table created successfully'];
@@ -24,11 +25,11 @@ class UsersDal {
         }
     }
 
-    async create({ id, name, email, password }) {
+    async create({ id, name, email, password, joinedAt }) {
         try {
             const statement = this.db.prepare(`
-                INSERT INTO users ( uuid,  id,  name,  email,  password)
-                VALUES            (@uuid, @id, @name, @email, @password)
+                INSERT INTO users ( uuid,  id,  name,  email,  password,  joinedAt)
+                VALUES            (@uuid, @id, @name, @email, @password, @joinedAt)
             `);
             const uuid = uuidv4();
 
@@ -37,11 +38,15 @@ class UsersDal {
             // const salt = await bcrypt.genSalt(10);
             // const passwordHash = await bcrypt.hash(password, salt);
 
-            statement.run({ uuid, id, name, email, password: passwordHash });
+            statement.run({ uuid, id, name, email, password: passwordHash, joinedAt });
             return [null];
         } catch (e) {
             const maskedPassword = password.replaceAll(/./g, '*');
-            console.error('Error in inserting into "users"', JSON.stringify({ id, name, email, password: maskedPassword }), e);
+            console.error(
+                'Error in inserting into "users"',
+                JSON.stringify({ id, name, email, password: maskedPassword, joinedAt }),
+                e
+            );
             return [e];
         }
     }

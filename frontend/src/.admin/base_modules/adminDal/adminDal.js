@@ -37,10 +37,10 @@ const ajaxPost = async function ({ url, data, retry }) {
     }
 };
 
-export const createUser = async function ({ id, name, email, password }) {
+export const createUser = async function ({ id, name, email, password, joinedAt }) {
     const [err, responseData] = await ajaxPost({
         url: '/admin/users/create',
-        data: { id, name, email, password }
+        data: { id, name, email, password, joinedAt }
     });
     return [err, responseData];
 };

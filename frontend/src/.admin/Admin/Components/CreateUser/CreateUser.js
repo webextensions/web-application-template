@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { toast } from '../../../../ImportedComponents/react-toastify.js';
 
-import { userObjectSchema } from '../../../../../../backend/src/database/AppDal/Users/UsersFieldsSchema.js';
+import { userObjectFrontendSchema } from '../../../../../../backend/src/database/AppDal/Users/UsersFieldsSchema.js';
 
 import { LoadingErrorLoaded } from '../../../../base_modules/LoadingErrorLoaded/LoadingErrorLoaded.js';
 
@@ -17,6 +17,7 @@ const CreateUser = function () {
     const [name, setName] = useState('Abc Xyz');
     const [email, setEmail] = useState('mail@example.com');
     const [password, setPassword] = useState('123456');
+    const [joinedAt, setJoinedAt] = useState(Date.now());
 
     const queryClient = useQueryClient();
 
@@ -34,7 +35,8 @@ const CreateUser = function () {
                 id,
                 name,
                 email,
-                password
+                password,
+                joinedAt
             });
             const querifiedP = safeArrayPromiseToErrorPromise(p);
             return querifiedP;
@@ -43,8 +45,8 @@ const CreateUser = function () {
 
     const handleSubmit = async () => {
         try {
-            const userOb = { id, name, email, password };
-            userObjectSchema.parse(userOb);
+            const userOb = { id, name, email, password, joinedAt };
+            userObjectFrontendSchema.parse(userOb);
         } catch (e) {
             console.error(e);
             toast.error(e.message);
@@ -89,6 +91,14 @@ const CreateUser = function () {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                />
+            </div>
+            <div style={{ marginTop: 5 }}>
+                <input
+                    type="number"
+                    placeholder="Joined At"
+                    value={joinedAt}
+                    onChange={(e) => setJoinedAt(e.target.value)}
                 />
             </div>
             <div style={{ marginTop: 10 }}>

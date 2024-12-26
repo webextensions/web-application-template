@@ -7,12 +7,17 @@ const passwordFieldSchema = z.string().min(6).max(18); // https://www.npmjs.com/
                                                        // 'bcrypt' only utilizes first 72 bytes (not necessarily 72 characters)
                                                        // At the time of writing this, in UTF-8, a character can be in the range of 1 byte up to 4 bytes
                                                        // Hence, limiting the password to 18 characters (18 * 4 = 72 bytes)
+const joinedAtFieldSchema = z.number().int().positive();
 
-const userObjectSchema = z.object({
+const userObjectFrontendSchema = z.object({
     id:       idFieldSchema,
     name:     nameFieldSchema,
     email:    emailFieldSchema,
     password: passwordFieldSchema
+});
+
+const userObjectFullSchema = userObjectFrontendSchema.extend({
+    joinedAt: joinedAtFieldSchema
 });
 
 export {
@@ -20,6 +25,8 @@ export {
     nameFieldSchema,
     emailFieldSchema,
     passwordFieldSchema,
+    joinedAtFieldSchema,
 
-    userObjectSchema
+    userObjectFrontendSchema,
+    userObjectFullSchema
 };
