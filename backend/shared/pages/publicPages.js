@@ -1,9 +1,9 @@
-const {
+import {
     ROOT,
     ROOT_ACCOUNT,
     ROOT_SIGN_IN,
     ROOT_UNDER_CONSTRUCTION
-} = require('./pageUrls.js');
+} from './pageUrls.js';
 
 const publicPagesConfig = [
     ROOT,
@@ -34,7 +34,7 @@ const publicPages = publicPagesConfig.map((item) => {
     return item.location;
 });
 
-module.exports = {
+export {
     publicPages,
     publicPagesInSitemap
 };

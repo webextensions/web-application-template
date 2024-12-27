@@ -8,6 +8,7 @@ import path, { dirname } from 'node:path';
 import https from 'node:https';
 import http from 'node:http';
 import fs from 'node:fs';
+import fsAsync from 'node:fs/promises';
 
 import { fileURLToPath } from 'node:url';
 
@@ -37,6 +38,8 @@ import matchRequest from 'express-match-request';
 import { basicAuth } from './middleware/basic-auth.js';
 
 import { enabledMiddlewareOrNoop } from './utils/express/enabledMiddlewareOrNoop.js';
+
+import { publicPages } from '../../shared/pages/publicPages.js';
 
 import { getUsersConstructorParam } from '../database/AppDal/Users/getUsersConstructorParam.js';
 
@@ -178,6 +181,43 @@ const generateCspHeaderForHtmlPage = function ({ allowHosts, allowKnownExternalS
         parsedCspValue = cspParser.share('string');
 
     return parsedCspValue;
+};
+
+let indexHtmlContentsCached;
+const serveIndexHtmlContents = async function (
+    req,
+    res,
+    { projectRootFullPath, staticDir }
+) {
+    try {
+        let indexHtmlContents;
+
+        if (indexHtmlContentsCached) {
+            indexHtmlContents = indexHtmlContentsCached;
+        } else {
+            const indexHtmlFilePath = path.resolve(projectRootFullPath, staticDir, 'index.html');
+            const data = await fsAsync.readFile(indexHtmlFilePath);
+            indexHtmlContents = data.toString();
+
+            if (process.env.NODE_ENV === 'production') {
+                indexHtmlContentsCached = indexHtmlContents;
+            }
+        }
+
+        return res.send(indexHtmlContents);
+    } catch (e) {
+        logger.error('Error: Encountered an error while attempting to serve the index.html file.');
+        logger.error(e);
+
+        return (
+            res
+                .status(500)
+                .send({
+                    status: 'Error',
+                    message: 'Error: Encountered an error while attempting to serve the index.html file.'
+                })
+        );
+    }
 };
 
 const application = {
@@ -462,6 +502,18 @@ const application = {
                         )
                     );
                 }
+
+                exp.use(async function (req, res, next) {
+                    const parsedUrl = new URL(res.locals.fullUrl);
+
+                    const requestedIndexHtml = publicPages.includes(parsedUrl.pathname);
+
+                    if (requestedIndexHtml) {
+                        return await serveIndexHtmlContents(req, res, { projectRootFullPath, staticDir });
+                    } else {
+                        return next();
+                    }
+                });
 
                 exp.use(
                     '/.admin',
