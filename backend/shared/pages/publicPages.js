@@ -1,0 +1,40 @@
+const {
+    ROOT,
+    ROOT_ACCOUNT,
+    ROOT_SIGN_IN,
+    ROOT_UNDER_CONSTRUCTION
+} = require('./pageUrls.js');
+
+const publicPagesConfig = [
+    ROOT,
+    {   location: ROOT_ACCOUNT,            excludeFromSitemap: true },
+    ROOT_SIGN_IN,
+    {   location: ROOT_UNDER_CONSTRUCTION, excludeFromSitemap: true }
+].map((item) => {
+    if (typeof item === 'string') {
+        return {
+            location: item
+        };
+    } else {
+        return item;
+    }
+});
+
+const publicPagesInSitemap = publicPagesConfig.filter((item) => {
+    if (item.excludeFromSitemap) {
+        return false;
+    } else {
+        return true;
+    }
+}).map((item) => {
+    return item.location;
+});
+
+const publicPages = publicPagesConfig.map((item) => {
+    return item.location;
+});
+
+module.exports = {
+    publicPages,
+    publicPagesInSitemap
+};

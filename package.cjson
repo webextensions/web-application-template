@@ -59,8 +59,14 @@
         "react-dom": "^19.0.0",
         "prop-types": "^15.8.1",
 
+        "react-error-boundary": "^5.0.0",
+
+        "react-router": "^7.1.1",
+
         "@tanstack/react-query": "^5.62.10",
         "react-toastify": "^10.0.6",
+
+        "react-use": "^17.6.0",
 
         // Material UI
         "@mui/material": "^6.3.0",

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { BrowserRouter } from 'react-router';
+
 import { QueryClientProvider } from '@tanstack/react-query';
 
 import { queryClient } from '../common/queryClient/queryClient.js';
@@ -14,12 +16,14 @@ import { PageWidgets } from './PageWidgets/PageWidgets.js';
 const App = function () {
     return (
         <QueryClientProvider client={queryClient}>
-            <div>
-                <PageHeader />
-                <PageBody />
-                <PageFooter />
-                <PageWidgets />
-            </div>
+            <BrowserRouter>
+                <div>
+                    <PageHeader />
+                    <PageBody />
+                    <PageFooter />
+                    <PageWidgets />
+                </div>
+            </BrowserRouter>
         </QueryClientProvider>
     );
 };

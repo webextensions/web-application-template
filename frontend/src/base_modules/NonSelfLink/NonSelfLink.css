@@ -1,0 +1,42 @@
+/* https://stackoverflow.com/questions/36830283/creating-a-light-sweep-effect-shiny-on-an-image-logo/36830389#36830389 */
+
+:global(#bodyShiningEffect) {
+    pointer-events: none;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 999999;
+}
+
+:global(#bodyShiningEffect:before) {
+    content: "";
+    position: absolute;
+    width: 225%;
+    height: 225%;
+    background: linear-gradient(transparent 0%, rgba(255, 255, 255, 0.1) 45%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.1) 55%, transparent 100%);
+    transform: rotate(-45deg);
+    animation: bodyShine 4s;
+}
+
+@keyframes bodyShine {
+    0% {
+        left: -100%;
+        top: -100%;
+    }
+    40% {
+        left: 40%;
+        top: 40%;
+    }
+    60% {
+        left: 60%;
+        top: 60%;
+    }
+    100% {
+        left: 125%;
+        top: 125%;
+    }
+}
