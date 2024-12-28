@@ -20,7 +20,9 @@ const App = function () {
                 <div>
                     <PageHeader />
                     <PageBody />
-                    <PageFooter />
+                    <div style={{ marginTop: 20 }}>
+                        <PageFooter />
+                    </div>
                     <PageWidgets />
                 </div>
             </BrowserRouter>
