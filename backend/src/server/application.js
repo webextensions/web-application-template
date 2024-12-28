@@ -111,7 +111,10 @@ const logAndNotifyAboutServer = async function ({
     if (!localIpAddressesAndHostnames) {
         try {
             localIpAddressesAndHostnames = libLocalIpAddressesAndHostnames.getLocalIpAddressesAndHostnames({
-                preferredEntries: ['web-application-template']
+                preferredEntries: [
+                    'web-application-template',
+                    'localhost'
+                ]
             });
         } catch (e) {
             localIpAddressesAndHostnames = [];
