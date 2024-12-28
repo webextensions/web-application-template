@@ -1,0 +1,17 @@
+.SignInForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.SignInForm form {
+    width: 400px;
+}
+
+.SignInForm form input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}

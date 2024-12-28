@@ -6,6 +6,8 @@ import { QueryClientProvider } from '@tanstack/react-query';
 
 import { queryClient } from '../common/queryClient/queryClient.js';
 
+import 'styles-reset/styles-reset.css';
+
 import './App.css';
 
 import { PageHeader } from './PageHeader/PageHeader.js';
