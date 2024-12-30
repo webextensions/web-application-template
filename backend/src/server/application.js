@@ -70,8 +70,8 @@ const routeSetup = async function (exp, _accessSecurityConfig, { databaseFilePat
                 )
             )
             .get('/help', (await import('./handlers/admin/help/help.js')).help(exp))
-            .get('/info', (await import('./handlers/admin/info/info.js')).info)
-            .get('/kill', (await import('./handlers/admin/kill/kill.js')).kill)
+            .get('/info', (await import('./handlers/admin/info/info.js')).info())
+            .get('/kill', (await import('./handlers/admin/kill/kill.js')).kill())
             .get('/setupDb', (await import('./handlers/admin/setupDb/setupDb.js')).setupDb({ constructorParamForUsers }))
             .use('/users', (await import('./handlers/admin/users/usersRoutes.js')).setupUsersRoutes({ constructorParamForUsers }))
             .get('/', function (req, res) {
@@ -473,7 +473,7 @@ const application = {
                 }));
             }
 
-            // TODO: Add "exp.use(morgan('dev'));"
+            // TODO: Add https://github.com/pinojs/pino/blob/HEAD/docs/web.md#pino-with-express
 
             /*
             (function (obscuredSourceMaps, exp) {
