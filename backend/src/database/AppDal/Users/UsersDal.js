@@ -51,9 +51,34 @@ class UsersDal {
         }
     }
 
+    async authenticateUserByAccountIdAndPassword({ accountId, password }) {
+        try {
+            const statement = this.db.prepare(`SELECT * FROM users WHERE id = ?`);
+            const user = statement.get(accountId);
+            if (!user) {
+                return [new Error('User not found', { cause: { code: 'USER_NOT_FOUND' } })];
+            }
+
+            const isPasswordCorrect = await bcrypt.compare(password, user.password);
+            if (!isPasswordCorrect) {
+                return [new Error('Password incorrect', { cause: { code: 'PASSWORD_INCORRECT' } })];
+            }
+
+            const userObjectToRespondWith = {
+                uuid: user.uuid,
+                id: user.id
+            };
+            return [null, userObjectToRespondWith];
+        } catch (e) {
+            console.error('Error in authenticating user by accountId and password', accountId, e);
+            return [e];
+        }
+    }
+
     async getUserByUuid({ uuid }) {
         try {
-            const statement = this.db.prepare(`SELECT * FROM users WHERE uuid = ?`);
+            const statement = this.db.prepare(`SELECT uuid, id, name, email, joinedAt FROM users WHERE uuid = ?`);
+
             const result = statement.get(uuid);
             return [null, result];
         } catch (e) {

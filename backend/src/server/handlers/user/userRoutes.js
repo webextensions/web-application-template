@@ -13,7 +13,7 @@ const setupUsersRoutes = function ({ constructorParamForUsers }) {
     return (
         express.Router({ mergeParams: true })
             .use('/:userUuid', express.Router({ mergeParams: true })
-                .get('/info', async function (req, res) {
+                .get('/owninfo', async function (req, res) {
                     const { userUuid } = req.params;
 
                     const [err, user] = await usersDal.getUserByUuid({ uuid: userUuid });

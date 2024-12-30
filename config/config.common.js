@@ -31,6 +31,11 @@ const configForThisMode = {
                     port: 443
                 },
                 redirectToWww: true
+            },
+            security: {
+                cookieSecrets: [
+                    'bcfce3ae-3613-43ad-b45d-844c6c52d5d9'
+                ]
             }
         },
         logger: {

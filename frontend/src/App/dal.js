@@ -60,3 +60,28 @@ export const deleteTaskCategory = async (taskId) => {
         return [err, null];
     }
 };
+
+export const loginWithAccountIdAndPassword = async ({ accountId, password }) => {
+    try {
+        const response = await kyForApp.instance.post('/api/v1/account/login', {
+            json: {
+                accountId,
+                password
+            }
+        });
+        const json = await response.json();
+        return [null, json.output];
+    } catch (err) {
+        return [err, null];
+    }
+};
+
+export const getProfileForLoggedInUserByUserUuid = async (userUuid) => {
+    try {
+        const response = await kyForApp.instance.get(`/api/v1/users/${userUuid}/owninfo`);
+        const json = await response.json();
+        return [null, json.output];
+    } catch (err) {
+        return [err, null];
+    }
+};

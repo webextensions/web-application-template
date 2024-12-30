@@ -14,6 +14,7 @@ import { fileURLToPath } from 'node:url';
 
 import express from 'express';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import helmet from 'helmet';
 import ContentSecurityPolicy from 'csp-dev';
@@ -78,6 +79,7 @@ const routeSetup = async function (exp, _accessSecurityConfig, { databaseFilePat
             })
         )
         .use('/api/v1', express.Router()
+            .use('/account', (await import('./handlers/account/accountRoutes.js')).setupAccountRoutes({ constructorParamForUsers }))
             .use('/user-account', express.Router()
                 .post('/create', function (req, res) {
                     const reqBody = structuredClone(req.body);
@@ -373,6 +375,12 @@ const application = {
 
             const networkDelayRange = _nonProductionDevToolsConfig.networkDelay || {};
             exp.use(networkDelay(networkDelayRange.minimum, networkDelayRange.maximum));
+
+            const _cookieParserSecrets = _accessSecurityConfig.cookieSecrets;
+            if (!_cookieParserSecrets) {
+                throw new Error('Error: Cookie parser secret(s) needs to be set.');
+            }
+            exp.use(cookieParser(_cookieParserSecrets));
 
             exp.use(compression());
 
