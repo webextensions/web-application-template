@@ -32,15 +32,15 @@ const SignInOrSignOutLink = function () {
                         forgetUserUuid();
                         navigate(ROOT_SIGN_IN);
                     }}
-                    style={{ textDecoration: 'none' }}
+                    style={{ color: '#152c4a', textDecoration: 'none' }}
                 >
-                    Sign-out
+                    Sign out
                 </a>
             }
             {
                 flagUserIsRegistered === 'no' &&
-                <NonSelfLink to={ROOT_SIGN_IN} style={{ textDecoration: 'none' }}>
-                    Sign-in
+                <NonSelfLink to={ROOT_SIGN_IN} style={{ color: '#152c4a', textDecoration: 'none' }}>
+                    Sign in
                 </NonSelfLink>
             }
         </div>
@@ -51,16 +51,16 @@ const GeneralLinks = function () {
     return (
         <div className={styles.GeneralLinks}>
             <div>
-                <NonSelfLink to={ROOT} style={{ textDecoration: 'none' }}>
+                <NonSelfLink to={ROOT} style={{ color: '#152c4a', textDecoration: 'none' }}>
                     Home
                 </NonSelfLink>
             </div>
-            <div>
-                <NonSelfLink to={ROOT_ACCOUNT} style={{ textDecoration: 'none' }}>
+            <div style={{ marginTop: 8 }}>
+                <NonSelfLink to={ROOT_ACCOUNT} style={{ color: '#152c4a', textDecoration: 'none' }}>
                     Account
                 </NonSelfLink>
             </div>
-            <div>
+            <div style={{ marginTop: 8 }}>
                 <SignInOrSignOutLink />
             </div>
         </div>

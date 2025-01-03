@@ -59,6 +59,7 @@
         "strip-ansi": "^7.1.0",
         "styles-reset": "=0.3.0",
         "systeminformation": "^5.23.23",
+        "utility-classes.css": "^0.0.1",
         "uuid": "^11.0.3",
         "webpack": "^5.97.1",
         "webpack-dev-middleware": "^7.4.2",

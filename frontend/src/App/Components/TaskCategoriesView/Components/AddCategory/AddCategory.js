@@ -45,11 +45,11 @@ const AddCategory = function () {
 
     return (
         <div className={styles.AddCategory}>
-            <div>
+            <div style={{ flexGrow: 1 }}>
                 <input
                     type="text"
                     placeholder="Provide the category to be added"
-                    style={{ width: '80vw' }}
+                    style={{ width: '100%' }}
                     value={title}
                     onChange={function (e) {
                         setTitle(e.target.value);

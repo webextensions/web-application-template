@@ -2,10 +2,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    container-type: inline-size;
 }
 
 .SignInForm .wrapper {
     width: 400px;
+}
+@container (max-width: 500px) {
+    .SignInForm .wrapper {
+        width: 100%;
+    }
 }
 
 .SignInForm .wrapper input {

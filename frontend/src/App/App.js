@@ -7,8 +7,11 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '../common/queryClient/queryClient.js';
 
 import 'styles-reset/styles-reset.css';
+import 'utility-classes.css/utility-classes.css';
 
 import './App.css';
+
+import { LayoutAbsoluteFullWidth } from '../Layout/Layout.js';
 
 import { PageHeader } from './PageHeader/PageHeader.js';
 import { PageBody } from './PageBody/PageBody.js';
@@ -20,11 +23,39 @@ const App = function () {
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
                 <div>
-                    <PageHeader />
-                    <PageBody />
-                    <div style={{ marginTop: 20 }}>
-                        <PageFooter />
+                    <div>
+                        <LayoutAbsoluteFullWidth
+                            style={{
+                                backgroundColor: '#fff'
+                            }}
+                        >
+                            <PageHeader />
+                        </LayoutAbsoluteFullWidth>
                     </div>
+
+                    <div>
+                        <LayoutAbsoluteFullWidth
+                            style={{
+                                paddingTop: 65,
+                                paddingBottom: 65,
+                                backgroundColor: '#fff'
+                            }}
+                        >
+                            <PageBody />
+                        </LayoutAbsoluteFullWidth>
+                    </div>
+
+                    <div>
+                        <LayoutAbsoluteFullWidth
+                            style={{
+                                paddingTop: 25,
+                                paddingBottom: 50
+                            }}
+                        >
+                            <PageFooter />
+                        </LayoutAbsoluteFullWidth>
+                    </div>
+
                     <PageWidgets />
                 </div>
             </BrowserRouter>

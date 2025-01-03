@@ -11,7 +11,10 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { useUpdateEffect, usePrevious } from 'react-use';
 
-import * as styles from './PageBody.css';
+import {
+    LayoutFullWidth,
+    LayoutContentZone
+} from '../../Layout/Layout.js';
 
 import { PageAccount } from './PageAccount/PageAccount.js';
 import { PageMain } from './PageMain/PageMain.js';
@@ -26,6 +29,8 @@ import {
     ROOT_SIGN_IN,
     ROOT_UNDER_CONSTRUCTION
 } from '../../../../backend/shared/pages/pageUrls.js';
+
+import * as styles from './PageBody.css';
 
 const ErrorLayer = function ({ error, resetErrorBoundary }) {
     const location = useLocation();
@@ -68,25 +73,29 @@ ErrorLayer.propTypes = {
 
 const PageBody = function () {
     return (
-        <div className={styles.PageBody}>
-            <ErrorBoundary
-                fallbackRender={({ error, resetErrorBoundary }) => {
-                    return (
-                        <ErrorLayer
-                            error={error}
-                            resetErrorBoundary={resetErrorBoundary}
-                        />
-                    );
-                }}
-            >
-                <Routes>
-                    <Route exact path={ROOT}                           element={<PageMain              />} />
-                    <Route exact path={ROOT_ACCOUNT}                   element={<PageAccount           />} />
-                    <Route exact path={ROOT_SIGN_IN}                   element={<PageSignIn            />} />
-                    <Route exact path={ROOT_UNDER_CONSTRUCTION}        element={<PageUnderConstruction />} />
-                    <Route       path="*"                              element={<PageNotFound          />} />
-                </Routes>
-            </ErrorBoundary>
+        <div className={styles.PageBody} style={{ width: '100%' }}>
+            <LayoutFullWidth>
+                <LayoutContentZone style={{ width: '100%' }}>
+                    <ErrorBoundary
+                        fallbackRender={({ error, resetErrorBoundary }) => {
+                            return (
+                                <ErrorLayer
+                                    error={error}
+                                    resetErrorBoundary={resetErrorBoundary}
+                                />
+                            );
+                        }}
+                    >
+                        <Routes>
+                            <Route exact path={ROOT}                           element={<PageMain              />} />
+                            <Route exact path={ROOT_ACCOUNT}                   element={<PageAccount           />} />
+                            <Route exact path={ROOT_SIGN_IN}                   element={<PageSignIn            />} />
+                            <Route exact path={ROOT_UNDER_CONSTRUCTION}        element={<PageUnderConstruction />} />
+                            <Route       path="*"                              element={<PageNotFound          />} />
+                        </Routes>
+                    </ErrorBoundary>
+                </LayoutContentZone>
+            </LayoutFullWidth>
         </div>
     );
 };

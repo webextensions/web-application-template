@@ -1,0 +1,20 @@
+.LayoutAbsoluteFullWidth {
+}
+
+.LayoutFullWidth {
+    padding-left: 35px;
+    padding-right: 35px;
+}
+
+.LayoutContentZone {
+    max-width: 1024px;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (min-width: 900px) {
+    .LayoutContentZone {
+        max-width: 750px;
+    }
+}
