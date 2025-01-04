@@ -7,7 +7,7 @@ import {
 
 import { ROOT_ACCOUNT } from '../../../../../backend/shared/pages/pageUrls.js';
 
-import { toast } from '../../../ImportedComponents/react-toastify.js';
+import { toast } from 'react-toastify';
 
 import { useAuth } from '../../../base_modules/hooks/useAuth/useAuth.js';
 

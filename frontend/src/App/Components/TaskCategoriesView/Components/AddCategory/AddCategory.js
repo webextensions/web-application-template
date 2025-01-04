@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { toast } from '../../../../../ImportedComponents/react-toastify.js';
+import { toast } from 'react-toastify';
 
 import { safeArrayPromiseToErrorPromise } from '../../../../utils/safeArrayPromiseToErrorPromise.js';
 

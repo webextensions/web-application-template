@@ -2,7 +2,7 @@ import React from 'react';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
-import { toast } from '../../../ImportedComponents/react-toastify.js';
+import { toast } from 'react-toastify';
 
 import { GenericAccordion } from '../../../base_modules/GenericAccordion/GenericAccordion.js';
 

@@ -15,7 +15,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import CodeIcon from '@mui/icons-material/Code';
 
-import { toast } from '../../../ImportedComponents/react-toastify.js';
+import { toast } from 'react-toastify';
 
 import { NonSelfLink } from '../../../base_modules/NonSelfLink/NonSelfLink.js';
 

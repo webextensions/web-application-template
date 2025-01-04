@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { toast } from '../../../../ImportedComponents/react-toastify.js';
+import { toast } from 'react-toastify';
 
 import { userObjectFrontendSchema } from '../../../../../../backend/src/database/AppDal/Users/UsersFieldsSchema.js';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ToastContainer } from '../../ImportedComponents/react-toastify.js';
+import { ToastContainer } from 'react-toastify';
 
 const PageWidgets = function () {
     return (

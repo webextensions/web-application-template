@@ -7,7 +7,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 
-import { toast } from '../../../../ImportedComponents/react-toastify.js';
+import { toast } from 'react-toastify';
 
 import { loginWithAccountIdAndPassword } from '../../../dal.js';
 import { safeArrayPromiseToErrorPromise } from '../../../utils/safeArrayPromiseToErrorPromise.js';
