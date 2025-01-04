@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { useNavigate } from 'react-router';
-
+import Button from '@mui/material/Button/index.js';
 import IconButton from '@mui/material/IconButton/index.js';
 
 import MenuIcon from '@mui/icons-material/Menu';
@@ -11,43 +10,46 @@ import { NonSelfLink } from '../../../base_modules/NonSelfLink/NonSelfLink.js';
 
 import {
     ROOT,
-    ROOT_ACCOUNT,
-    ROOT_SIGN_IN
+    ROOT_SIGN_IN,
+    ROOT_UNDER_CONSTRUCTION
 } from '../../../../../backend/shared/pages/pageUrls.js';
 
-import { useAuth } from '../../../base_modules/hooks/useAuth/useAuth.js';
-import { useUserUuid } from '../../../base_modules/hooks/useUserUuid/useUserUuid.js';
+import { SignedInOrNot } from '../../Components/SignedInOrNot/SignedInOrNot.js';
 
 import * as styles from './MyToolBar.css';
 
 const SignInOrSignOutLink = function () {
-    const navigate = useNavigate();
-
-    const { flagUserIsRegistered } = useAuth();
-    const { forgetUserUuid } = useUserUuid();
+    const SignInLink = (
+        <NonSelfLink to={ROOT_SIGN_IN} style={{ color: '#fff', textDecoration: 'none' }}>
+            <Button
+                type="button"
+                variant="contained"
+                size="small"
+                color="primary"
+                style={{
+                    color: '#152c4a',
+                    backgroundColor: '#fff'
+                }}
+            >
+                <span
+                    style={{
+                        fontWeight: 'bold',
+                        fontSize: '12px',
+                        textTransform: 'none'
+                    }}
+                >
+                    Sign In
+                </span>
+            </Button>
+        </NonSelfLink>
+    );
 
     return (
         <div>
-            {
-                flagUserIsRegistered === 'yes' &&
-                <a
-                    href="#"
-                    onClick={function (evt) {
-                        evt.preventDefault();
-                        forgetUserUuid();
-                        navigate(ROOT_SIGN_IN);
-                    }}
-                    style={{ color: '#fff', textDecoration: 'none' }}
-                >
-                    Sign out
-                </a>
-            }
-            {
-                flagUserIsRegistered === 'no' &&
-                <NonSelfLink to={ROOT_SIGN_IN} style={{ color: '#fff', textDecoration: 'none' }}>
-                    Sign in
-                </NonSelfLink>
-            }
+            <SignedInOrNot
+                WhenSignedError={SignInLink}
+                WhenSignedOut={SignInLink}
+            />
         </div>
     );
 };
@@ -61,18 +63,15 @@ const LinksInHeader = () => {
                 gap: 40
             }}
         >
-            <div>
+            <div style={{ flexGrow: 1 }}>
                 <NonSelfLink to={ROOT} style={{ color: '#fff', textDecoration: 'none' }}>
                     Home
                 </NonSelfLink>
             </div>
             <div>
-                <NonSelfLink to={ROOT_ACCOUNT} style={{ color: '#fff', textDecoration: 'none' }}>
-                    Account
+                <NonSelfLink to={ROOT_UNDER_CONSTRUCTION} style={{ color: '#fff', textDecoration: 'none' }}>
+                    Under Construction
                 </NonSelfLink>
-            </div>
-            <div>
-                <SignInOrSignOutLink />
             </div>
         </div>
     );
@@ -99,7 +98,7 @@ const MyToolBar = ({ style = {}, onMenuClick }) => {
                                 borderColor: '#fff',
                                 borderRadius: 5,
                                 borderStyle: 'dashed',
-                                padding: '5px 10px',
+                                padding: '8px 15px',
                                 fontWeight: 'bold'
                             }}
                         >
@@ -121,7 +120,10 @@ const MyToolBar = ({ style = {}, onMenuClick }) => {
                         <LinksInHeader />
                     </div>
                 </div>
-                <div>
+                <div className="flexCenterVertical">
+                    <SignInOrSignOutLink />
+                </div>
+                <div style={{ marginLeft: 25 }}>
                     <IconButton
                         edge="start"
                         color="inherit"

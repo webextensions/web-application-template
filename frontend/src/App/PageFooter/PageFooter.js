@@ -19,7 +19,7 @@ const PageFooter = function () {
                 <LayoutContentZone>
                     <div>
                         <div style={{ fontSize: '24px', fontVariantCaps: 'small-caps' }}>
-                            Links
+                            Quick Links
                         </div>
                         <div style={{ marginTop: 10 }}>
                             <GeneralLinks />

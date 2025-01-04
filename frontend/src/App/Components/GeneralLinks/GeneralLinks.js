@@ -1,48 +1,56 @@
 import React from 'react';
 
-import { useNavigate } from 'react-router';
+import { AfterDelay } from '@webextensions/react/components/AfterDelay/AfterDelay.js';
 
 import { NonSelfLink } from '../../../base_modules/NonSelfLink/NonSelfLink.js';
 
-import { useAuth } from '../../../base_modules/hooks/useAuth/useAuth.js';
 import { useUserUuid } from '../../../base_modules/hooks/useUserUuid/useUserUuid.js';
+
+import { SignedInOrNot } from '../SignedInOrNot/SignedInOrNot.js';
 
 import {
     ROOT,
-    ROOT_ACCOUNT,
-    ROOT_SIGN_IN
+    ROOT_SIGN_IN,
+    ROOT_UNDER_CONSTRUCTION
 } from '../../../../../backend/shared/pages/pageUrls.js';
 
 import * as styles from './GeneralLinks.css';
 
 const SignInOrSignOutLink = function () {
-    const navigate = useNavigate();
-
-    const { flagUserIsRegistered } = useAuth();
     const { forgetUserUuid } = useUserUuid();
+
+    const SignInLink = (
+        <NonSelfLink to={ROOT_SIGN_IN} style={{ color: '#152c4a', textDecoration: 'none' }}>
+            Sign In
+        </NonSelfLink>
+    );
+
+    const SignOutLink = (
+        <a
+            href="#"
+            onClick={function (evt) {
+                evt.preventDefault();
+                forgetUserUuid();
+            }}
+            style={{ color: '#152c4a', textDecoration: 'none' }}
+        >
+            Sign Out
+        </a>
+    );
 
     return (
         <div>
-            {
-                flagUserIsRegistered === 'yes' &&
-                <a
-                    href="#"
-                    onClick={function (evt) {
-                        evt.preventDefault();
-                        forgetUserUuid();
-                        navigate(ROOT_SIGN_IN);
-                    }}
-                    style={{ color: '#152c4a', textDecoration: 'none' }}
-                >
-                    Sign out
-                </a>
-            }
-            {
-                flagUserIsRegistered === 'no' &&
-                <NonSelfLink to={ROOT_SIGN_IN} style={{ color: '#152c4a', textDecoration: 'none' }}>
-                    Sign in
-                </NonSelfLink>
-            }
+            <SignedInOrNot
+                WhenSignedUnknown={null}
+                WhenSignedLoading={
+                    <AfterDelay delay={2500}>
+                        ...
+                    </AfterDelay>
+                }
+                WhenSignedError={SignInLink}
+                WhenSignedOut={SignInLink}
+                WhenSignedIn={SignOutLink}
+            />
         </div>
     );
 };
@@ -55,11 +63,13 @@ const GeneralLinks = function () {
                     Home
                 </NonSelfLink>
             </div>
+
             <div style={{ marginTop: 8 }}>
-                <NonSelfLink to={ROOT_ACCOUNT} style={{ color: '#152c4a', textDecoration: 'none' }}>
-                    Account
+                <NonSelfLink to={ROOT_UNDER_CONSTRUCTION} style={{ color: '#152c4a', textDecoration: 'none' }}>
+                    Under Construction
                 </NonSelfLink>
             </div>
+
             <div style={{ marginTop: 8 }}>
                 <SignInOrSignOutLink />
             </div>

@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { useNavigate } from 'react-router';
-
 import Drawer from '@mui/material/Drawer/index.js';
 import List from '@mui/material/List/index.js';
 
@@ -11,7 +9,6 @@ import ListItemButton from '@mui/material/ListItemButton/index.js';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import HomeIcon from '@mui/icons-material/Home';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import CodeIcon from '@mui/icons-material/Code';
 
@@ -22,13 +19,18 @@ import { NonSelfLink } from '../../../base_modules/NonSelfLink/NonSelfLink.js';
 import { useUserUuid } from '../../../base_modules/hooks/useUserUuid/useUserUuid.js';
 
 import {
-    ROOT,
     ROOT_ACCOUNT,
     ROOT_SIGN_IN,
     ROOT_UNDER_CONSTRUCTION
 } from '../../../../../backend/shared/pages/pageUrls.js';
 
+import { SignedInOrNot } from '../../Components/SignedInOrNot/SignedInOrNot.js';
+
 import * as styles from './MyDrawer.css';
+
+const timeout = function (ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+};
 
 const MyDrawer = ({ expanded, onClose }) => {
     const flagLinksToHiddenPages = true;
@@ -40,9 +42,18 @@ const MyDrawer = ({ expanded, onClose }) => {
         }, 150);
     };
 
-    const navigate = useNavigate();
-
     const { forgetUserUuid } = useUserUuid();
+
+    const SignInLink = (
+        <NonSelfLink to={ROOT_SIGN_IN} style={{ textDecoration: 'none' }}>
+            <ListItemButton onClick={delayedHideDrawer} style={{ color: '#fff' }}>
+                <LoginIcon sx={{ color: '#fff' }} />
+                <div style={{ marginLeft: 10 }}>
+                    Sign In
+                </div>
+            </ListItemButton>
+        </NonSelfLink>
+    );
 
     return (
         <div className={styles.MyDrawer}>
@@ -57,50 +68,20 @@ const MyDrawer = ({ expanded, onClose }) => {
                 <List style={{ paddingTop: 0 }}>
                     <div style={{ paddingTop: 4 }} />
 
-                    <NonSelfLink to={ROOT_SIGN_IN} style={{ textDecoration: 'none' }}>
-                        <ListItemButton onClick={delayedHideDrawer} style={{ color: '#fff' }}>
-                            <LoginIcon sx={{ color: '#fff' }} />
-                            <div style={{ marginLeft: 10 }}>
-                                Sign in
-                            </div>
-                        </ListItemButton>
-                    </NonSelfLink>
-                    <NonSelfLink to={ROOT_SIGN_IN} style={{ textDecoration: 'none' }}>
-                        <ListItemButton onClick={delayedHideDrawer} style={{ color: '#fff' }}>
-                            <LogoutIcon sx={{ color: '#fff' }} />
-                            <div
-                                style={{ marginLeft: 10 }}
-                                onClick={function (evt) {
-                                    evt.preventDefault();
-                                    forgetUserUuid();
-                                    navigate(ROOT_SIGN_IN);
-                                }}
-                            >
-                                Sign out
-                            </div>
-                        </ListItemButton>
-                    </NonSelfLink>
-
-                    {
-                        flagLinksToHiddenPages &&
-                        <NonSelfLink to={ROOT_ACCOUNT} style={{ textDecoration: 'none' }}>
-                            <ListItemButton onClick={delayedHideDrawer} style={{ color: '#fff' }}>
-                                <AccountCircleIcon sx={{ color: '#fff' }} />
-                                <div style={{ marginLeft: 10 }}>
-                                    Account
-                                </div>
-                            </ListItemButton>
-                        </NonSelfLink>
-                    }
-
-                    <NonSelfLink to={ROOT} style={{ textDecoration: 'none' }}>
-                        <ListItemButton onClick={delayedHideDrawer} style={{ color: '#fff' }}>
-                            <HomeIcon sx={{ color: '#fff' }} />
-                            <div style={{ marginLeft: 10 }}>
-                                Home
-                            </div>
-                        </ListItemButton>
-                    </NonSelfLink>
+                    <SignedInOrNot
+                        WhenSignedError={SignInLink}
+                        WhenSignedOut={SignInLink}
+                        WhenSignedIn={
+                            <NonSelfLink to={ROOT_ACCOUNT} style={{ textDecoration: 'none' }}>
+                                <ListItemButton onClick={delayedHideDrawer} style={{ color: '#fff' }}>
+                                    <AccountCircleIcon sx={{ color: '#fff' }} />
+                                    <div style={{ marginLeft: 10 }}>
+                                        Account
+                                    </div>
+                                </ListItemButton>
+                            </NonSelfLink>
+                        }
+                    />
 
                     {
                         flagLinksToHiddenPages &&
@@ -113,6 +94,32 @@ const MyDrawer = ({ expanded, onClose }) => {
                             </ListItemButton>
                         </NonSelfLink>
                     }
+
+                    <SignedInOrNot
+                        WhenSignedIn={
+                            <NonSelfLink to={ROOT_SIGN_IN} style={{ textDecoration: 'none' }}>
+                                <ListItemButton onClick={delayedHideDrawer} style={{ color: '#fff' }}>
+                                    <LogoutIcon sx={{ color: '#fff' }} />
+                                    <div
+                                        style={{ marginLeft: 10 }}
+                                        onClick={function (evt) {
+                                            evt.preventDefault();
+
+                                            (async () => {
+                                                // Added a delay to allow the drawer to close before navigating and the UI update (due to authSignOut()) should
+                                                // be done together with the redirect to sign-in page.
+                                                await timeout(300);
+
+                                                forgetUserUuid();
+                                            })();
+                                        }}
+                                    >
+                                        Sign Out
+                                    </div>
+                                </ListItemButton>
+                            </NonSelfLink>
+                        }
+                    />
 
                     {
                         flagDevHelperMenuOption &&
