@@ -66,14 +66,14 @@
 
         "jotai": "^2.11.0",
 
-        "@tanstack/react-query": "^5.62.11",
+        "@tanstack/react-query": "^5.62.15",
         "react-toastify": "^11.0.2",
 
         "react-use": "^17.6.0",
 
         // Material UI
-        "@mui/material": "^6.3.0",
-        "@mui/icons-material": "^6.3.0",
+        "@mui/material": "^6.3.1",
+        "@mui/icons-material": "^6.3.1",
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.0",
 
@@ -99,7 +99,7 @@
         "better-sqlite3": "^11.7.0",
 
         // System and I/O devices
-        "systeminformation": "^5.23.23",
+        "systeminformation": "^5.24.9",
         "@sindresorhus/df": "^4.0.0",
 
         // Security
@@ -169,13 +169,13 @@
         "local-ip-addresses-and-hostnames": "=0.2.0",
 
         // Miscellaneous
-        "concurrently": "^9.1.1",
+        "concurrently": "^9.1.2",
         "del": "^8.0.0",
         "handlebars": "^4.7.8",
         "node-notifier": "^10.0.1",
         "package-cjson": "^1.5.0", // Required in scripts "health-checks/compare-package-json-cjson.sh" and "housekeeping/generate-package-json.sh"
         "shelljs": "^0.8.5",
-        "commander": "^12.1.0"
+        "commander": "^13.0.0"
     },
 
     "overrides": {
