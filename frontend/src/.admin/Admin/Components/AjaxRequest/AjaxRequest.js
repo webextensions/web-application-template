@@ -139,6 +139,16 @@ const ajaxRequestConfigs = [
         ]
     },
     {
+        label: 'User',
+        options: [
+            {
+                id: 'User > Info',
+                title: 'Info',
+                url: '/api/v1/users/{userId}/owninfo'
+            }
+        ]
+    },
+    {
         label: 'General',
         options: [
             {
@@ -355,7 +365,7 @@ const AjaxRequest = function () {
                                         {options.map((entry, index) => {
                                             return (
                                                 <option key={index} value={entry.id}>
-                                                    {entry.id}
+                                                    {entry.title || entry.id}
                                                 </option>
                                             );
                                         })}
@@ -389,13 +399,24 @@ const AjaxRequest = function () {
                                 spellCheck="false"
                                 placeholder="AJAX Request URL"
                                 value={typedValueForUrl}
-                                onChange={function (evt) {
-                                    setTypedValueForUrl(evt.target.value);
-                                }}
                                 style={{
                                     width: '100%',
                                     padding: 5,
                                     height: 28
+                                }}
+                                onChange={function (evt) {
+                                    setTypedValueForUrl(evt.target.value);
+                                }}
+                                onFocus={function (evt) {
+                                    // If the current value matches a pattern like: '/abc/{pattern}/xyz', then select the
+                                    // part within the first set of curly braces (including the curly braces).
+                                    const value = evt.target.value;
+                                    const matches = value.match(/{[^{}]+}/);
+                                    if (matches) {
+                                        evt.target.setSelectionRange(matches.index, matches.index + matches[0].length);
+                                    } else {
+                                        evt.target.select();
+                                    }
                                 }}
                             />
                         </div>
