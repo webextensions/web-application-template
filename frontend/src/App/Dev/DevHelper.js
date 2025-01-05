@@ -200,7 +200,19 @@ const DevHelper = function () {
                     <span style={{ flex: 1, alignContent: 'center' }}>
                         Frontend Config:&nbsp;&nbsp;
                     </span>
-                    <ClickToShow type="button">
+                    <ClickToShow
+                        type="custom"
+                        CustomShowComponent={
+                            <Button variant="contained" size="small">
+                                Show
+                            </Button>
+                        }
+                        CustomHideComponent={
+                            <Button variant="contained" size="small">
+                                Hide
+                            </Button>
+                        }
+                    >
                         <ReactScrollIntoViewIfNeeded options={{ behavior: 'smooth', scrollMode: 'if-needed', block: 'nearest' }}>
                             <textarea
                                 style={{
@@ -224,7 +236,19 @@ const DevHelper = function () {
                     <span style={{ flex: 1, alignContent: 'center' }}>
                         User data:&nbsp;&nbsp;
                     </span>
-                    <ClickToShow type="button">
+                    <ClickToShow
+                        type="custom"
+                        CustomShowComponent={
+                            <Button variant="contained" size="small">
+                                Show
+                            </Button>
+                        }
+                        CustomHideComponent={
+                            <Button variant="contained" size="small">
+                                Hide
+                            </Button>
+                        }
+                    >
                         <ReactScrollIntoViewIfNeeded options={{ behavior: 'smooth', scrollMode: 'if-needed', block: 'nearest' }}>
                             <UserInfo />
                         </ReactScrollIntoViewIfNeeded>

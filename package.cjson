@@ -84,7 +84,7 @@
         "react-hotkeys-hook": "^4.6.1",
 
         // React components
-        "@webextensions/react": "=0.1.1",
+        "@webextensions/react": "=0.1.2",
 
         // Form builder
         "@rjsf/core": "^5.23.2",
