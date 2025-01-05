@@ -290,10 +290,8 @@ const webpackConfigGenerator = function (generatorOptions = {}, frontEndConfig =
                             {
                                 patterns: (function () {
                                     const arr = [
-                                        {
-                                            from: path.join(projectRootFrontend, 'src', 'favicon.ico'),
-                                            to: targetPublicDirectory
-                                        }
+                                        { from: path.join(projectRootFrontend, 'src', 'favicon.ico'), to: targetPublicDirectory                            },
+                                        { from: path.join(projectRootFrontend, 'src', 'resources'),   to: path.resolve(targetPublicDirectory, 'resources') }
                                     ];
                                     return arr;
                                 }())

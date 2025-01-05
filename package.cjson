@@ -117,6 +117,9 @@
 
         "execa": "^9.5.2",
 
+        "use-local-storage-state": "^19.5.0",
+        "react-draggable": "^4.4.6",
+
         "json-stringify-pretty-compact": "^4.0.0",
 
         "zod": "^3.24.1",
@@ -169,6 +172,9 @@
         "local-ip-addresses-and-hostnames": "=0.2.0",
 
         // Miscellaneous
+        "stats.js": "=0.17.0",
+        "console-panel": "^1.0.4",
+
         "concurrently": "^9.1.2",
         "del": "^8.0.0",
         "handlebars": "^4.7.8",
@@ -186,6 +192,8 @@
     "scripts": {
         /* Setup */
         "preinstall":  "./scripts/npm-run-scripts/preinstall.sh",
+
+        "copy-files-from-to": "npx --yes --prefer-offline copy-files-from-to --when-file-exists overwrite",
 
         "prepare": "husky || true", // If installing only dependencies (not devDependencies), the "prepare": "husky" script may fail because Husky won't be installed.
 

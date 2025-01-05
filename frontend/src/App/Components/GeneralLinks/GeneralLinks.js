@@ -14,6 +14,8 @@ import {
     ROOT_UNDER_CONSTRUCTION
 } from '../../../../../backend/shared/pages/pageUrls.js';
 
+import { useDevCustomizations } from '../../../base_modules/hooks/useDevCustomizations/useDevCustomizations.js';
+
 import * as styles from './GeneralLinks.css';
 
 const SignInOrSignOutLink = function () {
@@ -56,6 +58,8 @@ const SignInOrSignOutLink = function () {
 };
 
 const GeneralLinks = function () {
+    const { flagLinksToHiddenPages } = useDevCustomizations();
+
     return (
         <div className={styles.GeneralLinks}>
             <div>
@@ -64,11 +68,14 @@ const GeneralLinks = function () {
                 </NonSelfLink>
             </div>
 
-            <div style={{ marginTop: 8 }}>
-                <NonSelfLink to={ROOT_UNDER_CONSTRUCTION} style={{ color: '#152c4a', textDecoration: 'none' }}>
-                    Under Construction
-                </NonSelfLink>
-            </div>
+            {
+                flagLinksToHiddenPages === 'yes' &&
+                <div style={{ marginTop: 8 }}>
+                    <NonSelfLink to={ROOT_UNDER_CONSTRUCTION} style={{ color: '#152c4a', textDecoration: 'none' }}>
+                        Under Construction
+                    </NonSelfLink>
+                </div>
+            }
 
             <div style={{ marginTop: 8 }}>
                 <SignInOrSignOutLink />

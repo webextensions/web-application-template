@@ -8,6 +8,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 import { NonSelfLink } from '../../../base_modules/NonSelfLink/NonSelfLink.js';
 
+import { useDevCustomizations } from '../../../base_modules/hooks/useDevCustomizations/useDevCustomizations.js';
+
 import {
     ROOT,
     ROOT_SIGN_IN,
@@ -55,6 +57,8 @@ const SignInOrSignOutLink = function () {
 };
 
 const LinksInHeader = () => {
+    const { flagLinksToHiddenPages } = useDevCustomizations();
+
     return (
         <div
             className={styles.LinksInHeader}
@@ -68,16 +72,24 @@ const LinksInHeader = () => {
                     Home
                 </NonSelfLink>
             </div>
-            <div>
-                <NonSelfLink to={ROOT_UNDER_CONSTRUCTION} style={{ color: '#fff', textDecoration: 'none' }}>
-                    Under Construction
-                </NonSelfLink>
-            </div>
+            {
+                flagLinksToHiddenPages === 'yes' &&
+                <div>
+                    <NonSelfLink to={ROOT_UNDER_CONSTRUCTION} style={{ color: '#fff', textDecoration: 'none' }}>
+                        Under Construction
+                    </NonSelfLink>
+                </div>
+            }
         </div>
     );
 };
 
 const MyToolBar = ({ style = {}, onMenuClick }) => {
+    const {
+        flagDevHelperMenuOption,
+        flagDifferentColorHeaderBackground
+    } = useDevCustomizations();
+
     return (
         <div
             className={styles.MyToolBar}
@@ -85,6 +97,14 @@ const MyToolBar = ({ style = {}, onMenuClick }) => {
                 paddingTop: 14,
                 paddingBottom: 14,
                 backgroundColor: '#152c4a',
+                backgroundImage: (
+                    (
+                        flagDevHelperMenuOption === 'yes' &&
+                        flagDifferentColorHeaderBackground === 'yes'
+                    ) ?
+                        'linear-gradient(rgb(21,171,196) 0%, #3960a0 80%)' :
+                        undefined
+                ),
                 ...style
             }}
         >

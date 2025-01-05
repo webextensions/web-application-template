@@ -1,0 +1,20 @@
+{
+    "copyFilesSettings": {
+        "addReferenceToSourceOfOrigin": false,
+        "bail": true
+    },
+    "copyFiles": [
+        {
+            "from": "node_modules/console-panel/src/console-panel.js",
+            "to": "frontend/src/resources/3rdparty/autoloaded/console-panel/console-panel.js"
+        },
+        {
+            "from": "node_modules/console-panel/src/console-panel.css",
+            "to": "frontend/src/resources/3rdparty/autoloaded/console-panel/console-panel.css"
+        },
+        {
+            "from": "node_modules/stats.js/build/stats.min.js",
+            "to": "frontend/src/resources/3rdparty/autoloaded/stats.js/stats.min.js"
+        }
+    ]
+}

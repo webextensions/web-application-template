@@ -1,6 +1,12 @@
 const eslintConfigIronPlateReact = require('eslint-config-ironplate/react.js');
 
 module.exports = [
+    {
+        ignores: [
+            'resources/3rdparty/**/*.*'
+        ]
+    },
+
     ...eslintConfigIronPlateReact,
 
     {

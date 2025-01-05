@@ -12,11 +12,11 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import CodeIcon from '@mui/icons-material/Code';
 
-import { toast } from 'react-toastify';
-
 import { NonSelfLink } from '../../../base_modules/NonSelfLink/NonSelfLink.js';
 
 import { useUserUuid } from '../../../base_modules/hooks/useUserUuid/useUserUuid.js';
+
+import { useDevCustomizations } from '../../../base_modules/hooks/useDevCustomizations/useDevCustomizations.js';
 
 import {
     ROOT_ACCOUNT,
@@ -33,8 +33,10 @@ const timeout = function (ms) {
 };
 
 const MyDrawer = ({ expanded, onClose }) => {
-    const flagLinksToHiddenPages = true;
-    const flagDevHelperMenuOption = true;
+    const {
+        flagLinksToHiddenPages,
+        flagDevHelperMenuOption
+    } = useDevCustomizations();
 
     const delayedHideDrawer = function () {
         setTimeout(() => {
@@ -84,7 +86,7 @@ const MyDrawer = ({ expanded, onClose }) => {
                     />
 
                     {
-                        flagLinksToHiddenPages &&
+                        flagLinksToHiddenPages === 'yes' &&
                         <NonSelfLink to={ROOT_UNDER_CONSTRUCTION} style={{ textDecoration: 'none' }}>
                             <ListItemButton onClick={delayedHideDrawer} style={{ color: '#fff' }}>
                                 <ConstructionIcon sx={{ color: '#fff' }} />
@@ -122,11 +124,10 @@ const MyDrawer = ({ expanded, onClose }) => {
                     />
 
                     {
-                        flagDevHelperMenuOption &&
+                        flagDevHelperMenuOption === 'yes' &&
                         <ListItemButton
                             onClick={() => {
-                                // window.dev(); // TODO: Pending
-                                toast.warn('Dev Helper is under construction');
+                                window.dev();
 
                                 delayedHideDrawer();
                             }}
