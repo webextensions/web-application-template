@@ -206,7 +206,13 @@ const accessUrlAndParse = async function ({
         const response = await ky(url, {
             method,
             json: (function () {
-                if (method !== 'POST' && method !== 'PUT' && method !== 'PATCH') {
+                if (
+                    method !== 'HEAD' &&
+                    method !== 'DELETE' &&
+                    method !== 'PATCH' &&
+                    method !== 'POST' &&
+                    method !== 'PUT'
+                ) {
                     return undefined;
                 }
                 if (JSON.stringify(parameters) === '{}') {
@@ -259,6 +265,8 @@ const AjaxRequest = function () {
 
     const [ajaxHistory, setAjaxHistory] = useState([]);
 
+    const [theRequestMethod, setTheRequestMethod] = useState('GET');
+
     const { refetch } = useQuery({
         enabled: false,
         queryKey: ['ajaxHistory'],
@@ -266,7 +274,7 @@ const AjaxRequest = function () {
             const url = typedValueForUrl;
 
             const p = accessUrlAndParse({
-                method: requestConfig.method,
+                method: theRequestMethod,
                 url,
                 parameters: providedParameters
             });
@@ -326,6 +334,7 @@ const AjaxRequest = function () {
         for (const optgroup of ajaxRequestConfigs) {
             for (const option of optgroup.options) {
                 if (option.id === value) {
+                    setTheRequestMethod(option.method || 'GET');
                     setSelectedAjaxUrl(value);
 
                     setRequestConfig(option);
@@ -391,7 +400,24 @@ const AjaxRequest = function () {
                                 textAlign: canHoldInputElementsInRow ? 'center' : undefined
                             }}
                         >
-                            {requestConfig ? (requestConfig.method || 'GET') : '---'}
+                            <select
+                                value={theRequestMethod}
+                                onChange={(evt) => setTheRequestMethod(evt.target.value)}
+                                style={{
+                                    height: 28
+                                }}
+                            >
+                                <optgroup label="Common">
+                                    <option value="GET">GET</option>
+                                    <option value="POST">POST</option>
+                                </optgroup>
+                                <optgroup label="Others">
+                                    <option value="PUT">PUT</option>
+                                    <option value="PATCH">PATCH</option>
+                                    <option value="DELETE">DELETE</option>
+                                    <option value="HEAD">HEAD</option>
+                                </optgroup>
+                            </select>
                         </div>
                         <div style={{ flex: 1, marginLeft: 5 }}>
                             <input
@@ -406,6 +432,12 @@ const AjaxRequest = function () {
                                 }}
                                 onChange={function (evt) {
                                     setTypedValueForUrl(evt.target.value);
+                                }}
+                                onKeyDown={function (evt) {
+                                    if (evt.key === 'Enter') {
+                                        setRequestedUrl(typedValueForUrl);
+                                        refetch();
+                                    }
                                 }}
                                 onFocus={function (evt) {
                                     // If the current value matches a pattern like: '/abc/{pattern}/xyz', then select the
@@ -451,7 +483,7 @@ const AjaxRequest = function () {
                                 }) => {
                                     let url = requestConfig.url;
 
-                                    if (requestConfig.method === 'GET') {
+                                    if (theRequestMethod === 'GET') {
                                         const searchParams = new URLSearchParams();
                                         for (const key in formData) {
                                             if (
