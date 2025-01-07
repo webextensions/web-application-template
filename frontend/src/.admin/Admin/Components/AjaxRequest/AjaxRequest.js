@@ -392,19 +392,16 @@ const AjaxRequest = function () {
                     }}
                 >
                     <div style={{ display: 'flex' }}>
-                        <div
-                            style={{
-                                fontFamily: 'monospace',
-                                lineHeight: '28px',
-                                minWidth: '32px',
-                                textAlign: canHoldInputElementsInRow ? 'center' : undefined
-                            }}
-                        >
+                        <div>
                             <select
                                 value={theRequestMethod}
                                 onChange={(evt) => setTheRequestMethod(evt.target.value)}
                                 style={{
-                                    height: 28
+                                    height: 28,
+                                    fontFamily: 'monospace',
+                                    minWidth: 70,
+                                    textAlignLast: 'center', // Center align only the unopened part of the select box
+                                    fieldSizing: 'content'
                                 }}
                             >
                                 <optgroup label="Common">
@@ -419,7 +416,7 @@ const AjaxRequest = function () {
                                 </optgroup>
                             </select>
                         </div>
-                        <div style={{ flex: 1, marginLeft: 5 }}>
+                        <div style={{ flex: 1, marginLeft: 15 }}>
                             <input
                                 type="text"
                                 spellCheck="false"
@@ -428,7 +425,8 @@ const AjaxRequest = function () {
                                 style={{
                                     width: '100%',
                                     padding: 5,
-                                    height: 28
+                                    height: 28,
+                                    fontFamily: 'monospace'
                                 }}
                                 onChange={function (evt) {
                                     setTypedValueForUrl(evt.target.value);
