@@ -53,10 +53,10 @@ let localIpAddressesAndHostnames;
 
 const packageJson = require('../../../package.json');
 
-const routeSetup = async function (exp, _accessSecurityConfig, { databaseFilePath }) {
+const routeSetup = async function (exp, { _accessSecurityConfig, _databaseFilePath }) {
     const router = express.Router();
 
-    const constructorParamForUsers = await getUsersConstructorParam({ sqliteDbPath: databaseFilePath });
+    const constructorParamForUsers = await getUsersConstructorParam({ sqliteDbPath: _databaseFilePath });
 
     router
         .use('/admin', express.Router()
@@ -583,13 +583,10 @@ const application = {
             exp.use(bodyParser.json()); // support json encoded bodies
             exp.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-            const router = await routeSetup(
-                exp,
+            const router = await routeSetup(exp, {
                 _accessSecurityConfig,
-                {
-                    databaseFilePath: _serverConfig.database.sqlite.databaseFilePath
-                }
-            );
+                _databaseFilePath: _serverConfig.database.sqlite.databaseFilePath
+            });
 
             const registerServer = function (protocol, portNumber, httpsConfig) {
                 let server;
