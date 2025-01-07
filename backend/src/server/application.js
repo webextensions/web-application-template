@@ -53,7 +53,11 @@ let localIpAddressesAndHostnames;
 
 const packageJson = require('../../../package.json');
 
-const routeSetup = async function (exp, { _accessSecurityConfig, _databaseFilePath }) {
+const routeSetup = async function (exp, {
+    _accessSecurityConfig,
+    _userUuidsWithAdminAccess,
+    _databaseFilePath
+}) {
     const router = express.Router();
 
     const constructorParamForUsers = await getUsersConstructorParam({ sqliteDbPath: _databaseFilePath });
@@ -79,7 +83,7 @@ const routeSetup = async function (exp, { _accessSecurityConfig, _databaseFilePa
             })
         )
         .use('/api/v1', express.Router()
-            .use('/account', (await import('./handlers/account/accountRoutes.js')).setupAccountRoutes({ constructorParamForUsers }))
+            .use('/account', (await import('./handlers/account/accountRoutes.js')).setupAccountRoutes({ constructorParamForUsers, _userUuidsWithAdminAccess }))
             .use('/user-account', express.Router()
                 .post('/create', function (req, res) {
                     const reqBody = structuredClone(req.body);
@@ -88,7 +92,7 @@ const routeSetup = async function (exp, { _accessSecurityConfig, _databaseFilePa
                     res.send(`TODO: Create a user with ID ${reqBody.username} (if available)`);
                 })
             )
-            .use('/users', (await import('./handlers/users/usersRoutes.js')).setupUsersRoutes({ constructorParamForUsers }))
+            .use('/users', (await import('./handlers/users/usersRoutes.js')).setupUsersRoutes({ constructorParamForUsers, _userUuidsWithAdminAccess }))
         )
 
         .use('/taskCategories', await (await import('./handlers/taskCategories/taskCategories.js')).setupTaskCategoriesRoutes());
@@ -347,7 +351,8 @@ const application = {
                 _httpServerConfig = _serverUrlConfig.http || {},
                 _httpsServerConfig = _serverUrlConfig.https || {},
                 _httpsSecretsAndSettings = _httpsServerConfig.secretsAndSettings || {},
-                _accessSecurityConfig = _accessConfig.security || {};
+                _accessSecurityConfig = _accessConfig.security || {},
+                _userUuidsWithAdminAccess = _accessSecurityConfig.admin?.userUuidsWithAdminAccess || [];
 
             // const
             //     _devToolsConfig = _serverConfig.devTools || {};
@@ -585,6 +590,7 @@ const application = {
 
             const router = await routeSetup(exp, {
                 _accessSecurityConfig,
+                _userUuidsWithAdminAccess,
                 _databaseFilePath: _serverConfig.database.sqlite.databaseFilePath
             });
 

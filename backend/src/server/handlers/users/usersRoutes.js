@@ -9,13 +9,13 @@ import { verifyUserUuid } from './verifyUserUuid.js';
 
 import { UsersDal } from '../../../database/AppDal/Users/UsersDal.js';
 
-const setupUsersRoutes = function ({ constructorParamForUsers }) {
+const setupUsersRoutes = function ({ constructorParamForUsers, _userUuidsWithAdminAccess }) {
     const usersDal = new UsersDal(constructorParamForUsers);
 
     return (
         express.Router({ mergeParams: true })
             .use('/:userUuid', express.Router({ mergeParams: true })
-                .use(verifyUserUuid({ _userUuidsWithAdminAccess: [] }))
+                .use(verifyUserUuid({ _userUuidsWithAdminAccess }))
                 .get('/owninfo', async function (req, res) {
                     const { userUuid } = req.params;
 
