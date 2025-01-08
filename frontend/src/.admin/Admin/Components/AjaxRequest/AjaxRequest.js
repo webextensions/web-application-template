@@ -135,6 +135,10 @@ const ajaxRequestConfigs = [
                         joinedAt: Date.now()
                     }
                 }
+            },
+            {
+                id: 'Login as user',
+                url: '/admin/users/loginAs/{userUuid}'
             }
         ]
     },

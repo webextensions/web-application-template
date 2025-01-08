@@ -77,7 +77,7 @@ const routeSetup = async function (exp, {
             .get('/info', (await import('./handlers/admin/info/info.js')).info())
             .get('/kill', (await import('./handlers/admin/kill/kill.js')).kill())
             .get('/setupDb', (await import('./handlers/admin/setupDb/setupDb.js')).setupDb({ constructorParamForUsers }))
-            .use('/users', (await import('./handlers/admin/users/usersRoutes.js')).setupUsersRoutes({ constructorParamForUsers }))
+            .use('/users', await (await import('./handlers/admin/users/usersRoutes.js')).setupUsersRoutes({ constructorParamForUsers }))
             .get('/', function (req, res) {
                 res.send('TODO: Serve the /GET request for /admin');
             })

@@ -8,7 +8,7 @@ import {
 import { UsersDal } from '../../../../database/AppDal/Users/UsersDal.js';
 import { userObjectFullSchema } from '../../../../database/AppDal/Users/UsersFieldsSchema.js';
 
-const setupUsersRoutes = function ({ constructorParamForUsers }) {
+const setupUsersRoutes = async function ({ constructorParamForUsers }) {
     const usersDal = new UsersDal(constructorParamForUsers);
 
     return (
@@ -44,6 +44,7 @@ const setupUsersRoutes = function ({ constructorParamForUsers }) {
                 }
                 return sendSuccessResponse(res, 'User created successfully');
             })
+            .get('/loginAs/:userUuid', (await import('./loginAs/loginAs.js')).loginAs())
     );
 };
 
