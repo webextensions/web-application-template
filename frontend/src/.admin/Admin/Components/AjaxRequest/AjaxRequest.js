@@ -214,6 +214,11 @@ const ajaxRequestConfigs = [
                         newPassword: ''
                     }
                 }
+            },
+            {
+                id: 'User > whoami',
+                title: '/whoami',
+                url: '/whoami'
             }
         ]
     },

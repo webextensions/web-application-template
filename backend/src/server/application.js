@@ -63,6 +63,7 @@ const routeSetup = async function (exp, {
     const constructorParamForUsers = await getUsersConstructorParam({ sqliteDbPath: _databaseFilePath });
 
     router
+        .get('/whoami', (await import('./handlers/whoami/whoami.js')).whoami())
         .use('/admin', express.Router()
             .use(
                 enabledMiddlewareOrNoop(
