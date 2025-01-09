@@ -90,16 +90,16 @@ class UsersDal {
                 return [new Error('Password incorrect', { cause: { code: 'OLD_PASSWORD_INCORRECT' } })];
             }
 
-            const newPasswordHash = await bcrypt.hash(newPassword, 10);
-
             try {
                 passwordFieldSchema.parse(newPassword);
             } catch (e) {
                 return [new Error('New password does not meet policy', { cause: { code: 'NEW_PASSWORD_DOES_NOT_MEET_POLICY' } })];
             }
 
+            const newPasswordHash = await bcrypt.hash(newPassword, 10);
             const updateStatement = this.db.prepare(`UPDATE users SET password = ? WHERE uuid = ?`);
             updateStatement.run(newPasswordHash, uuid);
+
             return [null];
         } catch (e) {
             console.error('Error in changing password for user with UUID', { uuid }, e);
