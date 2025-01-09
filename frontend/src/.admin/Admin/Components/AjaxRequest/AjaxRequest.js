@@ -520,9 +520,9 @@ const AjaxRequest = function () {
                                     result, // eslint-disable-line no-unused-vars
                                     formChangeId // eslint-disable-line no-unused-vars
                                 }) => {
-                                    let url = requestConfig.url;
-
                                     if (theRequestMethod === 'GET') {
+                                        let url = requestConfig.url;
+
                                         const searchParams = new URLSearchParams();
                                         for (const key in formData) {
                                             if (
@@ -536,11 +536,11 @@ const AjaxRequest = function () {
                                         if (searchParamsString !== '') {
                                             url += `?${searchParamsString}`;
                                         }
+
+                                        setTypedValueForUrl(url);
                                     } else {
                                         setProvidedParameters(formData);
                                     }
-
-                                    setTypedValueForUrl(url);
                                 }}
                             />
                         </div>
