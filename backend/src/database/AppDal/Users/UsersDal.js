@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
 
+import { passwordFieldSchema } from './UsersFieldsSchema.js';
+
 class UsersDal {
     constructor({ sqliteDb }) {
         this.db = sqliteDb;
@@ -71,6 +73,36 @@ class UsersDal {
             return [null, userObjectToRespondWith];
         } catch (e) {
             console.error('Error in authenticating user by accountId and password', accountId, e);
+            return [e];
+        }
+    }
+
+    async changePassword({ uuid, oldPassword, newPassword }) {
+        try {
+            const statement = this.db.prepare(`SELECT * FROM users WHERE uuid = ?`);
+            const user = statement.get(uuid);
+            if (!user) {
+                return [new Error('User not found', { cause: { code: 'USER_NOT_FOUND' } })];
+            }
+
+            const isOldPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
+            if (!isOldPasswordCorrect) {
+                return [new Error('Password incorrect', { cause: { code: 'OLD_PASSWORD_INCORRECT' } })];
+            }
+
+            const newPasswordHash = await bcrypt.hash(newPassword, 10);
+
+            try {
+                passwordFieldSchema.parse(newPassword);
+            } catch (e) {
+                return [new Error('New password does not meet policy', { cause: { code: 'NEW_PASSWORD_DOES_NOT_MEET_POLICY' } })];
+            }
+
+            const updateStatement = this.db.prepare(`UPDATE users SET password = ? WHERE uuid = ?`);
+            updateStatement.run(newPasswordHash, uuid);
+            return [null];
+        } catch (e) {
+            console.error('Error in changing password for user with UUID', { uuid }, e);
             return [e];
         }
     }

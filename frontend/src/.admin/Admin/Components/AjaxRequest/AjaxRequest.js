@@ -149,6 +149,43 @@ const ajaxRequestConfigs = [
                 id: 'User > Info',
                 title: 'Info',
                 url: '/api/v1/users/{userId}/owninfo'
+            },
+            {
+                id: 'User > Change password',
+                title: 'Change password',
+                method: 'POST',
+                url: '/api/v1/users/{userId}/changePassword',
+                form: {
+                    schema: {
+                        type: 'object',
+                        required: [
+                            'oldPassword',
+                            'newPassword'
+                        ],
+                        properties: {
+                            oldPassword: {
+                                type: 'string',
+                                title: 'Old password'
+                            },
+                            newPassword: {
+                                type: 'string',
+                                title: 'New password'
+                            }
+                        }
+                    },
+                    uiSchema: {
+                        oldPassword: {
+                            'ui:widget': 'password'
+                        },
+                        newPassword: {
+                            'ui:widget': 'password'
+                        }
+                    },
+                    formData: {
+                        oldPassword: '',
+                        newPassword: ''
+                    }
+                }
             }
         ]
     },

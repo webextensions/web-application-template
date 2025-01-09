@@ -7,6 +7,8 @@ import {
 
 import { verifyUserUuid } from './verifyUserUuid.js';
 
+import { changePassword } from './changePassword/changePassword.js';
+
 import { UsersDal } from '../../../database/AppDal/Users/UsersDal.js';
 
 const setupUsersRoutes = function ({ constructorParamForUsers, _userUuidsWithAdminAccess }) {
@@ -27,6 +29,7 @@ const setupUsersRoutes = function ({ constructorParamForUsers, _userUuidsWithAdm
                     }
                     return sendSuccessResponse(res, user);
                 })
+                .post('/changePassword', changePassword({ constructorParamForUsers }))
             )
     );
 };
