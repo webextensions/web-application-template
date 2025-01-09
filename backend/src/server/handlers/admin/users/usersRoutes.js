@@ -46,6 +46,7 @@ const setupUsersRoutes = async function ({ constructorParamForUsers }) {
             })
             .use('/:userUuid', express.Router({ mergeParams: true })
                 .get('/loginAs', (await import('./loginAs/loginAs.js')).loginAs())
+                .post('/setPassword', (await import('./setPassword/setPassword.js')).setPassword({ constructorParamForUsers }))
             )
     );
 };

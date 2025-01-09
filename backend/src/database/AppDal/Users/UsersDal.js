@@ -77,6 +77,31 @@ class UsersDal {
         }
     }
 
+    async setPassword({ uuid, newPassword }) {
+        try {
+            const statement = this.db.prepare(`SELECT * FROM users WHERE uuid = ?`);
+            const user = statement.get(uuid);
+            if (!user) {
+                return [new Error('User not found', { cause: { code: 'USER_NOT_FOUND' } })];
+            }
+
+            try {
+                passwordFieldSchema.parse(newPassword);
+            } catch (e) {
+                return [new Error('New password does not meet policy', { cause: { code: 'NEW_PASSWORD_DOES_NOT_MEET_POLICY' } })];
+            }
+
+            const newPasswordHash = await bcrypt.hash(newPassword, 10);
+            const updateStatement = this.db.prepare(`UPDATE users SET password = ? WHERE uuid = ?`);
+            updateStatement.run(newPasswordHash, uuid);
+
+            return [null];
+        } catch (e) {
+            console.error('Error in setting password for user with UUID', { uuid }, e);
+            return [e];
+        }
+    }
+
     async changePassword({ uuid, oldPassword, newPassword }) {
         try {
             const statement = this.db.prepare(`SELECT * FROM users WHERE uuid = ?`);
