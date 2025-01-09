@@ -44,7 +44,9 @@ const setupUsersRoutes = async function ({ constructorParamForUsers }) {
                 }
                 return sendSuccessResponse(res, 'User created successfully');
             })
-            .get('/loginAs/:userUuid', (await import('./loginAs/loginAs.js')).loginAs())
+            .use('/:userUuid', express.Router({ mergeParams: true })
+                .get('/loginAs', (await import('./loginAs/loginAs.js')).loginAs())
+            )
     );
 };
 

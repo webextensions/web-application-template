@@ -138,7 +138,35 @@ const ajaxRequestConfigs = [
             },
             {
                 id: 'Login as user',
-                url: '/admin/users/loginAs/{userUuid}'
+                url: '/admin/users/{userUuid}/loginAs'
+            },
+            {
+                id: 'Admin > Set password',
+                title: 'Set password',
+                method: 'POST',
+                url: '/admin/users/{userId}/setPassword',
+                form: {
+                    schema: {
+                        type: 'object',
+                        required: [
+                            'newPassword'
+                        ],
+                        properties: {
+                            newPassword: {
+                                type: 'string',
+                                title: 'New password'
+                            }
+                        }
+                    },
+                    uiSchema: {
+                        newPassword: {
+                            'ui:widget': 'password'
+                        }
+                    },
+                    formData: {
+                        newPassword: ''
+                    }
+                }
             }
         ]
     },
