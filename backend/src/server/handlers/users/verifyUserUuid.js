@@ -3,40 +3,9 @@ import { logger } from 'note-down';
 import { sendErrorResponse } from '../../utils/express/sendResponse.js';
 
 import {
-    USER_AUTH_COOKIE_NAME,
-    ADMIN_AUTH_COOKIE_NAME
-} from '../../../../shared/appConstants.js';
-
-const _getAuthUuidFromRequest = function (req, authCookieName) {
-    const signedCookies = req.signedCookies;
-    const authCookie = signedCookies[authCookieName];
-    const currentTimestamp = Date.now();
-    let authUuid = null;
-
-    if (
-        authCookie &&
-        typeof authCookie.issuedAt === 'number' &&
-        typeof authCookie.expiresAt === 'number' &&
-        authCookie.issuedAt < currentTimestamp &&
-        currentTimestamp < authCookie.expiresAt &&
-        authCookie.uuid &&
-        authCookie.uuid.length === 36
-    ) {
-        authUuid = authCookie.uuid;
-    }
-
-    return authUuid;
-};
-
-const _getLoggedInUserUuidFromRequest = function (req) {
-    const loggedInUserUuid = _getAuthUuidFromRequest(req, USER_AUTH_COOKIE_NAME);
-    return loggedInUserUuid;
-};
-
-const _getLoggedInAdminUuidFromRequest = function (req) {
-    const loggedInAdminUuid = _getAuthUuidFromRequest(req, ADMIN_AUTH_COOKIE_NAME);
-    return loggedInAdminUuid;
-};
+    getLoggedInUserUuidFromRequest,
+    getLoggedInAdminUuidFromRequest
+} from '../../appUtils/authUtils/authUtils.js';
 
 const userLoggedInWithAdminAccount = function (loggedInAdminUuid, _userUuidsWithAdminAccess) {
     if (
@@ -56,12 +25,12 @@ const verifyUserUuid = function ({ _userUuidsWithAdminAccess }) {
             return sendErrorResponse(res, 400, 'User UUID is missing');
         }
 
-        const loggedInUserUuid = _getLoggedInUserUuidFromRequest(req);
+        const loggedInUserUuid = getLoggedInUserUuidFromRequest(req);
         if (loggedInUserUuid) {
             res.locals.loggedInUserUuid = loggedInUserUuid;
         }
 
-        const loggedInAdminUuid = _getLoggedInAdminUuidFromRequest(req);
+        const loggedInAdminUuid = getLoggedInAdminUuidFromRequest(req);
         if (loggedInAdminUuid) {
             res.locals.loggedInAdminUuid = loggedInAdminUuid;
         }
