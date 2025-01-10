@@ -102,7 +102,7 @@ class UsersDal {
         }
     }
 
-    async changePassword({ uuid, oldPassword, newPassword }) {
+    async updatePassword({ uuid, oldPassword, newPassword }) {
         try {
             const statement = this.db.prepare(`SELECT * FROM users WHERE uuid = ?`);
             const user = statement.get(uuid);

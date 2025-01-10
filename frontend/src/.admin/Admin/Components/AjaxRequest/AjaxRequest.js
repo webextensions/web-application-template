@@ -179,10 +179,10 @@ const ajaxRequestConfigs = [
                 url: '/api/v1/users/{userId}/owninfo'
             },
             {
-                id: 'User > Change password',
-                title: 'Change password',
+                id: 'User > Update password',
+                title: 'Update password',
                 method: 'POST',
-                url: '/api/v1/users/{userId}/changePassword',
+                url: '/api/v1/users/{userId}/updatePassword',
                 form: {
                     schema: {
                         type: 'object',

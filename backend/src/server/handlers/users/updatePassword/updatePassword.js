@@ -5,14 +5,14 @@ import {
 
 import { UsersDal } from '../../../../database/AppDal/Users/UsersDal.js';
 
-const changePassword = function ({ constructorParamForUsers }) {
+const updatePassword = function ({ constructorParamForUsers }) {
     const usersDal = new UsersDal(constructorParamForUsers);
 
     return async function (req, res) {
         const { userUuid } = req.params;
         const { oldPassword, newPassword } = req.body;
 
-        const [err] = await usersDal.changePassword({
+        const [err] = await usersDal.updatePassword({
             uuid: userUuid,
             oldPassword,
             newPassword
@@ -54,14 +54,14 @@ const changePassword = function ({ constructorParamForUsers }) {
                 // }
 
                 default: {
-                    console.error('Error: Unable to change password', userUuid, err);
+                    console.error('Error: Unable to update password', userUuid, err);
                     return sendErrorResponse(res, 500, 'Internal Server Error');
                 }
             }
         } else {
-            return sendSuccessResponse(res, 'Password changed successfully');
+            return sendSuccessResponse(res, 'Password updated successfully');
         }
     };
 };
 
-export { changePassword };
+export { updatePassword };
