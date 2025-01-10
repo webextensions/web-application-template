@@ -219,6 +219,29 @@ const ajaxRequestConfigs = [
                         newPassword: ''
                     }
                 }
+            },
+            {
+                id: 'User > Update email',
+                title: 'Update email',
+                method: 'POST',
+                url: '/api/v1/users/{userId}/updateEmail',
+                form: {
+                    schema: {
+                        type: 'object',
+                        required: [
+                            'email'
+                        ],
+                        properties: {
+                            email: {
+                                type: 'string',
+                                title: 'Email'
+                            }
+                        }
+                    },
+                    formData: {
+                        email: ''
+                    }
+                }
             }
         ]
     },

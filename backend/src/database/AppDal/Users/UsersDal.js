@@ -1,7 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
 
-import { passwordFieldSchema } from './UsersFieldsSchema.js';
+import {
+    passwordFieldSchema,
+    emailFieldSchema
+} from './UsersFieldsSchema.js';
 
 class UsersDal {
     constructor({ sqliteDb }) {
@@ -128,6 +131,35 @@ class UsersDal {
             return [null];
         } catch (e) {
             console.error('Error in changing password for user with UUID', { uuid }, e);
+            return [e];
+        }
+    }
+
+    async updateEmail({ uuid, email }) {
+        try {
+            const statement = this.db.prepare(`SELECT * FROM users WHERE uuid = ?`);
+            const user = statement.get(uuid);
+            if (!user) {
+                return [new Error('User not found', { cause: { code: 'USER_NOT_FOUND' } })];
+            }
+
+            try {
+                emailFieldSchema.parse(email);
+            } catch (e) {
+                return [new Error('Email invalid', { cause: { code: 'EMAIL_INVALID' } })];
+            }
+
+            const existingUserWithNewEmail = this.db.prepare(`SELECT * FROM users WHERE email = ?`).get(email);
+            if (existingUserWithNewEmail) {
+                return [new Error('Email already in use', { cause: { code: 'EMAIL_ALREADY_IN_USE' } })];
+            }
+
+            const updateStatement = this.db.prepare(`UPDATE users SET email = ? WHERE uuid = ?`);
+            updateStatement.run(email, uuid);
+
+            return [null];
+        } catch (e) {
+            console.error('Error in changing email for user with UUID', { uuid }, e);
             return [e];
         }
     }

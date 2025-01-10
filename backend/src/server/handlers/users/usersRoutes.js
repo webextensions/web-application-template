@@ -5,11 +5,12 @@ import {
     sendSuccessResponse
 } from '../../utils/express/sendResponse.js';
 
+import { UsersDal } from '../../../database/AppDal/Users/UsersDal.js';
+
 import { verifyUserUuid } from './verifyUserUuid.js';
 
 import { updatePassword } from './updatePassword/updatePassword.js';
-
-import { UsersDal } from '../../../database/AppDal/Users/UsersDal.js';
+import { updateEmail } from './updateEmail/updateEmail.js';
 
 const setupUsersRoutes = function ({ constructorParamForUsers, _userUuidsWithAdminAccess }) {
     const usersDal = new UsersDal(constructorParamForUsers);
@@ -30,6 +31,7 @@ const setupUsersRoutes = function ({ constructorParamForUsers, _userUuidsWithAdm
                     return sendSuccessResponse(res, user);
                 })
                 .post('/updatePassword', updatePassword({ constructorParamForUsers }))
+                .post('/updateEmail', updateEmail({ constructorParamForUsers }))
             )
     );
 };
