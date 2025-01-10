@@ -174,6 +174,11 @@ const ajaxRequestConfigs = [
         label: 'User',
         options: [
             {
+                id: 'User > whoami',
+                title: '/whoami',
+                url: '/whoami'
+            },
+            {
                 id: 'User > Info',
                 title: 'Info',
                 url: '/api/v1/users/{userId}/owninfo'
@@ -214,11 +219,6 @@ const ajaxRequestConfigs = [
                         newPassword: ''
                     }
                 }
-            },
-            {
-                id: 'User > whoami',
-                title: '/whoami',
-                url: '/whoami'
             }
         ]
     },
