@@ -9,10 +9,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { NonSelfLink } from '../../../base_modules/NonSelfLink/NonSelfLink.js';
 
 import { useDevCustomizations } from '../../../base_modules/hooks/useDevCustomizations/useDevCustomizations.js';
+import { useAuth } from '../../../base_modules/hooks/useAuth/useAuth.js';
 
 import {
     ROOT,
     ROOT_SIGN_IN,
+    ROOT_TASKS,
     ROOT_UNDER_CONSTRUCTION
 } from '../../../../../backend/shared/pages/pageUrls.js';
 
@@ -59,6 +61,8 @@ const SignInOrSignOutLink = function () {
 const LinksInHeader = () => {
     const { flagLinksToHiddenPages } = useDevCustomizations();
 
+    const { flagUserIsRegistered } = useAuth();
+
     return (
         <div
             className={styles.LinksInHeader}
@@ -72,6 +76,14 @@ const LinksInHeader = () => {
                     Home
                 </NonSelfLink>
             </div>
+            {
+                flagUserIsRegistered === 'yes' &&
+                <div>
+                    <NonSelfLink to={ROOT_TASKS} style={{ color: '#fff', textDecoration: 'none' }}>
+                        Tasks
+                    </NonSelfLink>
+                </div>
+            }
             {
                 flagLinksToHiddenPages === 'yes' &&
                 <div>

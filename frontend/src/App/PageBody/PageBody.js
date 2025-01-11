@@ -19,6 +19,7 @@ import {
 import { PageAccount } from './PageAccount/PageAccount.js';
 import { PageMain } from './PageMain/PageMain.js';
 import { PageSignIn } from './PageSignIn/PageSignIn.js';
+import { PageTasks } from './PageTasks/PageTasks.js';
 
 import { PageUnderConstruction } from './PageUnderConstruction/PageUnderConstruction.js';
 
@@ -27,6 +28,7 @@ import {
     ROOT,
     ROOT_ACCOUNT,
     ROOT_SIGN_IN,
+    ROOT_TASKS,
     ROOT_UNDER_CONSTRUCTION
 } from '../../../../backend/shared/pages/pageUrls.js';
 
@@ -90,6 +92,7 @@ const PageBody = function () {
                             <Route exact path={ROOT}                           element={<PageMain              />} />
                             <Route exact path={ROOT_ACCOUNT}                   element={<PageAccount           />} />
                             <Route exact path={ROOT_SIGN_IN}                   element={<PageSignIn            />} />
+                            <Route exact path={ROOT_TASKS}                     element={<PageTasks             />} />
                             <Route exact path={ROOT_UNDER_CONSTRUCTION}        element={<PageUnderConstruction />} />
                             <Route       path="*"                              element={<PageNotFound          />} />
                         </Routes>

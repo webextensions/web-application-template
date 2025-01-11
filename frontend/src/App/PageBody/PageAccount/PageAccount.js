@@ -16,6 +16,7 @@ const PageAccount = function () {
 
     const navigate = useNavigate();
 
+    // TODO: FIX-CODE-DUPLICATION: The redirection logic should be handled in a more generic way (Ref: PageTasks.js)
     useEffect(() => {
         if (flagUserIsRegistered === 'no') {
             const theCurrentFullPath = window.location.href.replace(window.location.origin, '');

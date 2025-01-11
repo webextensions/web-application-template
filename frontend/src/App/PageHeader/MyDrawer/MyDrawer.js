@@ -9,6 +9,7 @@ import ListItemButton from '@mui/material/ListItemButton/index.js';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import CodeIcon from '@mui/icons-material/Code';
 
@@ -17,10 +18,12 @@ import { NonSelfLink } from '../../../base_modules/NonSelfLink/NonSelfLink.js';
 import { useUserUuid } from '../../../base_modules/hooks/useUserUuid/useUserUuid.js';
 
 import { useDevCustomizations } from '../../../base_modules/hooks/useDevCustomizations/useDevCustomizations.js';
+import { useAuth } from '../../../base_modules/hooks/useAuth/useAuth.js';
 
 import {
     ROOT_ACCOUNT,
     ROOT_SIGN_IN,
+    ROOT_TASKS,
     ROOT_UNDER_CONSTRUCTION
 } from '../../../../../backend/shared/pages/pageUrls.js';
 
@@ -37,6 +40,8 @@ const MyDrawer = ({ expanded, onClose }) => {
         flagLinksToHiddenPages,
         flagDevHelperMenuOption
     } = useDevCustomizations();
+
+    const { flagUserIsRegistered } = useAuth();
 
     const delayedHideDrawer = function () {
         setTimeout(() => {
@@ -84,6 +89,18 @@ const MyDrawer = ({ expanded, onClose }) => {
                             </NonSelfLink>
                         }
                     />
+
+                    {
+                        flagUserIsRegistered === 'yes' &&
+                        <NonSelfLink to={ROOT_TASKS} style={{ textDecoration: 'none' }}>
+                            <ListItemButton onClick={delayedHideDrawer} style={{ color: '#fff' }}>
+                                <ListAltIcon sx={{ color: '#fff' }} />
+                                <div style={{ marginLeft: 10 }}>
+                                    Tasks
+                                </div>
+                            </ListItemButton>
+                        </NonSelfLink>
+                    }
 
                     {
                         flagLinksToHiddenPages === 'yes' &&
