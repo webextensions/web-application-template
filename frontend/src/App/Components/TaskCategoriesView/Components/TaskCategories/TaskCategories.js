@@ -13,6 +13,8 @@ import {
 
 import { AddCategory } from '../AddCategory/AddCategory.js';
 
+import * as styles from './TaskCategories.css';
+
 const DeleteTaskCategory = ({ taskCategoryId, onDelete }) => {
     const {
         mutate,
@@ -59,9 +61,9 @@ const TaskCategory = ({ taskCategory }) => {
                 opacity: deleted ? 0.5 : undefined
             }}
         >
-            <td>{taskCategory.title}</td>
-            <td>{taskCategory.createdAt}</td>
-            <td>
+            <td className="column-width-auto">{taskCategory.title}</td>
+            <td className="column-width-min">{taskCategory.createdAt}</td>
+            <td className="column-width-min">
                 <DeleteTaskCategory taskCategoryId={taskCategory._id} onDelete={handleDelete} />
             </td>
         </tr>
@@ -81,12 +83,12 @@ const TaskCategoriesTable = ({ taskCategories }) => {
     }
 
     return (
-        <table>
+        <table style={{ width: '100%' }}>
             <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Created At</th>
-                    <th>Actions</th>
+                    <th className="column-width-auto">Title</th>
+                    <th className="column-width-min">Created At</th>
+                    <th className="column-width-min">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -129,7 +131,8 @@ const TaskCategoriesList = ({ refreshedAt }) => {
         <div
             style={{
                 opacity: (fetchStatus === 'fetching') ? 0.5 : undefined,
-                transition: (fetchStatus === 'fetching') ? undefined : 'opacity 0.3s'
+                transition: (fetchStatus === 'fetching') ? undefined : 'opacity 0.3s',
+                overflow: 'auto'
             }}
         >
             {(() => {
@@ -150,7 +153,7 @@ TaskCategoriesList.propTypes = {
 
 const TaskCategories = function ({ refreshedAt }) {
     return (
-        <div>
+        <div className={styles.TaskCategories}>
             <TaskCategoriesList refreshedAt={refreshedAt} />
 
             <div style={{ marginTop: 20 }}>

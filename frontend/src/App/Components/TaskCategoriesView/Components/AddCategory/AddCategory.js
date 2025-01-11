@@ -69,6 +69,9 @@ const AddCategory = function () {
                 <button
                     type="button"
                     disabled={isLoading || !title}
+                    style={{
+                        whiteSpace: 'nowrap'
+                    }}
                     onClick={function () {
                         mutate();
                     }}

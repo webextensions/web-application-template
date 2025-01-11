@@ -1,0 +1,12 @@
+.TaskCategories th {
+    font-weight: bold;
+}
+.TaskCategories th:not(:first-child),
+.TaskCategories td:not(:first-child) {
+    padding-left: 15px;
+    padding-right: 1px; /* As per the status when implemented, this is required to not crop the 1px border in the top-right of the "Delete" button when the horizontal scrollbar is shown due to less screen width */
+}
+
+.TaskCategories td:first-child {
+    min-width: 100px;
+}

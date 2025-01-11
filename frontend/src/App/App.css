@@ -1,3 +1,11 @@
 body {
     background-color: rgb(232, 234, 237);
 }
+
+:global(.column-width-auto) {
+    width: auto;
+}
+:global(.column-width-min) {
+    width: 1px;
+    white-space: nowrap;
+}
