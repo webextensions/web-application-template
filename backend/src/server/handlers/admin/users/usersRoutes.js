@@ -1,14 +1,19 @@
 import express from 'express';
 
-const usersRoutes = async function ({ constructorParamForUsers }) {
+import { list } from './list/list.js';
+import { create } from './create/create.js';
+import { loginAs } from './loginAs/loginAs.js';
+import { setPassword } from './setPassword/setPassword.js';
+
+const usersRoutes = function ({ constructorParamForUsers }) {
     return (
         express
             .Router({ mergeParams: true })
-            .get('/list', (await import('./list/list.js')).list({ constructorParamForUsers }))
-            .post('/create', (await import('./create/create.js')).create({ constructorParamForUsers }))
+            .get('/list', list({ constructorParamForUsers }))
+            .post('/create', create({ constructorParamForUsers }))
             .use('/:userUuid', express.Router({ mergeParams: true })
-                .get('/loginAs', (await import('./loginAs/loginAs.js')).loginAs())
-                .post('/setPassword', (await import('./setPassword/setPassword.js')).setPassword({ constructorParamForUsers }))
+                .get('/loginAs', loginAs())
+                .post('/setPassword', setPassword({ constructorParamForUsers }))
             )
     );
 };
