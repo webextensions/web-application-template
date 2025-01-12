@@ -1,11 +1,11 @@
 import { logger } from 'note-down';
 
-import { sendErrorResponse } from '../../utils/express/sendResponse.js';
+import { sendErrorResponse } from '../../../utils/express/sendResponse.js';
 
 import {
     getLoggedInUserUuidFromRequest,
     getLoggedInAdminUuidFromRequest
-} from '../../appUtils/authUtils/authUtils.js';
+} from '../../../appUtils/authUtils/authUtils.js';
 
 const userLoggedInWithAdminAccount = function (loggedInAdminUuid, _userUuidsWithAdminAccess) {
     if (

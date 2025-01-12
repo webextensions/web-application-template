@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { verifyUserUuid } from './verifyUserUuid.js';
+import { verifyUserUuid } from './verifyUserUuid/verifyUserUuid.js';
 
 import { ownInfo } from './ownInfo/ownInfo.js';
 import { updatePassword } from './updatePassword/updatePassword.js';
