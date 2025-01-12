@@ -9,7 +9,7 @@ const whoami = function () {
             return sendErrorResponse(res, 401, 'Unauthorized');
         }
 
-        return res.redirect(307, '/api/v1/users/' + loggedInUserUuid + '/owninfo');
+        return res.redirect(307, '/api/v1/users/' + loggedInUserUuid + '/ownInfo');
     };
 };
 

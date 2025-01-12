@@ -78,7 +78,7 @@ export const loginWithAccountIdAndPassword = async ({ accountId, password }) => 
 
 export const getProfileForLoggedInUserByUserUuid = async (userUuid) => {
     try {
-        const response = await kyForApp.instance.get(`/api/v1/users/${userUuid}/owninfo`);
+        const response = await kyForApp.instance.get(`/api/v1/users/${userUuid}/ownInfo`);
         const json = await response.json();
         return [null, json.output];
     } catch (err) {

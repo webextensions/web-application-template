@@ -181,7 +181,7 @@ const ajaxRequestConfigs = [
             {
                 id: 'User > Info',
                 title: 'Info',
-                url: '/api/v1/users/{userId}/owninfo'
+                url: '/api/v1/users/{userId}/ownInfo'
             },
             {
                 id: 'User > Update password',
