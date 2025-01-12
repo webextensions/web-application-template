@@ -6,7 +6,7 @@ import { ownInfo } from './ownInfo/ownInfo.js';
 import { updatePassword } from './updatePassword/updatePassword.js';
 import { updateEmail } from './updateEmail/updateEmail.js';
 
-const setupUsersRoutes = function ({ constructorParamForUsers, _userUuidsWithAdminAccess }) {
+const usersRoutes = function ({ constructorParamForUsers, _userUuidsWithAdminAccess }) {
     return (
         express.Router({ mergeParams: true })
             .use('/:userUuid', express.Router({ mergeParams: true })
@@ -18,4 +18,4 @@ const setupUsersRoutes = function ({ constructorParamForUsers, _userUuidsWithAdm
     );
 };
 
-export { setupUsersRoutes };
+export { usersRoutes };

@@ -93,7 +93,7 @@ const routeSetup = async function (exp, {
                     res.send(`TODO: Create a user with ID ${reqBody.username} (if available)`);
                 })
             )
-            .use('/users', (await import('./handlers/users/usersRoutes.js')).setupUsersRoutes({ constructorParamForUsers, _userUuidsWithAdminAccess }))
+            .use('/users', (await import('./handlers/users/usersRoutes.js')).usersRoutes({ constructorParamForUsers, _userUuidsWithAdminAccess }))
         )
 
         .use('/taskCategories', await (await import('./handlers/taskCategories/taskCategories.js')).setupTaskCategoriesRoutes());
