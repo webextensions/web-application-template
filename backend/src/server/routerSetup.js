@@ -6,6 +6,19 @@ import { basicAuth } from './middleware/basic-auth.js';
 
 import { getUsersConstructorParam } from '../database/AppDal/Users/getUsersConstructorParam.js';
 
+import { whoami } from './handlers/whoami/whoami.js';
+
+import { help } from './handlers/admin/help/help.js';
+import { info } from './handlers/admin/info/info.js';
+import { kill } from './handlers/admin/kill/kill.js';
+import { setupDb } from './handlers/admin/setupDb/setupDb.js';
+import { usersRoutes as usersRoutesForAdmin } from './handlers/admin/users/usersRoutes.js';
+
+import { setupAccountRoutes } from './handlers/account/accountRoutes.js';
+import { usersRoutes as usersRoutesForUsers } from './handlers/users/usersRoutes.js';
+
+import { setupTaskCategoriesRoutes } from './handlers/taskCategories/taskCategories.js';
+
 const routerSetup = async function (exp, {
     _accessSecurityConfig,
     _userUuidsWithAdminAccess,
@@ -16,7 +29,7 @@ const routerSetup = async function (exp, {
     const constructorParamForUsers = await getUsersConstructorParam({ sqliteDbPath: _databaseFilePath });
 
     router
-        .get('/whoami', (await import('./handlers/whoami/whoami.js')).whoami())
+        .get('/whoami', whoami())
         .use('/admin', express.Router()
             .use(
                 enabledMiddlewareOrNoop(
@@ -27,17 +40,17 @@ const routerSetup = async function (exp, {
                     })
                 )
             )
-            .get('/help', (await import('./handlers/admin/help/help.js')).help(exp))
-            .get('/info', (await import('./handlers/admin/info/info.js')).info())
-            .get('/kill', (await import('./handlers/admin/kill/kill.js')).kill())
-            .get('/setupDb', (await import('./handlers/admin/setupDb/setupDb.js')).setupDb({ constructorParamForUsers }))
-            .use('/users', (await import('./handlers/admin/users/usersRoutes.js')).usersRoutes({ constructorParamForUsers }))
+            .get('/help', help(exp))
+            .get('/info', info())
+            .get('/kill', kill())
+            .get('/setupDb', setupDb({ constructorParamForUsers }))
+            .use('/users', usersRoutesForAdmin({ constructorParamForUsers }))
             .get('/', function (req, res) {
                 res.send('TODO: Serve the /GET request for /admin');
             })
         )
         .use('/api/v1', express.Router()
-            .use('/account', (await import('./handlers/account/accountRoutes.js')).setupAccountRoutes({ constructorParamForUsers, _userUuidsWithAdminAccess }))
+            .use('/account', setupAccountRoutes({ constructorParamForUsers, _userUuidsWithAdminAccess }))
             .use('/user-account', express.Router()
                 .post('/create', function (req, res) {
                     const reqBody = structuredClone(req.body);
@@ -46,10 +59,10 @@ const routerSetup = async function (exp, {
                     res.send(`TODO: Create a user with ID ${reqBody.username} (if available)`);
                 })
             )
-            .use('/users', (await import('./handlers/users/usersRoutes.js')).usersRoutes({ constructorParamForUsers, _userUuidsWithAdminAccess }))
+            .use('/users', usersRoutesForUsers({ constructorParamForUsers, _userUuidsWithAdminAccess }))
         )
 
-        .use('/taskCategories', await (await import('./handlers/taskCategories/taskCategories.js')).setupTaskCategoriesRoutes());
+        .use('/taskCategories', await setupTaskCategoriesRoutes());
 
     setTimeout(function () {
         // Setting up this router after a delay so that live-css server router is able to attach itself before it
