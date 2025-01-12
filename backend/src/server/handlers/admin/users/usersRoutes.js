@@ -8,7 +8,7 @@ import {
 import { UsersDal } from '../../../../database/AppDal/Users/UsersDal.js';
 import { userObjectFullSchema } from '../../../../database/AppDal/Users/UsersFieldsSchema.js';
 
-const setupUsersRoutes = async function ({ constructorParamForUsers }) {
+const usersRoutes = async function ({ constructorParamForUsers }) {
     const usersDal = new UsersDal(constructorParamForUsers);
 
     return (
@@ -51,4 +51,4 @@ const setupUsersRoutes = async function ({ constructorParamForUsers }) {
     );
 };
 
-export { setupUsersRoutes };
+export { usersRoutes };
