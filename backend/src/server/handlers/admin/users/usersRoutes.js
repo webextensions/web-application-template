@@ -14,13 +14,7 @@ const usersRoutes = async function ({ constructorParamForUsers }) {
     return (
         express
             .Router({ mergeParams: true })
-            .get('/list', async function (req, res) {
-                const [err, users] = await usersDal.selectAll();
-                if (err) {
-                    return sendErrorResponse(res, 500, 'Internal Server Error');
-                }
-                return sendSuccessResponse(res, users, { beautify: true });
-            })
+            .get('/list', (await import('./list/list.js')).list({ constructorParamForUsers }))
             .post('/create', async function (req, res) {
                 const { id, name, email, password, joinedAt } = req.body;
                 const userOb = {
