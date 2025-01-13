@@ -60,6 +60,7 @@
         "strip-ansi": "^7.1.0",
         "styles-reset": "=0.3.0",
         "systeminformation": "^5.24.9",
+        "throttle-debounce": "^5.0.2",
         "use-local-storage-state": "^19.5.0",
         "utility-classes.css": "^0.0.1",
         "uuid": "^11.0.3",

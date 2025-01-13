@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useMinHeight } from '../../../base_modules/hooks/useMinHeight/useMinHeight.js';
+
 import { EnsureLogin } from '../../Components/EnsureLogin/EnsureLogin.js';
 
 import { TaskCategoriesView } from '../../Components/TaskCategoriesView/TaskCategoriesView.js';
@@ -7,12 +9,16 @@ import { TaskCategoriesView } from '../../Components/TaskCategoriesView/TaskCate
 import * as styles from './PageTasks.css';
 
 const PageTasks = () => {
+    const { ref, removeMinHeight } = useMinHeight({ key: 'page-tasks' });
+
     return (
-        <EnsureLogin>
-            <div className={styles.PageTasks}>
-                <TaskCategoriesView />
-            </div>
-        </EnsureLogin>
+        <div ref={ref}>
+            <EnsureLogin onLoadingDone={removeMinHeight}>
+                <div className={styles.PageTasks}>
+                    <TaskCategoriesView />
+                </div>
+            </EnsureLogin>
+        </div>
     );
 };
 

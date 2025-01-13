@@ -1,9 +1,12 @@
 import React from 'react';
 
+import { useMinHeight } from '../../../base_modules/hooks/useMinHeight/useMinHeight.js';
+
 import { useAuth } from '../../../base_modules/hooks/useAuth/useAuth.js';
 
-import * as styles from './PageAccount.css';
 import { EnsureLogin } from '../../Components/EnsureLogin/EnsureLogin.js';
+
+import * as styles from './PageAccount.css';
 
 const Content = function () {
     const {
@@ -41,12 +44,16 @@ const Content = function () {
 };
 
 const PageAccount = function () {
+    const { ref, removeMinHeight } = useMinHeight({ key: 'page-account' });
+
     return (
-        <EnsureLogin>
-            <div className={styles.PageAccount}>
-                <Content />
-            </div>
-        </EnsureLogin>
+        <div ref={ref}>
+            <EnsureLogin onLoadingDone={removeMinHeight}>
+                <div className={styles.PageAccount}>
+                    <Content />
+                </div>
+            </EnsureLogin>
+        </div>
     );
 };
 

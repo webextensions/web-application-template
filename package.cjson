@@ -122,6 +122,8 @@
 
         "json-stringify-pretty-compact": "^4.0.0",
 
+        "throttle-debounce": "^5.0.2",
+
         "zod": "^3.24.1",
         "lodash": "^4.17.21",
         "extend": "^3.0.2"
