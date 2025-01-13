@@ -84,7 +84,7 @@
         "react-hotkeys-hook": "^4.6.1",
 
         // React components
-        "@webextensions/react": "=0.1.2",
+        "@webextensions/react": "=0.1.5",
 
         // Form builder
         "@rjsf/core": "^5.23.2",
@@ -106,7 +106,7 @@
         "bcrypt": "^5.1.1",
 
         // Miscellaneous
-        "helpmate": "=1.7.1",
+        "helpmate": "=1.7.2",
 
         "js-cookie": "^3.0.5",
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useMinHeight } from '../../../base_modules/hooks/useMinHeight/useMinHeight.js';
+import { useMinHeight } from '@webextensions/react/hooks/useMinHeight/useMinHeight.js';
 
 import { EnsureLogin } from '../../Components/EnsureLogin/EnsureLogin.js';
 
