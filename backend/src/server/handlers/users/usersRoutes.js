@@ -6,14 +6,14 @@ import { ownInfo } from './ownInfo/ownInfo.js';
 import { updatePassword } from './updatePassword/updatePassword.js';
 import { updateEmail } from './updateEmail/updateEmail.js';
 
-const usersRoutes = function ({ constructorParamForUsers, _userUuidsWithAdminAccess }) {
+const usersRoutes = function ({ constructorParamForDb, _userUuidsWithAdminAccess }) {
     return (
         express.Router({ mergeParams: true })
             .use('/:userUuid', express.Router({ mergeParams: true })
                 .use(verifyUserUuid({ _userUuidsWithAdminAccess }))
-                .get('/ownInfo', ownInfo({ constructorParamForUsers }))
-                .post('/updatePassword', updatePassword({ constructorParamForUsers }))
-                .post('/updateEmail', updateEmail({ constructorParamForUsers }))
+                .get('/ownInfo', ownInfo({ constructorParamForDb }))
+                .post('/updatePassword', updatePassword({ constructorParamForDb }))
+                .post('/updateEmail', updateEmail({ constructorParamForDb }))
             )
     );
 };

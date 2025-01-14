@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3';
 
-const getUsersConstructorParam = async function ({
+const getDbConstructorParam = async function ({
     sqliteDbPath
 }) {
     const sqliteDb = new Database(sqliteDbPath);
@@ -9,4 +9,4 @@ const getUsersConstructorParam = async function ({
     return { sqliteDb };
 };
 
-export { getUsersConstructorParam };
+export { getDbConstructorParam };

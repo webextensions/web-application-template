@@ -4,7 +4,7 @@ import { enabledMiddlewareOrNoop } from './utils/express/enabledMiddlewareOrNoop
 
 import { basicAuth } from './middleware/basic-auth.js';
 
-import { getUsersConstructorParam } from '../database/AppDal/Users/getUsersConstructorParam.js';
+import { getDbConstructorParam } from '../database/AppDal/getDbConstructorParam.js';
 
 import { whoami } from './handlers/whoami/whoami.js';
 
@@ -26,7 +26,7 @@ const routerSetup = async function (exp, {
 }) {
     const router = express.Router();
 
-    const constructorParamForUsers = await getUsersConstructorParam({ sqliteDbPath: _databaseFilePath });
+    const constructorParamForDb = await getDbConstructorParam({ sqliteDbPath: _databaseFilePath });
 
     router
         .get('/whoami', whoami())
@@ -43,14 +43,14 @@ const routerSetup = async function (exp, {
             .get('/help', help(exp))
             .get('/info', info())
             .get('/kill', kill())
-            .get('/setupDb', setupDb({ constructorParamForUsers }))
-            .use('/users', usersRoutesForAdmin({ constructorParamForUsers }))
+            .get('/setupDb', setupDb({ constructorParamForDb }))
+            .use('/users', usersRoutesForAdmin({ constructorParamForDb }))
             .get('/', function (req, res) {
                 res.send('TODO: Serve the /GET request for /admin');
             })
         )
         .use('/api/v1', express.Router()
-            .use('/account', setupAccountRoutes({ constructorParamForUsers, _userUuidsWithAdminAccess }))
+            .use('/account', setupAccountRoutes({ constructorParamForDb, _userUuidsWithAdminAccess }))
             .use('/user-account', express.Router()
                 .post('/create', function (req, res) {
                     const reqBody = structuredClone(req.body);
@@ -59,7 +59,7 @@ const routerSetup = async function (exp, {
                     res.send(`TODO: Create a user with ID ${reqBody.username} (if available)`);
                 })
             )
-            .use('/users', usersRoutesForUsers({ constructorParamForUsers, _userUuidsWithAdminAccess }))
+            .use('/users', usersRoutesForUsers({ constructorParamForDb, _userUuidsWithAdminAccess }))
         )
 
         .use('/taskCategories', await taskCategoriesRoutes());

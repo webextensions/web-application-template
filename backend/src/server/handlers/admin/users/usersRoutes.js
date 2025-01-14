@@ -5,15 +5,15 @@ import { create } from './create/create.js';
 import { loginAs } from './loginAs/loginAs.js';
 import { setPassword } from './setPassword/setPassword.js';
 
-const usersRoutes = function ({ constructorParamForUsers }) {
+const usersRoutes = function ({ constructorParamForDb }) {
     return (
         express
             .Router({ mergeParams: true })
-            .get('/list', list({ constructorParamForUsers }))
-            .post('/create', create({ constructorParamForUsers }))
+            .get('/list', list({ constructorParamForDb }))
+            .post('/create', create({ constructorParamForDb }))
             .use('/:userUuid', express.Router({ mergeParams: true })
                 .get('/loginAs', loginAs())
-                .post('/setPassword', setPassword({ constructorParamForUsers }))
+                .post('/setPassword', setPassword({ constructorParamForDb }))
             )
     );
 };

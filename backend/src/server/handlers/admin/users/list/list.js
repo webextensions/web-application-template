@@ -5,8 +5,8 @@ import {
 
 import { UsersDal } from '../../../../../database/AppDal/Users/UsersDal.js';
 
-const list = function ({ constructorParamForUsers }) {
-    const usersDal = new UsersDal(constructorParamForUsers);
+const list = function ({ constructorParamForDb }) {
+    const usersDal = new UsersDal(constructorParamForDb);
 
     return async function (req, res) {
         const [err, users] = await usersDal.selectAll();

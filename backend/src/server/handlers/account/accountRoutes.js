@@ -63,8 +63,8 @@ const setCookiesForSuccessfulAuthentication = function ({ res, userUuid, _userUu
     }
 };
 
-const setupAccountRoutes = function ({ constructorParamForUsers, _userUuidsWithAdminAccess }) {
-    const usersDal = new UsersDal(constructorParamForUsers);
+const setupAccountRoutes = function ({ constructorParamForDb, _userUuidsWithAdminAccess }) {
+    const usersDal = new UsersDal(constructorParamForDb);
 
     return (
         express.Router({ mergeParams: true })

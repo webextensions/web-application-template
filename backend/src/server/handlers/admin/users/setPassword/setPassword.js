@@ -5,8 +5,8 @@ import {
 
 import { UsersDal } from '../../../../../database/AppDal/Users/UsersDal.js';
 
-const setPassword = function ({ constructorParamForUsers }) {
-    const usersDal = new UsersDal(constructorParamForUsers);
+const setPassword = function ({ constructorParamForDb }) {
+    const usersDal = new UsersDal(constructorParamForDb);
 
     return async function (req, res) {
         const { userUuid } = req.params;

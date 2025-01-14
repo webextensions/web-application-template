@@ -5,8 +5,8 @@ import {
 
 import { UsersDal } from '../../../../database/AppDal/Users/UsersDal.js';
 
-const setupDb = function ({ constructorParamForUsers }) {
-    const usersDal = new UsersDal(constructorParamForUsers);
+const setupDb = function ({ constructorParamForDb }) {
+    const usersDal = new UsersDal(constructorParamForDb);
 
     return async function (req, res) {
         const [errUsers] = await usersDal.createTable();
