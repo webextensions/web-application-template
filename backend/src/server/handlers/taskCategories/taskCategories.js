@@ -19,7 +19,7 @@ const db = new Datastore({
     autoload: true
 });
 
-const setupTaskCategoriesRoutes = async function () {
+const taskCategoriesRoutes = async function () {
     await db.loadDatabaseAsync();
     try {
         await db.ensureIndexAsync({ fieldName: 'title', unique: true });
@@ -30,7 +30,7 @@ const setupTaskCategoriesRoutes = async function () {
         throw e;
     }
 
-    const router = (
+    return (
         express.Router()
             .get('/list', async function (req, res) {
                 const entries = await db.find({}).sort({ title: 1 });
@@ -71,8 +71,6 @@ const setupTaskCategoriesRoutes = async function () {
                 }
             })
     );
-
-    return router;
 };
 
-export { setupTaskCategoriesRoutes };
+export { taskCategoriesRoutes };
