@@ -17,7 +17,7 @@ import { usersRoutes as usersRoutesForAdmin } from './handlers/admin/users/users
 import { setupAccountRoutes } from './handlers/account/accountRoutes.js';
 import { usersRoutes as usersRoutesForUsers } from './handlers/users/usersRoutes.js';
 
-import { taskCategoriesRoutes } from './handlers/taskCategories/taskCategories.js';
+import { taskCategoriesRoutes } from './handlers/taskCategories/taskCategoriesRoutes.js';
 
 const routerSetup = async function (exp, {
     _accessSecurityConfig,
@@ -62,7 +62,7 @@ const routerSetup = async function (exp, {
             .use('/users', usersRoutesForUsers({ constructorParamForDb, _userUuidsWithAdminAccess }))
         )
 
-        .use('/taskCategories', await taskCategoriesRoutes());
+        .use('/taskCategories', await taskCategoriesRoutes({ constructorParamForDb }));
 
     setTimeout(function () {
         // Setting up this router after a delay so that live-css server router is able to attach itself before it

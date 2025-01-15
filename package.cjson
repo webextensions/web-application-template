@@ -95,7 +95,6 @@
         "ky": "^1.7.4",
 
         // Database
-        "@seald-io/nedb": "^4.0.4",
         "better-sqlite3": "^11.7.2",
 
         // System and I/O devices

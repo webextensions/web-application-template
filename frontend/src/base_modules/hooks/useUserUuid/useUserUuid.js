@@ -33,7 +33,6 @@ export const useUserUuid = function () {
     /* */
 
     const recomputeUserUuid = function () {
-        // debugger;
         const userUuidFromCookie = getUserUuidFromCookie();
         setUserUuid(userUuidFromCookie);
     };

@@ -4,38 +4,34 @@ import bcrypt from 'bcrypt';
 import {
     passwordFieldSchema,
     emailFieldSchema
-} from './UsersFieldsSchema.js';
+} from './UserFieldsSchema.js';
 
 class UsersDal {
     constructor({ sqliteDb }) {
         this.db = sqliteDb;
     }
 
-    async createTable() {
+    async createTable_users() {
         try {
             this.db.exec(`
-                CREATE TABLE users (
-                    uuid     TEXT             PRIMARY KEY,
-                    id       TEXT    NOT NULL UNIQUE,
-                    name     TEXT    NOT NULL,
-                    email    TEXT    NOT NULL UNIQUE,
-                    password TEXT    NOT NULL,
-                    joinedAt INTEGER NOT NULL
+                CREATE TABLE IF NOT EXISTS users (
+                    uuid         TEXT             PRIMARY KEY,
+                    id           TEXT    NOT NULL UNIQUE,
+                    name         TEXT    NOT NULL,
+                    email        TEXT    NOT NULL UNIQUE,
+                    passwordHash TEXT    NOT NULL,
+                    joinedAt     INTEGER NOT NULL
                 )
             `);
-            return [null, 'Table created successfully'];
+            return [null, 'Success: Created table "users"'];
         } catch (e) {
-            console.error('Error in creating table "users"', e);
+            console.error('Error: Failed to create table "users"', e);
             return [e];
         }
     }
 
-    async create({ id, name, email, password, joinedAt }) {
+    async createUser({ id, name, email, password, joinedAt }) {
         try {
-            const statement = this.db.prepare(`
-                INSERT INTO users ( uuid,  id,  name,  email,  password,  joinedAt)
-                VALUES            (@uuid, @id, @name, @email, @password, @joinedAt)
-            `);
             const uuid = uuidv4();
 
             const passwordHash = await bcrypt.hash(password, 10);
@@ -43,13 +39,17 @@ class UsersDal {
             // const salt = await bcrypt.genSalt(10);
             // const passwordHash = await bcrypt.hash(password, salt);
 
-            statement.run({ uuid, id, name, email, password: passwordHash, joinedAt });
+            const statement = this.db.prepare(`
+                INSERT INTO users ( uuid,  id,  name,  email,  passwordHash,  joinedAt)
+                VALUES            (@uuid, @id, @name, @email, @passwordHash, @joinedAt)
+            `);
+            statement.run({         uuid,  id,  name,  email,  passwordHash,  joinedAt });
             return [null];
         } catch (e) {
             const maskedPassword = password.replaceAll(/./g, '*');
             console.error(
-                'Error in inserting into "users"',
-                JSON.stringify({ id, name, email, password: maskedPassword, joinedAt }),
+                'Error: Failed to insert record into "users"',
+                JSON.stringify({ id, name, email, maskedPassword, joinedAt }),
                 e
             );
             return [e];
@@ -61,12 +61,12 @@ class UsersDal {
             const statement = this.db.prepare(`SELECT * FROM users WHERE id = ?`);
             const user = statement.get(accountId);
             if (!user) {
-                return [new Error('User not found', { cause: { code: 'USER_NOT_FOUND' } })];
+                return [new Error('Error: User not found', { cause: { code: 'USER_NOT_FOUND' } })];
             }
 
-            const isPasswordCorrect = await bcrypt.compare(password, user.password);
+            const isPasswordCorrect = await bcrypt.compare(password, user.passwordHash);
             if (!isPasswordCorrect) {
-                return [new Error('Password incorrect', { cause: { code: 'PASSWORD_INCORRECT' } })];
+                return [new Error('Error: Password incorrect', { cause: { code: 'PASSWORD_INCORRECT' } })];
             }
 
             const userObjectToRespondWith = {
@@ -75,7 +75,7 @@ class UsersDal {
             };
             return [null, userObjectToRespondWith];
         } catch (e) {
-            console.error('Error in authenticating user by accountId and password', accountId, e);
+            console.error('Error: Failed to authenticate user by accountId and password', accountId, e);
             return [e];
         }
     }
@@ -85,22 +85,22 @@ class UsersDal {
             const statement = this.db.prepare(`SELECT * FROM users WHERE uuid = ?`);
             const user = statement.get(uuid);
             if (!user) {
-                return [new Error('User not found', { cause: { code: 'USER_NOT_FOUND' } })];
+                return [new Error('Error: User not found', { cause: { code: 'USER_NOT_FOUND' } })];
             }
 
             try {
                 passwordFieldSchema.parse(newPassword);
             } catch (e) {
-                return [new Error('New password does not meet policy', { cause: { code: 'NEW_PASSWORD_DOES_NOT_MEET_POLICY' } })];
+                return [new Error('Error: New password does not meet policy', { cause: { code: 'NEW_PASSWORD_DOES_NOT_MEET_POLICY' } })];
             }
 
             const newPasswordHash = await bcrypt.hash(newPassword, 10);
-            const updateStatement = this.db.prepare(`UPDATE users SET password = ? WHERE uuid = ?`);
+            const updateStatement = this.db.prepare(`UPDATE users SET passwordHash = ? WHERE uuid = ?`);
             updateStatement.run(newPasswordHash, uuid);
 
             return [null];
         } catch (e) {
-            console.error('Error in setting password for user with UUID', { uuid }, e);
+            console.error('Error: Failed to set password for user with UUID', { uuid }, e);
             return [e];
         }
     }
@@ -110,27 +110,27 @@ class UsersDal {
             const statement = this.db.prepare(`SELECT * FROM users WHERE uuid = ?`);
             const user = statement.get(uuid);
             if (!user) {
-                return [new Error('User not found', { cause: { code: 'USER_NOT_FOUND' } })];
+                return [new Error('Error: User not found', { cause: { code: 'USER_NOT_FOUND' } })];
             }
 
-            const isOldPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
+            const isOldPasswordCorrect = await bcrypt.compare(oldPassword, user.passwordHash);
             if (!isOldPasswordCorrect) {
-                return [new Error('Password incorrect', { cause: { code: 'OLD_PASSWORD_INCORRECT' } })];
+                return [new Error('Error: Password incorrect', { cause: { code: 'OLD_PASSWORD_INCORRECT' } })];
             }
 
             try {
                 passwordFieldSchema.parse(newPassword);
             } catch (e) {
-                return [new Error('New password does not meet policy', { cause: { code: 'NEW_PASSWORD_DOES_NOT_MEET_POLICY' } })];
+                return [new Error('Error: New password does not meet policy', { cause: { code: 'NEW_PASSWORD_DOES_NOT_MEET_POLICY' } })];
             }
 
             const newPasswordHash = await bcrypt.hash(newPassword, 10);
-            const updateStatement = this.db.prepare(`UPDATE users SET password = ? WHERE uuid = ?`);
+            const updateStatement = this.db.prepare(`UPDATE users SET passwordHash = ? WHERE uuid = ?`);
             updateStatement.run(newPasswordHash, uuid);
 
             return [null];
         } catch (e) {
-            console.error('Error in changing password for user with UUID', { uuid }, e);
+            console.error('Error: Failed to change password for user with UUID', { uuid }, e);
             return [e];
         }
     }
@@ -140,18 +140,18 @@ class UsersDal {
             const statement = this.db.prepare(`SELECT * FROM users WHERE uuid = ?`);
             const user = statement.get(uuid);
             if (!user) {
-                return [new Error('User not found', { cause: { code: 'USER_NOT_FOUND' } })];
+                return [new Error('Error: User not found', { cause: { code: 'USER_NOT_FOUND' } })];
             }
 
             try {
                 emailFieldSchema.parse(email);
             } catch (e) {
-                return [new Error('Email invalid', { cause: { code: 'EMAIL_INVALID' } })];
+                return [new Error('Error: Email invalid', { cause: { code: 'EMAIL_INVALID' } })];
             }
 
             const existingUserWithNewEmail = this.db.prepare(`SELECT * FROM users WHERE email = ?`).get(email);
             if (existingUserWithNewEmail) {
-                return [new Error('Email already in use', { cause: { code: 'EMAIL_ALREADY_IN_USE' } })];
+                return [new Error('Error: Email already in use', { cause: { code: 'EMAIL_ALREADY_IN_USE' } })];
             }
 
             const updateStatement = this.db.prepare(`UPDATE users SET email = ? WHERE uuid = ?`);
@@ -159,7 +159,7 @@ class UsersDal {
 
             return [null];
         } catch (e) {
-            console.error('Error in changing email for user with UUID', { uuid }, e);
+            console.error('Error: Failed to change email for user with UUID', { uuid }, e);
             return [e];
         }
     }
@@ -171,17 +171,18 @@ class UsersDal {
             const result = statement.get(uuid);
             return [null, result];
         } catch (e) {
-            console.error('Error in getting user by uuid', uuid, e);
+            console.error('Error: Failed to get record by "uuid" from table "users"', uuid, e);
             return [e];
         }
     }
 
-    async selectAll() {
+    async listUsers() {
         try {
             const statement = this.db.prepare(`SELECT * FROM users`);
             const result = statement.all();
             return [null, result];
         } catch (e) {
+            console.error('Error: Failed to list records from table "users"', e);
             return [e];
         }
     }

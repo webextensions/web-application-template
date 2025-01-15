@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { toast } from 'react-toastify';
 
-import { userObjectFrontendSchema } from '../../../../../../backend/src/database/AppDal/Users/UsersFieldsSchema.js';
+import { userObjectCreationAdminFrontendSchema } from '../../../../../../backend/src/database/AppDal/Users/UserFieldsSchema.js';
 
 import { LoadingErrorLoaded } from '../../../../base_modules/LoadingErrorLoaded/LoadingErrorLoaded.js';
 
@@ -17,7 +17,7 @@ const CreateUser = function () {
     const [name, setName] = useState('Abc Xyz');
     const [email, setEmail] = useState('mail@example.com');
     const [password, setPassword] = useState('123456');
-    const [joinedAt, setJoinedAt] = useState(Date.now());
+    const [joinedAt, setJoinedAt] = useState(String(Date.now()));
 
     const queryClient = useQueryClient();
 
@@ -36,7 +36,7 @@ const CreateUser = function () {
                 name,
                 email,
                 password,
-                joinedAt
+                joinedAt: Number.parseInt(joinedAt)
             });
             const querifiedP = safeArrayPromiseToErrorPromise(p);
             return querifiedP;
@@ -45,8 +45,14 @@ const CreateUser = function () {
 
     const handleSubmit = async () => {
         try {
-            const userOb = { id, name, email, password, joinedAt };
-            userObjectFrontendSchema.parse(userOb);
+            const userOb = {
+                id,
+                name,
+                email,
+                password,
+                joinedAt: Number.parseInt(joinedAt)
+            };
+            userObjectCreationAdminFrontendSchema.parse(userOb);
         } catch (e) {
             console.error(e);
             toast.error(e.message);

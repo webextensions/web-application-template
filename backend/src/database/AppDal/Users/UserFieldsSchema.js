@@ -9,14 +9,11 @@ const passwordFieldSchema = z.string().min(6).max(18); // https://www.npmjs.com/
                                                        // Hence, limiting the password to 18 characters (18 * 4 = 72 bytes)
 const joinedAtFieldSchema = z.number().int().positive();
 
-const userObjectFrontendSchema = z.object({
+const userObjectCreationAdminFrontendSchema = z.object({
     id:       idFieldSchema,
     name:     nameFieldSchema,
     email:    emailFieldSchema,
-    password: passwordFieldSchema
-});
-
-const userObjectFullSchema = userObjectFrontendSchema.extend({
+    password: passwordFieldSchema,
     joinedAt: joinedAtFieldSchema
 });
 
@@ -27,6 +24,5 @@ export {
     passwordFieldSchema,
     joinedAtFieldSchema,
 
-    userObjectFrontendSchema,
-    userObjectFullSchema
+    userObjectCreationAdminFrontendSchema
 };

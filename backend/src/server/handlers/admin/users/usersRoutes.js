@@ -9,8 +9,8 @@ const usersRoutes = function ({ constructorParamForDb }) {
     return (
         express
             .Router({ mergeParams: true })
-            .get('/list', list({ constructorParamForDb }))
-            .post('/create', create({ constructorParamForDb }))
+            .get('/listUsers', list({ constructorParamForDb }))
+            .post('/createUser', create({ constructorParamForDb }))
             .use('/:userUuid', express.Router({ mergeParams: true })
                 .get('/loginAs', loginAs())
                 .post('/setPassword', setPassword({ constructorParamForDb }))

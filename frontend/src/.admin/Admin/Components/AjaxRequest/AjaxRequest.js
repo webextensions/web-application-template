@@ -32,7 +32,8 @@ const ajaxRequestConfigs = [
         label: 'Admin',
         options: [
             {
-                id: 'Help (Routes)',
+                id: 'Admin > Help (Routes)',
+                title: 'Help (Routes)',
                 method: 'GET',
                 url:        '/admin/help',
                 defaultUrl: '/admin/help?responseFormat=json',
@@ -71,15 +72,18 @@ const ajaxRequestConfigs = [
                 }
             },
             {
-                id: 'Info',
+                id: 'Admin > Info',
+                title: 'Info',
                 url: '/admin/info'
             },
             {
-                id: 'Kill server instance',
+                id: 'Admin > Kill server instance',
+                title: 'Kill server instance',
                 url: '/admin/kill'
             },
             {
-                id: 'Setup database',
+                id: 'Admin > Setup database',
+                title: 'Setup database',
                 url: '/admin/setupDb'
             }
         ]
@@ -88,13 +92,15 @@ const ajaxRequestConfigs = [
         label: 'Admin - Users',
         options: [
             {
-                id: 'List all users',
-                url: '/admin/users/list'
+                id: 'Admin - Users > List',
+                title: 'List',
+                url: '/admin/users/listUsers'
             },
             {
-                id: 'Create a user',
+                id: 'Admin - Users > Create',
+                title: 'Create',
                 method: 'POST',
-                url: '/admin/users/create',
+                url: '/admin/users/createUser',
                 form: {
                     schema: {
                         type: 'object',
@@ -137,11 +143,12 @@ const ajaxRequestConfigs = [
                 }
             },
             {
-                id: 'Login as user',
+                id: 'Admin - Users > Delete',
+                title: 'Login as',
                 url: '/admin/users/{userUuid}/loginAs'
             },
             {
-                id: 'Admin > Set password',
+                id: 'Admin - Users > Set password',
                 title: 'Set password',
                 method: 'POST',
                 url: '/admin/users/{userId}/setPassword',
@@ -175,7 +182,7 @@ const ajaxRequestConfigs = [
         options: [
             {
                 id: 'User > whoami',
-                title: '/whoami',
+                title: 'whoami',
                 url: '/whoami'
             },
             {
@@ -228,9 +235,7 @@ const ajaxRequestConfigs = [
                 form: {
                     schema: {
                         type: 'object',
-                        required: [
-                            'email'
-                        ],
+                        required: ['email'],
                         properties: {
                             email: {
                                 type: 'string',
@@ -246,11 +251,44 @@ const ajaxRequestConfigs = [
         ]
     },
     {
-        label: 'General',
+        label: 'Task Categories',
         options: [
             {
-                id: 'List all task categories',
-                url: '/taskCategories/list'
+                id: 'Task Categories > List',
+                title: 'List',
+                url: '/taskCategories/listCategories'
+            },
+            {
+                id: 'Task Categories > Count',
+                title: 'Count',
+                url: '/taskCategories/countCategories'
+            },
+            {
+                id: 'Task Categories > Create',
+                title: 'Create',
+                method: 'POST',
+                url: '/taskCategories/createCategory',
+                form: {
+                    schema: {
+                        type: 'object',
+                        required: ['title'],
+                        properties: {
+                            title: {
+                                type: 'string',
+                                title: 'Title'
+                            }
+                        }
+                    },
+                    formData: {
+                        title: ''
+                    }
+                }
+            },
+            {
+                id: 'Task Categories > Delete',
+                title: 'Delete',
+                method: 'POST',
+                url: '/taskCategories/deleteCategory/{taskCategoryId}'
             }
         ]
     }

@@ -19,7 +19,7 @@ export const getDummyJsonData = async () => {
 
 export const listTaskCategories = async () => {
     try {
-        const response = await kyForApp.instance.get('/taskCategories/list');
+        const response = await kyForApp.instance.get('/taskCategories/listCategories');
         const json = await response.json();
         return [null, json.output];
     } catch (err) {
@@ -29,7 +29,7 @@ export const listTaskCategories = async () => {
 
 export const countTaskCategories = async () => {
     try {
-        const response = await kyForApp.instance.get('/taskCategories/count');
+        const response = await kyForApp.instance.get('/taskCategories/countCategories');
         const json = await response.json();
         return [null, json.output];
     } catch (err) {
@@ -39,7 +39,7 @@ export const countTaskCategories = async () => {
 
 export const createTaskCategory = async (title) => {
     try {
-        const response = await kyForApp.instance.post('/taskCategories/create', {
+        const response = await kyForApp.instance.post('/taskCategories/createCategory', {
             json: {
                 title
             }
@@ -53,7 +53,7 @@ export const createTaskCategory = async (title) => {
 
 export const deleteTaskCategory = async (taskId) => {
     try {
-        const response = await kyForApp.instance.post(`/taskCategories/delete/${taskId}`);
+        const response = await kyForApp.instance.post(`/taskCategories/deleteCategory/${taskId}`);
         const json = await response.json();
         return [null, json.output];
     } catch (err) {

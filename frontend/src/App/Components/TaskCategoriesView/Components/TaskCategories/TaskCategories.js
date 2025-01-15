@@ -64,7 +64,7 @@ const TaskCategory = ({ taskCategory }) => {
             <td className="column-width-auto">{taskCategory.title}</td>
             <td className="column-width-min">{taskCategory.createdAt}</td>
             <td className="column-width-min">
-                <DeleteTaskCategory taskCategoryId={taskCategory._id} onDelete={handleDelete} />
+                <DeleteTaskCategory taskCategoryId={taskCategory.id} onDelete={handleDelete} />
             </td>
         </tr>
     );
@@ -93,7 +93,7 @@ const TaskCategoriesTable = ({ taskCategories }) => {
             </thead>
             <tbody>
                 {taskCategories.map((taskCategory) => {
-                    return <TaskCategory taskCategory={taskCategory} key={taskCategory._id} />;
+                    return <TaskCategory taskCategory={taskCategory} key={taskCategory.id} />;
                 })}
             </tbody>
         </table>

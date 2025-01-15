@@ -9,7 +9,7 @@ const list = function ({ constructorParamForDb }) {
     const usersDal = new UsersDal(constructorParamForDb);
 
     return async function (req, res) {
-        const [err, users] = await usersDal.selectAll();
+        const [err, users] = await usersDal.listUsers();
         if (err) {
             return sendErrorResponse(res, 500, 'Internal Server Error');
         }
