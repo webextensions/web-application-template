@@ -50,8 +50,6 @@ const AddCategory = function () {
         }
     });
 
-    console.log('AddCategory: isPending', isPending);
-
     return (
         <div className={styles.AddCategory}>
             <div style={{ flexGrow: 1 }}>
