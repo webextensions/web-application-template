@@ -43,7 +43,7 @@ export const useAuth = function () {
         staleTime: Infinity,
         enabled: !!userUuid,
         queryFn: () => {
-            const p = getProfileForLoggedInUserByUserUuid(userUuid);
+            const p = getProfileForLoggedInUserByUserUuid({ userUuid });
             const querifiedP = safeArrayPromiseToErrorPromise(p);
             return querifiedP;
         }

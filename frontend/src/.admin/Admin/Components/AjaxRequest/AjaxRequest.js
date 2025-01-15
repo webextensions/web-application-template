@@ -251,23 +251,23 @@ const ajaxRequestConfigs = [
         ]
     },
     {
-        label: 'Task Categories',
+        label: 'User > Task Categories',
         options: [
             {
-                id: 'Task Categories > List',
+                id: 'User > Task Categories > List',
                 title: 'List',
-                url: '/taskCategories/listCategories'
+                url: '/api/v1/users/{userId}/taskCategories/listCategories'
             },
             {
-                id: 'Task Categories > Count',
+                id: 'User > Task Categories > Count',
                 title: 'Count',
-                url: '/taskCategories/countCategories'
+                url: '/api/v1/users/{userId}/taskCategories/countCategories'
             },
             {
-                id: 'Task Categories > Create',
+                id: 'User > Task Categories > Create',
                 title: 'Create',
                 method: 'POST',
-                url: '/taskCategories/createCategory',
+                url: '/api/v1/users/{userId}/taskCategories/createCategory',
                 form: {
                     schema: {
                         type: 'object',
@@ -285,10 +285,10 @@ const ajaxRequestConfigs = [
                 }
             },
             {
-                id: 'Task Categories > Delete',
+                id: 'User > Task Categories > Delete',
                 title: 'Delete',
                 method: 'POST',
-                url: '/taskCategories/deleteCategory/{taskCategoryId}'
+                url: '/api/v1/users/{userId}/taskCategories/deleteCategory/{taskCategoryId}'
             }
         ]
     }
@@ -416,6 +416,7 @@ const AjaxRequest = function () {
 
             const entry = {
                 uuid: randomUUID(),
+                method: theRequestMethod,
                 url,
                 initiatedAt: Date.now()
             };
@@ -678,6 +679,7 @@ const AjaxRequest = function () {
                             const {
                                 uuid,
                                 err,
+                                method,
                                 url: requestedUrl,
                                 jsonData,
                                 textData,
@@ -692,7 +694,7 @@ const AjaxRequest = function () {
                             );
                             const header = (
                                 <span title={`${initiatedAt} - ${completedAt}`} style={{ fontFamily: 'monospace' }}>
-                                    {`${timeDiff} => ${requestedUrl}`}
+                                    {`${timeDiff} => ${method} ${requestedUrl}`}
                                 </span>
                             );
 
@@ -723,40 +725,46 @@ const AjaxRequest = function () {
                                             children: (
                                                 <div>
                                                     {(function () {
+                                                        let responseAsCode = null;
+
+                                                        if (textData) {
+                                                            responseAsCode = (
+                                                                <ViewCode
+                                                                    type={jsonData ? 'json' : 'text'}
+                                                                    json={jsonData}
+                                                                    textData={textData}
+                                                                    style={{
+                                                                        paddingLeft: 16,
+                                                                        paddingRight: 16
+                                                                    }}
+                                                                    panelStyle={{
+                                                                        marginTop: 10,
+                                                                        marginBottom: 10,
+                                                                        paddingLeft: 20
+                                                                    }}
+                                                                    directLink={{
+                                                                        href: requestedUrl
+                                                                    }}
+                                                                />
+                                                            );
+                                                        }
+
                                                         if (err) {
                                                             return (
-                                                                <div style={{ marginTop: 5, fontWeight: 'bold', color: 'red' }}>
-                                                                    Error: {err.message}
-                                                                </div>
+                                                                <React.Fragment>
+                                                                    <div style={{ marginTop: 5, marginBottom: 5, fontWeight: 'bold', color: 'red' }}>
+                                                                        Error: {err.message}
+                                                                    </div>
+                                                                    {
+                                                                        textData &&
+                                                                        <div>{responseAsCode}</div>
+                                                                    }
+                                                                </React.Fragment>
                                                             );
                                                         } else if (textData) {
-                                                            return (
-                                                                <div>
-                                                                    <ViewCode
-                                                                        type={jsonData ? 'json' : 'text'}
-                                                                        json={jsonData}
-                                                                        textData={textData}
-                                                                        style={{
-                                                                            paddingLeft: 16,
-                                                                            paddingRight: 16
-                                                                        }}
-                                                                        panelStyle={{
-                                                                            marginTop: 10,
-                                                                            marginBottom: 10,
-                                                                            paddingLeft: 20
-                                                                        }}
-                                                                        directLink={{
-                                                                            href: requestedUrl
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                            );
+                                                            return <div>{responseAsCode}</div>;
                                                         } else {
-                                                            return (
-                                                                <div>
-                                                                    <Loading type="line-scale" />
-                                                                </div>
-                                                            );
+                                                            return <div><Loading type="line-scale" /></div>;
                                                         }
                                                     })()}
                                                 </div>

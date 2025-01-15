@@ -3,18 +3,20 @@ import express from 'express';
 import {
     sendErrorResponse,
     sendSuccessResponse
-} from '../../utils/express/sendResponse.js';
+} from '../../../utils/express/sendResponse.js';
 
-import { TasksDal } from '../../../database/AppDal/Tasks/TasksDal.js';
-import { taskCategoryObjectFrontendSchema } from '../../../database/AppDal/Tasks/TaskCategoryFieldsSchema.js';
+import { TasksDal } from '../../../../database/AppDal/Tasks/TasksDal.js';
+import { taskCategoryObjectFrontendSchema } from '../../../../database/AppDal/Tasks/TaskCategoryFieldsSchema.js';
 
 const taskCategoriesRoutes = function ({ constructorParamForDb }) {
     const tasksDal = new TasksDal(constructorParamForDb);
 
     return (
-        express.Router()
+        express.Router({ mergeParams: true })
             .get('/listCategories', async function (req, res) {
-                const [err, tasks] = await tasksDal.listCategories();
+                const { userUuid } = req.params;
+
+                const [err, tasks] = await tasksDal.listCategories({ userUuid });
                 if (err) {
                     return sendErrorResponse(res, 500, 'Internal Server Error');
                 } else {
@@ -22,7 +24,9 @@ const taskCategoriesRoutes = function ({ constructorParamForDb }) {
                 }
             })
             .get('/countCategories', async function (req, res) {
-                const [err, count] = await tasksDal.countCategories();
+                const { userUuid } = req.params;
+
+                const [err, count] = await tasksDal.countCategories({ userUuid });
                 if (err) {
                     return sendErrorResponse(res, 500, 'Internal Server Error');
                 } else {
@@ -30,9 +34,14 @@ const taskCategoriesRoutes = function ({ constructorParamForDb }) {
                 }
             })
             .post('/createCategory', async function (req, res) {
+                const { userUuid } = req.params;
+
                 const { title } = req.body;
 
-                const taskCategoryOb = { title };
+                const taskCategoryOb = {
+                    userUuid,
+                    title
+                };
 
                 try {
                     taskCategoryObjectFrontendSchema.parse(taskCategoryOb);
@@ -45,15 +54,24 @@ const taskCategoriesRoutes = function ({ constructorParamForDb }) {
 
                 const [err] = await tasksDal.createCategory(taskCategoryOb);
                 if (err) {
+                    if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+                        return sendErrorResponse(res, 409, `Error: Task category with title "${title}" already exists`);
+                    }
                     return sendErrorResponse(res, 500, `Error: Unable to create task category with title "${title}"`);
                 }
 
                 return sendSuccessResponse(res, `Success: Created task category with title "${title}"`);
             })
             .post('/deleteCategory/:taskCategoryId', async function (req, res) {
-                const { taskCategoryId } = req.params;
+                const {
+                    userUuid,
+                    taskCategoryId
+                } = req.params;
 
-                const [err, recordsDeletedCount] = await tasksDal.deleteCategories({ id: taskCategoryId });
+                const [err, recordsDeletedCount] = await tasksDal.deleteCategories({
+                    userUuid,
+                    taskCategoryId
+                });
 
                 if (err) {
                     return sendErrorResponse(res, 500, `Error: Unable to delete task category with id ${taskCategoryId}`);

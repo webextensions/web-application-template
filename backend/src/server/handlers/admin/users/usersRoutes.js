@@ -1,7 +1,7 @@
 import express from 'express';
 
-import { list } from './list/list.js';
-import { create } from './create/create.js';
+import { listUsers } from './listUsers/listUsers.js';
+import { createUser } from './createUser/createUser.js';
 import { loginAs } from './loginAs/loginAs.js';
 import { setPassword } from './setPassword/setPassword.js';
 
@@ -9,8 +9,8 @@ const usersRoutes = function ({ constructorParamForDb }) {
     return (
         express
             .Router({ mergeParams: true })
-            .get('/listUsers', list({ constructorParamForDb }))
-            .post('/createUser', create({ constructorParamForDb }))
+            .get('/listUsers', listUsers({ constructorParamForDb }))
+            .post('/createUser', createUser({ constructorParamForDb }))
             .use('/:userUuid', express.Router({ mergeParams: true })
                 .get('/loginAs', loginAs())
                 .post('/setPassword', setPassword({ constructorParamForDb }))

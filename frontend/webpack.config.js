@@ -88,7 +88,7 @@ const webpackConfig = async function (env, argv) {    // eslint-disable-line no-
     try {
         flagBasedWebpackConfig = fullConfig.webpack;
     } catch (e) {
-        console.error('An error occurred.');
+        console.error('Error: An error occurred.');
         console.error('Error stack trace:');
         console.error(e);
         const exampleConfigFilePath = path.resolve(__dirname, 'config/config.development.local.example.js');

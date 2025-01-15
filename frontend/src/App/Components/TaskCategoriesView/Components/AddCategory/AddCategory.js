@@ -8,40 +8,49 @@ import { safeArrayPromiseToErrorPromise } from '../../../../utils/safeArrayPromi
 
 import { createTaskCategory } from '../../../../dal.js';
 
+import { useUserUuid } from '../../../../../base_modules/hooks/useUserUuid/useUserUuid.js';
+
 import * as styles from './AddCategory.css';
 
 const AddCategory = function () {
     const [title, setTitle] = useState('');
 
+    const { userUuid } = useUserUuid();
+
     const queryClient = useQueryClient();
 
     const {
-        isLoading,
+        isPending,
         mutate
     } = useMutation({
         mutationFn: function () {
-            const p = createTaskCategory(title);
+            const p = createTaskCategory({ userUuid, title });
             const cachedTitle = title;
             (async function () {
                 const [err] = await p;
                 if (err) {
-                    const httpResponseStatus = err?.response?.status;
+                    const httpResponseStatus = err.response?.status;
                     if (httpResponseStatus === 409) {
-                        toast.error(`Error - Category "${cachedTitle}" already exists`);
+                        toast.error(`Error: Category "${cachedTitle}" already exists`);
                     } else {
-                        toast.error(`Error - Failed to add category "${cachedTitle}"`);
+                        toast.error(`Error: Failed to add category "${cachedTitle}"`);
                     }
                 } else {
                     // TODO: HARDCODING: Get rid of this hardcoding ('taskCategoriesList')
-                    queryClient.invalidateQueries(['taskCategoriesList']);
+                    queryClient.invalidateQueries({
+                        queryKey: ['taskCategoriesList'],
+                        exact: true
+                    });
                     setTitle('');
-                    toast.success('Category added successfully');
+                    toast.success(`Added category "${cachedTitle}"`);
                 }
             }());
             const querifiedP = safeArrayPromiseToErrorPromise(p);
             return querifiedP;
         }
     });
+
+    console.log('AddCategory: isPending', isPending);
 
     return (
         <div className={styles.AddCategory}>
@@ -57,7 +66,7 @@ const AddCategory = function () {
                     onKeyPress={function (e) {
                         if (
                             e.key === 'Enter' &&
-                            !isLoading &&
+                            !isPending &&
                             title
                         ) {
                             mutate();
@@ -68,7 +77,7 @@ const AddCategory = function () {
             <div>
                 <button
                     type="button"
-                    disabled={isLoading || !title}
+                    disabled={isPending || !title}
                     style={{
                         whiteSpace: 'nowrap'
                     }}
@@ -76,7 +85,7 @@ const AddCategory = function () {
                         mutate();
                     }}
                 >
-                    {isLoading ? 'Adding...' : 'Add'}
+                    {isPending ? 'Adding...' : 'Add'}
                 </button>
             </div>
         </div>

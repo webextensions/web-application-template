@@ -59,7 +59,7 @@ const updatePassword = function ({ constructorParamForDb }) {
                 }
             }
         } else {
-            return sendSuccessResponse(res, 'Password updated successfully');
+            return sendSuccessResponse(res, 'Success: Password has been updated');
         }
     };
 };

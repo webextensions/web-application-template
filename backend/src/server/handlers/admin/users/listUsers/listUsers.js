@@ -5,7 +5,7 @@ import {
 
 import { UsersDal } from '../../../../../database/AppDal/Users/UsersDal.js';
 
-const list = function ({ constructorParamForDb }) {
+const listUsers = function ({ constructorParamForDb }) {
     const usersDal = new UsersDal(constructorParamForDb);
 
     return async function (req, res) {
@@ -17,4 +17,4 @@ const list = function ({ constructorParamForDb }) {
     };
 };
 
-export { list };
+export { listUsers };

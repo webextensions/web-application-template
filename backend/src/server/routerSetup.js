@@ -17,20 +17,18 @@ import { usersRoutes as usersRoutesForAdmin } from './handlers/admin/users/users
 import { setupAccountRoutes } from './handlers/account/accountRoutes.js';
 import { usersRoutes as usersRoutesForUsers } from './handlers/users/usersRoutes.js';
 
-import { taskCategoriesRoutes } from './handlers/taskCategories/taskCategoriesRoutes.js';
-
 const routerSetup = async function (exp, {
     _accessSecurityConfig,
     _userUuidsWithAdminAccess,
     _databaseFilePath
 }) {
-    const router = express.Router();
+    const router = express.Router({ mergeParams: true });
 
     const constructorParamForDb = await getDbConstructorParam({ sqliteDbPath: _databaseFilePath });
 
     router
         .get('/whoami', whoami())
-        .use('/admin', express.Router()
+        .use('/admin', express.Router({ mergeParams: true })
             .use(
                 enabledMiddlewareOrNoop(
                     _accessSecurityConfig.limitAccess?.admin?.basicAuth?.enabled,
@@ -49,9 +47,9 @@ const routerSetup = async function (exp, {
                 res.send('TODO: Serve the /GET request for /admin');
             })
         )
-        .use('/api/v1', express.Router()
+        .use('/api/v1', express.Router({ mergeParams: true })
             .use('/account', setupAccountRoutes({ constructorParamForDb, _userUuidsWithAdminAccess }))
-            .use('/user-account', express.Router()
+            .use('/user-account', express.Router({ mergeParams: true })
                 .post('/create', function (req, res) {
                     const reqBody = structuredClone(req.body);
 
@@ -60,9 +58,7 @@ const routerSetup = async function (exp, {
                 })
             )
             .use('/users', usersRoutesForUsers({ constructorParamForDb, _userUuidsWithAdminAccess }))
-        )
-
-        .use('/taskCategories', await taskCategoriesRoutes({ constructorParamForDb }));
+        );
 
     setTimeout(function () {
         // Setting up this router after a delay so that live-css server router is able to attach itself before it

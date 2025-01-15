@@ -8,6 +8,7 @@ class TasksDal {
             this.db.exec(`
                 CREATE TABLE IF NOT EXISTS taskCategories (
                     id        INTEGER          PRIMARY KEY AUTOINCREMENT,
+                    userUuid  TEXT    NOT NULL,
                     title     TEXT    NOT NULL UNIQUE,
                     createdAt INTEGER NOT NULL
                 )
@@ -19,11 +20,20 @@ class TasksDal {
         }
     }
 
-    async ensureIndexes() {
+    async ensureIndexes_taskCategories() {
         const status = {};
         let encounteredError = false;
 
         try {
+            const statement_userUuid = this.db.prepare(`SELECT name FROM sqlite_master WHERE type='index' AND name='taskCategories_userUuid'`);
+            const result_userUuid = statement_userUuid.get();
+            if (result_userUuid) {
+                status['taskCategories_userUuid'] = 'ALREADY_EXISTS';
+            } else {
+                this.db.exec(`CREATE INDEX taskCategories_userUuid ON taskCategories (userUuid)`);
+                status['taskCategories_userUuid'] = 'CREATED';
+            }
+
             const statement_createdAt = this.db.prepare(`SELECT name FROM sqlite_master WHERE type='index' AND name='taskCategories_createdAt'`);
             const result_createdAt = statement_createdAt.get();
             if (result_createdAt) {
@@ -34,27 +44,27 @@ class TasksDal {
             }
         } catch (e) {
             encounteredError = true;
-            console.error('Error in creating indexes for "taskCategories"', e);
+            console.error('Error: Failed to create indexes for "taskCategories"', e);
         }
 
         if (encounteredError) {
-            return [new Error('Error in creating indexes for "taskCategories"'), status];
+            return [new Error('Error: Failed to create indexes for "taskCategories")'), status];
         } else {
             return [null, status];
         }
     }
 
-    async createCategory({ title, createdAt }) {
+    async createCategory({ userUuid, title, createdAt }) {
         try {
             const statement = this.db.prepare(`
-                INSERT INTO taskCategories ( title,  createdAt)
-                VALUES                     (@title, @createdAt)
+                INSERT INTO taskCategories ( userUuid,  title,  createdAt)
+                VALUES                     (@userUuid, @title, @createdAt)
             `);
-            const result = statement.run({   title,  createdAt });
+            const result = statement.run({   userUuid,  title,  createdAt });
             return [null, result];
         } catch (e) {
             console.error(
-                'Error in inserting into "taskCategories"',
+                'Error: Failed to insert into "taskCategories"',
                 JSON.stringify({ title, createdAt }),
                 e
             );
@@ -62,10 +72,11 @@ class TasksDal {
         }
     }
 
-    async listCategories() {
+    async listCategories({ userUuid }) {
         try {
-            const statement = this.db.prepare(`SELECT * FROM taskCategories ORDER BY title ASC`);
-            const result = statement.all();
+            const statement = this.db.prepare(`SELECT * FROM taskCategories WHERE userUuid = ? ORDER BY title ASC`);
+            const result = statement.all(userUuid);
+
             return [null, result];
         } catch (e) {
             console.error('Error: Failed to list records from table "taskCategories"', e);
@@ -73,10 +84,10 @@ class TasksDal {
         }
     }
 
-    async countCategories() {
+    async countCategories({ userUuid }) {
         try {
-            const statement = this.db.prepare(`SELECT COUNT(*) AS count FROM taskCategories`);
-            const result = statement.get();
+            const statement = this.db.prepare(`SELECT COUNT(*) AS count FROM taskCategories WHERE userUuid = ?`);
+            const result = statement.get(userUuid);
             return [null, result.count];
         } catch (e) {
             console.error('Error: Failed to count records in table "taskCategories"', e);
@@ -84,15 +95,15 @@ class TasksDal {
         }
     }
 
-    async deleteCategories({ id }) {
+    async deleteCategories({ userUuid, taskCategoryId }) {
         try {
             // `LIMIT 1` is not required as such. Keeping it for safety for future changes.
-            const statement = this.db.prepare(`DELETE FROM taskCategories WHERE id = ? LIMIT 1`);
-            const result = statement.run(id);
+            const statement = this.db.prepare(`DELETE FROM taskCategories WHERE id = ? AND userUuid = ? LIMIT 1`);
+            const result = statement.run(taskCategoryId, userUuid);
             const recordsDeletedCount = result.changes;
             return [null, recordsDeletedCount];
         } catch (e) {
-            console.error('Error: Failed to delete record from table "taskCategories"', id, e);
+            console.error('Error: Failed to delete record from table "taskCategories"', taskCategoryId, e);
             return [e];
         }
     }

@@ -17,9 +17,9 @@ export const getDummyJsonData = async () => {
     }];
 };
 
-export const listTaskCategories = async () => {
+export const listTaskCategories = async ({ userUuid }) => {
     try {
-        const response = await kyForApp.instance.get('/taskCategories/listCategories');
+        const response = await kyForApp.instance.get(`/api/v1/users/${userUuid}/taskCategories/listCategories`);
         const json = await response.json();
         return [null, json.output];
     } catch (err) {
@@ -27,9 +27,9 @@ export const listTaskCategories = async () => {
     }
 };
 
-export const countTaskCategories = async () => {
+export const countTaskCategories = async ({ userUuid }) => {
     try {
-        const response = await kyForApp.instance.get('/taskCategories/countCategories');
+        const response = await kyForApp.instance.get(`/api/v1/users/${userUuid}/taskCategories/countCategories`);
         const json = await response.json();
         return [null, json.output];
     } catch (err) {
@@ -37,9 +37,9 @@ export const countTaskCategories = async () => {
     }
 };
 
-export const createTaskCategory = async (title) => {
+export const createTaskCategory = async ({ userUuid, title }) => {
     try {
-        const response = await kyForApp.instance.post('/taskCategories/createCategory', {
+        const response = await kyForApp.instance.post(`/api/v1/users/${userUuid}/taskCategories/createCategory`, {
             json: {
                 title
             }
@@ -51,9 +51,9 @@ export const createTaskCategory = async (title) => {
     }
 };
 
-export const deleteTaskCategory = async (taskId) => {
+export const deleteTaskCategory = async ({ userUuid, taskCategoryId }) => {
     try {
-        const response = await kyForApp.instance.post(`/taskCategories/deleteCategory/${taskId}`);
+        const response = await kyForApp.instance.post(`/api/v1/users/${userUuid}/taskCategories/deleteCategory/${taskCategoryId}`);
         const json = await response.json();
         return [null, json.output];
     } catch (err) {
@@ -76,7 +76,7 @@ export const loginWithAccountIdAndPassword = async ({ accountId, password }) => 
     }
 };
 
-export const getProfileForLoggedInUserByUserUuid = async (userUuid) => {
+export const getProfileForLoggedInUserByUserUuid = async ({ userUuid }) => {
     try {
         const response = await kyForApp.instance.get(`/api/v1/users/${userUuid}/ownInfo`);
         const json = await response.json();

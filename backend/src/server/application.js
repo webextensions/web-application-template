@@ -103,7 +103,7 @@ const importAsync = async function (src) {
         const module = await import(src);
         return module;
     } catch (e) {
-        console.error('Error in importing module:', src);
+        console.error(`Error: Failed to import module ${src}`);
         throw new Error(e);
     }
 };

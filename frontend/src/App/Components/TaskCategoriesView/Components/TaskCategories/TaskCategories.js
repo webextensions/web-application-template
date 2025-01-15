@@ -11,18 +11,22 @@ import {
     deleteTaskCategory
 } from '../../../../dal.js';
 
+import { useUserUuid } from '../../../../../base_modules/hooks/useUserUuid/useUserUuid.js';
+
 import { AddCategory } from '../AddCategory/AddCategory.js';
 
 import * as styles from './TaskCategories.css';
 
 const DeleteTaskCategory = ({ taskCategoryId, onDelete }) => {
+    const { userUuid } = useUserUuid();
+
     const {
         mutate,
         status,
         isPending
     } = useMutation({
         mutationFn: () => {
-            const p = deleteTaskCategory(taskCategoryId);
+            const p = deleteTaskCategory({ userUuid, taskCategoryId });
             const querifiedP = safeArrayPromiseToErrorPromise(p);
             return querifiedP;
         }
@@ -104,6 +108,7 @@ TaskCategoriesTable.propTypes = {
 };
 
 const TaskCategoriesList = ({ refreshedAt }) => {
+    const { userUuid } = useUserUuid();
     const {
         status,
         fetchStatus,
@@ -111,7 +116,7 @@ const TaskCategoriesList = ({ refreshedAt }) => {
     } = useQuery({
         queryKey: ['taskCategoriesList'],
         queryFn: () => {
-            const p = listTaskCategories();
+            const p = listTaskCategories({ userUuid });
             const querifiedP = safeArrayPromiseToErrorPromise(p);
             return querifiedP;
         }

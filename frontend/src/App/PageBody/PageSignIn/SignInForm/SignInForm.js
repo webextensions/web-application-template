@@ -51,8 +51,8 @@ const SignInForm = function ({ redirecting }) {
 
     useEffect(() => {
         if (error) {
-            console.error('Error - Failed to sign in', error);
-            toast.error('Error - Failed to sign in');
+            console.error('Error: Failed to sign in', error);
+            toast.error('Error: Failed to sign in');
         }
     }, [error]);
 

@@ -86,7 +86,7 @@ const info = function () {
 
             infoOb.env = process.env;
         } catch (error) {
-            console.error('Error fetching system information:', error);
+            console.error('Error: Failed to fetch system information', error);
         }
 
         return sendSuccessResponse(res, infoOb, { beautify: true });

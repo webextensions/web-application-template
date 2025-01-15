@@ -33,7 +33,7 @@ const setPassword = function ({ constructorParamForDb }) {
                 }
             }
         }
-        return sendSuccessResponse(res, 'Password set successfully');
+        return sendSuccessResponse(res, 'Success: Password has been set');
     };
 };
 
