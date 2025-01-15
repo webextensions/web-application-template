@@ -72,8 +72,8 @@
         "react-use": "^17.6.0",
 
         // Material UI
-        "@mui/material": "^6.3.1",
-        "@mui/icons-material": "^6.3.1",
+        "@mui/material": "^6.4.0",
+        "@mui/icons-material": "^6.4.0",
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.0",
 
@@ -95,7 +95,7 @@
         "ky": "^1.7.4",
 
         // Database
-        "better-sqlite3": "^11.7.2",
+        "better-sqlite3": "^11.8.0",
 
         // System and I/O devices
         "systeminformation": "^5.25.11",
