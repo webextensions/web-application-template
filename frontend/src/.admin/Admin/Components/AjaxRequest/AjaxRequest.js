@@ -35,7 +35,7 @@ const ajaxRequestConfigs = [
                 id: 'Admin > Help (Routes)',
                 title: 'Help (Routes)',
                 method: 'GET',
-                url:        '/admin/help',
+                url:        '/admin/help', // eslint-disable-line @stylistic/no-multi-spaces
                 defaultUrl: '/admin/help?responseFormat=json',
                 // form: {
                 //     schema: {

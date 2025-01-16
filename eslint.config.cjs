@@ -37,6 +37,7 @@ module.exports = [
         // Add ESLint rules here. If they are stable and useful, move those as a pull
         // request to https://github.com/webextensions/eslint-config-ironplate/
         rules: {
+            '@stylistic/no-multi-spaces': ['error', { ignoreEOLComments: true, exceptions: { ImportAttribute: false, Property: false } }],
             'no-unused-vars': ['error', {
                 caughtErrors: 'none'
             }],

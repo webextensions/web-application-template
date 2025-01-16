@@ -147,12 +147,16 @@ const configForThisMode = {
         //     useTrackTime: true,
         //     useSafeAndSecure: false
         // },
+
+        /* eslint-disable @stylistic/no-multi-spaces */
         outputCssFilenamePattern: 'bundle.[name].[contenthash:20].css',
         outputJsFilenamePattern:  'bundle.[name].[contenthash:20].js',      // It seems that we need to use '[name].bundle.[hash].js' when webpack-dev server is being used
                                                                             // Other useful values to check:
                                                                             //     '[name].bundle.[hash].js'
                                                                             //     'bundle.[name].[chunkhash].js'
                                                                             //     '[name].bundle.[chunkhash].js'
+        /* eslint-enable @stylistic/no-multi-spaces */
+
         useMinimize: false,
         skipEntry: false                                                    // Set it to true to skip bundling JS/CSS dependencies etc in the ".html.template" file
     }

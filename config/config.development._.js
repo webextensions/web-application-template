@@ -47,8 +47,11 @@ const configForThisMode = {
         verbose: false,
         publicDirectory,
         devtool: 'source-map',
+
+        /* eslint-disable @stylistic/no-multi-spaces */
         outputCssFilenamePattern: 'bundle.[name].ensure-freshness.css',
         outputJsFilenamePattern:  'bundle.[name].ensure-freshness.js'
+        /* eslint-enable @stylistic/no-multi-spaces */
     }
 };
 

@@ -43,7 +43,7 @@ class UsersDal {
                 INSERT INTO users ( uuid,  id,  name,  email,  passwordHash,  joinedAt)
                 VALUES            (@uuid, @id, @name, @email, @passwordHash, @joinedAt)
             `);
-            statement.run({         uuid,  id,  name,  email,  passwordHash,  joinedAt });
+            statement.run({         uuid,  id,  name,  email,  passwordHash,  joinedAt }); // eslint-disable-line @stylistic/no-multi-spaces
             return [null];
         } catch (e) {
             const maskedPassword = password.replaceAll(/./g, '*');

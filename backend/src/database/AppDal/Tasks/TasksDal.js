@@ -60,7 +60,7 @@ class TasksDal {
                 INSERT INTO taskCategories ( userUuid,  title,  createdAt)
                 VALUES                     (@userUuid, @title, @createdAt)
             `);
-            const result = statement.run({   userUuid,  title,  createdAt });
+            const result = statement.run({   userUuid,  title,  createdAt }); // eslint-disable-line @stylistic/no-multi-spaces
             return [null, result];
         } catch (e) {
             console.error(

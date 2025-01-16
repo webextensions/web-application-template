@@ -1,6 +1,7 @@
 const { execSync } = require('node:child_process');
 
 const writeWithColor = function (message, color) {
+    /* eslint-disable @stylistic/no-multi-spaces */
     const colors = {
         red:     '\u001B[31m',
         green:   '\u001B[32m',
@@ -10,6 +11,7 @@ const writeWithColor = function (message, color) {
         cyan:    '\u001B[36m',
         white:   '\u001B[37m'
     };
+    /* eslint-enable @stylistic/no-multi-spaces */
     const resetCode = '\u001B[0m';
 
     // Only use color codes if stdout is a TTY
@@ -66,10 +68,12 @@ module.exports = {
             const timeSinceReleaseMs = Date.now() - new Date(timestampOfUpgradedVersion).getTime();
 
             const relativeTimeString = (function () {
+                /* eslint-disable @stylistic/no-multi-spaces */
                 const days    = Math.floor(timeSinceReleaseMs / (24 * 60 * 60 * 1000));
                 const hours   = Math.floor(timeSinceReleaseMs /      (60 * 60 * 1000)) % 24;
                 const minutes = Math.floor(timeSinceReleaseMs /           (60 * 1000)) % 60;
                 const seconds = Math.floor(timeSinceReleaseMs /                (1000)) % 60;
+                /* eslint-enable @stylistic/no-multi-spaces */
 
                 if (days >= 1) {
                     return `${days}d`;

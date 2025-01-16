@@ -87,10 +87,10 @@ export const useAuth = function () {
 
     const flagUserIsRegistered = (() => {
         if (!userUuid) {
-            return 'no';          // TODO: Export this string as a constant
+            return 'no'; // TODO: Export this string as a constant
         } else {
             if (isSuccess) {
-                return 'yes';     // TODO: Export this string as a constant
+                return 'yes'; // TODO: Export this string as a constant
             } else if (isPending && isFetching) {
                 return 'loading'; // TODO: Export this string as a constant
             } else {
@@ -101,12 +101,12 @@ export const useAuth = function () {
 
     const granularUserIsRegistered = (() => {
         if (!userUuid) {
-            return 'granular-no';          // TODO: Export this string as a constant
+            return 'granular-no'; // TODO: Export this string as a constant
         } else {
             if (isError) {
                 return 'granular-error';
             } else if (isSuccess) {
-                return 'granular-yes';     // TODO: Export this string as a constant
+                return 'granular-yes'; // TODO: Export this string as a constant
             } else if (isPending && isFetching) {
                 return 'granular-loading'; // TODO: Export this string as a constant
             } else {

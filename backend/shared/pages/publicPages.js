@@ -7,11 +7,13 @@ import {
 } from './pageUrls.js';
 
 const publicPagesConfig = [
+    /* eslint-disable @stylistic/no-multi-spaces */
     { excludeFromSitemap: false, location: ROOT },
     { excludeFromSitemap: true,  location: ROOT_ACCOUNT },
     { excludeFromSitemap: false, location: ROOT_SIGN_IN },
     { excludeFromSitemap: true,  location: ROOT_TASKS },
     { excludeFromSitemap: true,  location: ROOT_UNDER_CONSTRUCTION }
+    /* eslint-enable @stylistic/no-multi-spaces */
 ].map((item) => {
     if (typeof item === 'string') {
         return {

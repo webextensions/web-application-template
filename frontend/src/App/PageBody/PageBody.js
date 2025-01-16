@@ -89,12 +89,14 @@ const PageBody = function () {
                         }}
                     >
                         <Routes>
-                            <Route exact path={ROOT}                           element={<PageMain              />} />
-                            <Route exact path={ROOT_ACCOUNT}                   element={<PageAccount           />} />
-                            <Route exact path={ROOT_SIGN_IN}                   element={<PageSignIn            />} />
-                            <Route exact path={ROOT_TASKS}                     element={<PageTasks             />} />
-                            <Route exact path={ROOT_UNDER_CONSTRUCTION}        element={<PageUnderConstruction />} />
-                            <Route       path="*"                              element={<PageNotFound          />} />
+                            {/* eslint-disable @stylistic/no-multi-spaces */}
+                            <Route exact path={ROOT}                    element={<PageMain              />} />
+                            <Route exact path={ROOT_ACCOUNT}            element={<PageAccount           />} />
+                            <Route exact path={ROOT_SIGN_IN}            element={<PageSignIn            />} />
+                            <Route exact path={ROOT_TASKS}              element={<PageTasks             />} />
+                            <Route exact path={ROOT_UNDER_CONSTRUCTION} element={<PageUnderConstruction />} />
+                            <Route       path="*"                       element={<PageNotFound          />} />
+                            {/* eslint-enable @stylistic/no-multi-spaces */}
                         </Routes>
                     </ErrorBoundary>
                 </LayoutContentZone>

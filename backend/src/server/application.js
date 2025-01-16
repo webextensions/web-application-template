@@ -238,7 +238,7 @@ const application = {
                 host = req.get('host'),
                 originalUrl = req.originalUrl;
 
-            const origin  = protocol + '://' + host;
+            const origin = protocol + '://' + host;
             const fullUrl = origin + originalUrl;
 
             res.locals.origin = origin;
