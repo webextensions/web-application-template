@@ -14,6 +14,8 @@ import { ClickToShow } from '@webextensions/react/components/ClickToShow/ClickTo
 
 import { CopyIcon } from '@webextensions/react/components/CopyIcon/CopyIcon.js';
 
+import { CopyToClipboard } from '../../../base_modules/generic-components/CopyToClipboard/CopyToClipboard.js';
+
 import { CurrentTime } from '../../../base_modules/generic-components/CurrentTime/CurrentTime.js';
 
 import * as styles from './Demo.css';
@@ -24,6 +26,10 @@ const DemoAfterDelay = function () {
             This text is shown after a delay of 1 second.
         </AfterDelay>
     );
+};
+
+const DemoCopy = function () {
+    return <CopyToClipboard textToCopy="Dummy content copied to clipboard" />;
 };
 
 const DemoToastOnButton = function () {
@@ -113,6 +119,10 @@ const DemoContainer = function () {
         >
             <div>
                 <DemoAfterDelay />
+            </div>
+
+            <div>
+                <DemoCopy />
             </div>
 
             <div>

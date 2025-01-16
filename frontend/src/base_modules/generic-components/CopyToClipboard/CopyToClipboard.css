@@ -1,0 +1,7 @@
+.CopyToClipboard {
+    opacity: 0.5;
+}
+
+.CopyToClipboard:hover {
+    opacity: 1;
+}
