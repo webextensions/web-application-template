@@ -26,6 +26,8 @@ import FormControlLabel from '@mui/material/FormControlLabel/index.js';
 
 import { useAuth } from '../../base_modules/hooks/useAuth/useAuth.js';
 
+import { OpenAiApiKey } from './General/OpenAiApiKey/OpenAiApiKey.js';
+
 import * as styles from './DevHelper.css';
 
 window.dev = function () {
@@ -294,6 +296,10 @@ const DevHelper = function () {
                     >
                         Show / Hide
                     </Button>
+                </div>
+
+                <div style={{ marginTop: 10 }}>
+                    <OpenAiApiKey />
                 </div>
 
                 <div style={{ marginTop: 10 }}>

@@ -47,7 +47,7 @@ const configForThisMode = {
         database: {
             sqlite: {
                 // databaseFilePath: ':memory:' // DEBUG-HELPER
-                databaseFilePath: path.resolve(__dirname, '..', 'app-data', 'sqlite.db')
+                databaseFilePath: path.resolve(__dirname, '..', 'app-data', 'database', 'sqlite.db')
             }
         }
     },
