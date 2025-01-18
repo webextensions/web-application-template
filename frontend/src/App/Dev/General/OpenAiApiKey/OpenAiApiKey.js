@@ -15,28 +15,31 @@ const ensureOpenAiApiKey = function () {
         safeLocalStorage.setItem('OPENAI_API_KEY', apiKey);
         alert('OpenAI API key is set.'); // eslint-disable-line no-alert
         return true;
-    } else {
+    } else if (apiKey === '') {
         safeLocalStorage.removeItem('OPENAI_API_KEY');
         alert('OpenAI API key is unset.'); // eslint-disable-line no-alert
+        return false;
+    } else { // apiKey === null
         return false;
     }
 };
 
 const OpenAiApiKey = () => {
     return (
-        <div className={styles.OpenAiApiKey}>
-            <div style={{ display: 'flex' }}>
-                <div>
-                    <Button
-                        variant="contained"
-                        size="small"
-                        onClick={() => {
-                            ensureOpenAiApiKey();
-                        }}
-                    >
-                        Set/Unset OpenAI API Key
-                    </Button>
-                </div>
+        <div className={styles.OpenAiApiKey} style={{ display: 'flex' }}>
+            <div style={{ flex: 1, alignContent: 'center' }}>
+                OpenAI API Key:
+            </div>
+            <div>
+                <Button
+                    variant="contained"
+                    size="small"
+                    onClick={() => {
+                        ensureOpenAiApiKey();
+                    }}
+                >
+                    Set/Unset
+                </Button>
             </div>
         </div>
     );
