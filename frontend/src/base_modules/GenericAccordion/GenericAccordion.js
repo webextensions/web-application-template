@@ -22,8 +22,9 @@ const Accordion = styled((props) => (
 const GenericAccordion = function ({
     children,
     el,
+    style = {},
     flagRefreshedAt,
-    localStorageIdForExpanded,
+    localStorageIdForExpanded, // Note: When consuming this component, ensure that the value for this prop does not change, so that, the "rules of hooks" are effectively followed.
     localStorageDefaultValueForExpanded,
     title,
     icon
@@ -31,7 +32,6 @@ const GenericAccordion = function ({
     let expanded;
     let setExpanded;
 
-    // Note: When consuming this component, ensure that the value for the prop `localStorageIdForExpanded` does not change, so that, the "rules of hooks" are effectively followed.
     if (localStorageIdForExpanded) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         [expanded, setExpanded] = useLocalStorage(localStorageIdForExpanded, localStorageDefaultValueForExpanded || 'no');
@@ -55,6 +55,7 @@ const GenericAccordion = function ({
                 unmountOnExit: initialized ? false : true
             }}
             expanded={expanded === 'yes'}
+            style={style}
             onChange={(evt, expanded) => {
                 if (expanded) {
                     setInitialized(true);
@@ -114,6 +115,7 @@ const GenericAccordion = function ({
 GenericAccordion.propTypes = {
     children: PropTypes.node,
     el: PropTypes.func,
+    style: PropTypes.object,
     flagRefreshedAt: PropTypes.bool,
     localStorageIdForExpanded: PropTypes.string,
     localStorageDefaultValueForExpanded: PropTypes.string,
