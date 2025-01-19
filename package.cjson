@@ -109,7 +109,7 @@
 
         "js-cookie": "^3.0.5",
 
-        "styles-reset": "=0.3.0",
+        "styles-reset": "=0.3.1",
         "utility-classes.css": "^0.0.1",
 
         "uuid": "^11.0.5",
